@@ -36,8 +36,7 @@ namespace ModernPhysics.Web
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration["Sql:ConnectionString"]));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -60,7 +59,6 @@ namespace ModernPhysics.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

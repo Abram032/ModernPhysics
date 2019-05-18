@@ -7,7 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F2FBEC94-DA2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{DB502613-EC2F-4EFF-BC0E-C102A156C51C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernPhysics.Web", "src\ModernPhysics.Web\ModernPhysics.Web.csproj", "{3C10C101-45B5-4896-89B8-0978D87D1ECD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernPhysics.Web", "src\ModernPhysics.Web\ModernPhysics.Web.csproj", "{3C10C101-45B5-4896-89B8-0978D87D1ECD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernPhysics.Models", "lib\ModernPhysics.Models\ModernPhysics.Models.csproj", "{F44AC446-E37C-4D37-A6F9-9121198813C7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernPhysics.HtmlParser.Console", "src\ModernPhysics.HtmlParser.Console\ModernPhysics.HtmlParser.Console.csproj", "{604DBB7E-11B4-4947-97A1-E5F5AFB20CB6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernPhysics.HtmlParser", "lib\ModernPhysics.HtmlParser\ModernPhysics.HtmlParser.csproj", "{D57C0465-7E5A-4C9C-914C-CC46A6CB6347}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,12 +25,27 @@ Global
 		{3C10C101-45B5-4896-89B8-0978D87D1ECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C10C101-45B5-4896-89B8-0978D87D1ECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C10C101-45B5-4896-89B8-0978D87D1ECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F44AC446-E37C-4D37-A6F9-9121198813C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F44AC446-E37C-4D37-A6F9-9121198813C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F44AC446-E37C-4D37-A6F9-9121198813C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F44AC446-E37C-4D37-A6F9-9121198813C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{604DBB7E-11B4-4947-97A1-E5F5AFB20CB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{604DBB7E-11B4-4947-97A1-E5F5AFB20CB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{604DBB7E-11B4-4947-97A1-E5F5AFB20CB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{604DBB7E-11B4-4947-97A1-E5F5AFB20CB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D57C0465-7E5A-4C9C-914C-CC46A6CB6347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D57C0465-7E5A-4C9C-914C-CC46A6CB6347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D57C0465-7E5A-4C9C-914C-CC46A6CB6347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D57C0465-7E5A-4C9C-914C-CC46A6CB6347}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3C10C101-45B5-4896-89B8-0978D87D1ECD} = {F2FBEC94-DA2F-4DB9-99C8-0597013C8E96}
+		{F44AC446-E37C-4D37-A6F9-9121198813C7} = {DB502613-EC2F-4EFF-BC0E-C102A156C51C}
+		{604DBB7E-11B4-4947-97A1-E5F5AFB20CB6} = {F2FBEC94-DA2F-4DB9-99C8-0597013C8E96}
+		{D57C0465-7E5A-4C9C-914C-CC46A6CB6347} = {DB502613-EC2F-4EFF-BC0E-C102A156C51C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7A2AB1BD-203E-4199-A297-6DD48AE37091}
