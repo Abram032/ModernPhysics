@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,13 +21,15 @@ namespace ModernPhysics.HtmlParser.Console
                 System.Console.WriteLine($"No path given for parser. Ex. dotnet {Assembly.GetExecutingAssembly().GetName().Name}.dll C:/path");
                 return;
             }
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
 
             System.Console.WriteLine("Creating directories...");
-
             string path = args[0];
             string jsonPath = args[1];
             string logPath = args[2];
             Directory.CreateDirectory(jsonPath);
+            Directory.CreateDirectory(logPath);
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             HtmlParser parser = new HtmlParser();
 
@@ -46,14 +49,15 @@ namespace ModernPhysics.HtmlParser.Console
             int failures = 0;
             List<string> issueFiles = new List<string>();
             List<string> failedFiles = new List<string>();
-            for(int i = 0, k = 0; i < files.Length; i++)
+            for(int i = 0; i < files.Length; i++)
             {
                 try
                 {
-                    if (i % (files.Length / 20) == 0 && k < 20)
+                    //int progress = (int)(((double)i / (double)files.Length) * 100)1;
+                    //if (progress % 10 == 0)
+                    if(i % 100 == 0)
                     {
-                        k++;
-                        System.Console.WriteLine($"Progress... {k * 5}%");
+                        System.Console.WriteLine($"Progress... {i}/{files.Length}");
                     }
                     var file = files[i];
                     var fileName = file.Split('\\').Last().Replace(".html", "");
@@ -68,6 +72,7 @@ namespace ModernPhysics.HtmlParser.Console
                     var html = File.ReadAllText(file, encoding);
                     html = parser.ConvertToUTF8(html, encoding);
                     html = parser.TagsToLower(html);
+                    html = parser.RemoveLinebreaks(html);
                     var url = @"http://dydaktyka.fizyka.umk.pl" + file.Replace(path, "");
                     url = url.Replace('\\', '/');
                     Page page = new Page
@@ -86,8 +91,10 @@ namespace ModernPhysics.HtmlParser.Console
                 }
             }
 
+            timer.Stop();
             StringBuilder sb = new StringBuilder();
             System.Console.WriteLine($"Parsing done!");
+            System.Console.WriteLine($"Time elapsed: {timer.Elapsed}");
             System.Console.WriteLine($"Total files: {files.Length}");
             System.Console.WriteLine($"Files parsed successfully: {files.Length - issues - failures}");
             System.Console.WriteLine($"Issues during parsing: {issues}");

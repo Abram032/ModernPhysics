@@ -7,16 +7,16 @@ namespace ModernPhysics.HtmlParser
 {
     public class HtmlParser
     {
-        public string GetTitle (string html)
+        public string GetTitle(string html)
         {
             string title = "";
-            html = RemoveLinebreaks(html);
 
-            if(html.Contains("<title>"))
+            if (html.Contains("<title>"))
             {
                 var match = Regex.Match(html, "<title>(.*?)</title>");
                 var tag = match.Value;
                 title = tag.Replace("<title>", "").Replace("</title>", "");
+                title = ReplaceRegex(title, @"&(.*?);", " ");
             }
 
             return title;
@@ -24,25 +24,21 @@ namespace ModernPhysics.HtmlParser
 
         public string GetContent(string html)
         {
-            var text = "";
-            html = RemoveLinebreaks(html);
+            html = ReplaceRegex(html, @"<!--(.*?)-->", " ");                    //Removes all comments
+            //html = ReplaceRegex(html, @"<head>(.*?)</head>", " ");            //Removes head tag
+            html = ReplaceRegex(html, @"<title>(.*?)</title>", " ");            //Removes title tag
+            html = ReplaceRegex(html, @"<style(.*?)>(.*?)</style>", " ");       //Removes styles and it's contents
+            html = ReplaceRegex(html, @"<script(.*?)>(.*?)</script>", " ");     //Removes scripts and it's contents
+            html = ReplaceRegex(html, @"<(.*?)>", " ");                         //Removes all other tags
+            html = ReplaceRegex(html, @"&(.*?);", " ");                         //Removes all symbol entities
+            html = ReplaceRegex(html, @"\t", " ");                              //Removes tabulaions
+            html = ReplaceRegex(html, @"\s{2,}", " ");                          //Removes additional whitespaces
+            html = ReplaceRegex(html, @"\s{2,}", " ");                          //Removes additional whitespaces
+            html = ReplaceRegex(html, @"\s{2,}", " ");                          //Removes additional whitespaces
 
-            if(html.Contains("<body"))
-            {
-                var match = Regex.Match(html, @"<body(.*?)>(.*?)</body>");          //Gets entire body of html
-                var body = match.Value;
-                body = ReplaceRegex(body, @"<style>(.*?)</style>", " ");            //Removes styles and it's contents
-                body = ReplaceRegex(body, @"<script(.*?)>(.*?)</script>", " ");     //Removes scripts and it's contents
-                body = ReplaceRegex(body, @"<(.*?)>", " ");                         //Removes all tags
-                body = ReplaceRegex(body, @"&(.*?);", " ");                         //Removes all symbol entities
-                body = ReplaceRegex(body, @"\s{2,}", " ");                          //Removes additional whitespaces
-                body = ReplaceRegex(body, @"\s{2,}", " ");                          //Removes additional whitespaces
-                text = body;
-            }
-
-            text = text.TrimStart(' ');
-            text = text.TrimEnd(' ');
-            return text;
+            html = html.TrimStart(' ');
+            html = html.TrimEnd(' ');
+            return html;
         }
 
         public string RemoveLinebreaks(string html)
