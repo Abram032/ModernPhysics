@@ -25,12 +25,12 @@ namespace ModernPhysics.HtmlParser
         public string GetContent(string html)
         {
             html = ReplaceRegex(html, @"<!--(.*?)-->", " ");                    //Removes all comments
-            //html = ReplaceRegex(html, @"<head>(.*?)</head>", " ");            //Removes head tag
             html = ReplaceRegex(html, @"<title>(.*?)</title>", " ");            //Removes title tag
             html = ReplaceRegex(html, @"<style(.*?)>(.*?)</style>", " ");       //Removes styles and it's contents
             html = ReplaceRegex(html, @"<script(.*?)>(.*?)</script>", " ");     //Removes scripts and it's contents
             html = ReplaceRegex(html, @"<(.*?)>", " ");                         //Removes all other tags
             html = ReplaceRegex(html, @"&(.*?);", " ");                         //Removes all symbol entities
+            html = ReplaceRegex(html, @"&nbsp", " ");                           //Removes incorrect &nbsp symbols
             html = ReplaceRegex(html, @"\t", " ");                              //Removes tabulaions
             html = ReplaceRegex(html, @"\s{2,}", " ");                          //Removes additional whitespaces
             html = ReplaceRegex(html, @"\s{2,}", " ");                          //Removes additional whitespaces
