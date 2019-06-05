@@ -36,7 +36,21 @@ namespace ModernPhysics.Web
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration["Sql:UsersConnectionString"]));
+            {
+                options.UseMySql(Configuration["Sql:ConnectionString"]);
+                options.EnableSensitiveDataLogging();
+            });
+            services.AddDbContext<WebAppDbContext>(options =>
+            {
+                options.UseMySql(Configuration["Sql:ConnectionString"]);
+                options.EnableSensitiveDataLogging();
+            });
+
+            //services.AddDbContext<WebAppDbContext>(options =>
+            //{
+            //    options.UseInMemoryDatabase("AppDb");
+            //    options.EnableSensitiveDataLogging();
+            //});
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

@@ -5,16 +5,18 @@ namespace ModernPhysics.Models
 {
     public class Page
     {
-        int Id { get; set; }
-        Guid Guid { get; set; }
-        string Title { get; set; }
-        DateTime CreatedAt { get; set; }
-        string CreatedBy { get; set; }
-        DateTime ModifiedAt { get; set; }
-        string ModifiedBy { get; set; }
-        ICollection<string> Tags { get; set; }
-        string Content { get; set; }
-        bool IsPublished { get; set; }
-        bool IsDeleted { get; set; }
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public string FriendlyUrl { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime ModifiedAt { get; set; }
+        public string ModifiedBy { get; set; }
+        public ICollection<PageTag> PageTags { get; set; }
+        public Category Category { get; set; }
+        public string Content { get; set; }
+        public bool IsPublished { get; set; }
+        public bool IsDeleted { get; set; }
+        public int Order { get; set; }
     }
 }

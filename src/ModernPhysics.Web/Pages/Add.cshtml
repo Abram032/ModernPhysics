@@ -1,0 +1,26 @@
+﻿@page
+@model ModernPhysics.Web.Pages.AddModel
+@{
+    ViewData["Title"] = "Add";
+}
+
+<h1>Add</h1>
+
+<form method="post">
+    <label asp-for="@Model.Input.Title"></label>
+    <input asp-for="@Model.Input.Title" />
+
+    <label asp-for="@Model.Input.FriendlyUrl"></label>
+    <input asp-for="@Model.Input.FriendlyUrl" />
+
+    <label asp-for="@Model.Input.Tags"></label>
+    <input asp-for="@Model.Input.Tags" />
+
+    <label asp-for="@Model.Input.IsPublished"></label>
+    <input asp-for="@Model.Input.IsPublished" />
+
+    <label asp-for="@Model.Input.Content"></label>
+    <input asp-for="@Model.Input.Content" />
+
+    <button type="submit">Add</button>
+</form>
