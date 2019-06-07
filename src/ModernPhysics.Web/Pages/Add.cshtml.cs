@@ -56,12 +56,10 @@ namespace ModernPhysics.Web.Pages
                 Content = Input.Content,
                 IsPublished = Input.IsPublished,
                 CreatedBy = "admin"
-                //PageTags = pageTags
             };
 
             foreach(var tag in tags)
             {
-                //tag.PageTags = pageTags;
                 pageTags.Add(new PageTag
                 {
                     Page = page,

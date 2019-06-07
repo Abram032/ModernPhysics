@@ -18,12 +18,15 @@ namespace ModernPhysics.Web.Data
         public DbSet<Page> Pages { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<PageTag> PageTags { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Blob> Blobs { get; set; }
+
         //TODO: Migrate new model and update views
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.Entity<Page>().HasKey(p => p.Id);
-            builder.Entity<Page>().HasAlternateKey(p => new { p.Category, p.FriendlyUrl });
+            builder.Entity<Page>().HasIndex(p => new { p.Category, p.FriendlyUrl }).IsUnique();
             builder.Entity<Page>().Property(p => p.Title).IsRequired().HasMaxLength(255);
             builder.Entity<Page>().Property(p => p.FriendlyUrl).IsRequired().HasMaxLength(255);
             builder.Entity<Page>().Property(p => p.CreatedAt).IsRequired().ValueGeneratedOnAdd();
@@ -38,7 +41,7 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Page>().HasMany(p => p.PageTags).WithOne(p => p.Page).HasForeignKey(p => p.TagId);
 
             builder.Entity<Tag>().HasKey(p => p.Id);
-            builder.Entity<Tag>().HasAlternateKey(p => p.Name);
+            builder.Entity<Tag>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<Tag>().Property(p => p.Name).HasMaxLength(64).IsRequired();
             builder.Entity<Tag>().HasMany(p => p.PageTags).WithOne(p => p.Tag).HasForeignKey(p => p.PageId);
 
@@ -47,9 +50,18 @@ namespace ModernPhysics.Web.Data
             builder.Entity<PageTag>().HasOne(p => p.Tag).WithMany(p => p.PageTags).HasForeignKey(p => p.TagId);
 
             builder.Entity<Category>().HasKey(p => p.Id);
-            builder.Entity<Category>().HasAlternateKey(p => p.Name);
+            builder.Entity<Category>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<Category>().Property(p => p.Name).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().HasMany(p => p.Pages).WithOne(p => p.Category);
+
+            builder.Entity<Blob>().HasKey(p => p.Id);
+            builder.Entity<Blob>().HasIndex(p => p.Url).IsUnique();
+            builder.Entity<Blob>().HasIndex(p => new { p.Path, p.Name }).IsUnique();
+            builder.Entity<Blob>().Property(p => p.Url).IsRequired().HasMaxLength(2048);
+            builder.Entity<Blob>().Property(p => p.Name).IsRequired().HasMaxLength(255);
+            builder.Entity<Blob>().Property(p => p.Path).IsRequired().HasMaxLength(255);
+            builder.Entity<Blob>().Property(p => p.Description).HasMaxLength(255);
+            builder.Entity<Blob>().Property(p => p.Type).HasMaxLength(255);
         }
     }
 }

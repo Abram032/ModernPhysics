@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ModernPhysics.Web.Data.Identity.Migrations
+namespace ModernPhysics.Web.Data.Migrations.Identity
 {
-    public partial class IdentityInitialCreate : Migration
+    public partial class InitialCreateIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
