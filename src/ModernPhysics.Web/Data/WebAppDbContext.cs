@@ -26,7 +26,7 @@ namespace ModernPhysics.Web.Data
         {
             base.OnModelCreating(builder);
             builder.Entity<Page>().HasKey(p => p.Id);
-            builder.Entity<Page>().HasIndex(p => new { p.Category, p.FriendlyUrl }).IsUnique();
+            builder.Entity<Page>().HasIndex(p => p.FriendlyUrl).IsUnique();
             builder.Entity<Page>().Property(p => p.Title).IsRequired().HasMaxLength(255);
             builder.Entity<Page>().Property(p => p.FriendlyUrl).IsRequired().HasMaxLength(255);
             builder.Entity<Page>().Property(p => p.CreatedAt).IsRequired().ValueGeneratedOnAdd();

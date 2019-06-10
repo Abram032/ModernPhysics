@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -8,8 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Web\Migrations\20190603082624_WebInitialCreate.cs" />
-    <Compile Remove="Data\Web\Migrations\20190603082624_WebInitialCreate.Designer.cs" />
+    <Compile Remove="Data\Migrations\Web\20190610130154_InitialCreateWeb.cs" />
+    <Compile Remove="Data\Migrations\Web\20190610130154_InitialCreateWeb.Designer.cs" />
+    <Compile Remove="Data\Migrations\Web\20190610130650_InitialCreateWeb.cs" />
+    <Compile Remove="Data\Migrations\Web\20190610130650_InitialCreateWeb.Designer.cs" />
+    <Compile Remove="Data\Migrations\Web\20190610130845_InitialCreateWeb.cs" />
+    <Compile Remove="Data\Migrations\Web\20190610130845_InitialCreateWeb.Designer.cs" />
   </ItemGroup>
 
 
@@ -25,12 +29,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\lib\ModernPhysics.Extensions\ModernPhysics.Extensions.csproj" />
     <ProjectReference Include="..\..\lib\ModernPhysics.Models\ModernPhysics.Models.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="Data\Identity\Migrations\" />
-    <Folder Include="Data\Web\Migrations\" />
   </ItemGroup>
 
 </Project>

@@ -22,6 +22,8 @@
                 <td>IsPublished</td>
                 <td>IsDeleted</td>
                 <td>Content</td>
+                <td>Order</td>
+                <td>Category</td>
                 <td>Tags</td>
             </tr>
         </thead>
@@ -38,6 +40,8 @@
                 <td>@item.IsPublished</td>
                 <td>@item.IsDeleted</td>
                 <td>@item.Content</td>
+                <td>@item.Order</td>
+                <td>@item.Category.Name</td>
                 <td>
                     @if (item.PageTags != null)
                     {
@@ -45,7 +49,7 @@
                         {
                             if (tag != null)
                             {
-                                @tag.Tag.Name 
+                                <span>@tag.Tag.Name,</span>
                             }
                         }
                     }
@@ -68,7 +72,7 @@ else
                 <td>Id</td>
                 <td>Title</td>
                 <td>Pages</td>
-            </tr>   
+            </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Tags)
@@ -79,12 +83,12 @@ else
                     <td>
                         @if (item.PageTags != null)
                         {
-                            @foreach (var itemm in item.PageTags)
+                            @foreach (var pagetag in item.PageTags)
                             {
-                                if (itemm != null)
+                                if (pagetag != null)
 
                                 {
-                                    @itemm.Page.Id
+                                    @pagetag.Page.Title
                                 }
                             }
                         }
@@ -98,4 +102,81 @@ else
 else
 {
     <h4>No tags found.</h4>
+}
+
+<h4>Categories</h4>
+@if (Model.Categories != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Name</td>
+                <td>Pages</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Categories)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>
+                        @if (item.Pages != null)
+                        {
+                            @foreach (var post in item.Pages)
+                            {
+                                if (post != null)
+
+                                {
+                                    @post.Title
+                                }
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <h4>No categories found.</h4>
+}
+
+
+<h4>Blobs</h4>
+@if (Model.Blobs != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Name</td>
+                <td>Path</td>
+                <td>Url</td>
+                <td>Type</td>
+                <td>Description</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Blobs)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Path</td>
+                    <td>@item.Url</td>
+                    <td>@item.Type</td>
+                    <td>@item.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <h4>No blobs found.</h4>
 }
