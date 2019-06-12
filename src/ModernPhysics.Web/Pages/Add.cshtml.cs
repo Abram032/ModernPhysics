@@ -18,19 +18,28 @@ namespace ModernPhysics.Web.Pages
             _context = context;
         }
 
-
-        public ICollection<Models.Page> Pages { get; set; }
-
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputPageModel InputPage { get; set; }
+        [BindProperty]
+        public InputBlobModel InputBlob { get; set; }
 
-        public class InputModel
+        public class InputPageModel
         {
             public string Title { get; set; }
             public string FriendlyUrl { get; set; }
             public string Tags { get; set; }
             public string Content { get; set; }
             public bool IsPublished { get; set; }
+            public string Category { get; set; }
+        }
+        
+        public class InputBlobModel
+        {
+            public string Name { get; set; }
+            public string Path { get; set; }
+            public string Url { get; set; }
+            public string Type { get; set; }
+            public string Description { get; set; }
         }
 
         public void OnGet()
@@ -38,7 +47,7 @@ namespace ModernPhysics.Web.Pages
 
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostPageAsync()
         {
             if(!ModelState.IsValid)
             {
@@ -47,19 +56,42 @@ namespace ModernPhysics.Web.Pages
 
             var tags = new List<Tag>();
             var pageTags = new List<PageTag>();
-            tags.AddRange(Input.Tags.Split(' ').ToTags());
+            tags.AddRange(InputPage.Tags.Split(' ').ToTags());
+            var category = _context.Categories.FirstOrDefault(p => p.Name.Equals(InputPage.Category));
+
+            if (category == null)
+            {
+                category = new Category
+                {
+                    Name = InputPage.Category
+                };
+                _context.Categories.Add(category);
+            }
+            else
+            {
+                _context.Categories.Update(category);
+            }
+
+            if (category.Pages == null)
+            {
+                category.Pages = new List<Models.Page>();
+            }
 
             var page = new Models.Page
             {
-                Title = Input.Title,
-                FriendlyUrl = Input.FriendlyUrl,
-                Content = Input.Content,
-                IsPublished = Input.IsPublished,
+                Title = InputPage.Title,
+                FriendlyUrl = InputPage.FriendlyUrl,
+                Content = InputPage.Content,
+                IsPublished = InputPage.IsPublished,
+                Category = category,
                 CreatedBy = "admin"
             };
 
-            foreach(var tag in tags)
+            category.Pages.Add(page);
+
+            foreach (var tag in tags)
             {
+                var _tag = _context.Tags.FirstOrDefault(p => p.Name.Equals(tag.Name));
                 pageTags.Add(new PageTag
                 {
                     Page = page,
@@ -68,12 +100,77 @@ namespace ModernPhysics.Web.Pages
             }
 
             await _context.Pages.AddAsync(page);
-            await _context.Tags.AddRangeAsync(tags);
+            await _context.Tags.AddRangeAsync(tags);           
             await _context.PageTags.AddRangeAsync(pageTags);
 
             await _context.SaveChangesAsync();
 
             return new RedirectToPageResult("/View");
-        }   
+        }
+
+        public async Task<IActionResult> OnPostBlobAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return new BadRequestResult();
+            }
+
+            var url = BuildUrl(InputBlob.Path, InputBlob.Name, InputBlob.Type);
+            var blob = _context.Blobs.FirstOrDefault(p => p.Url.Equals(url));
+
+            if(blob == null)
+            {
+                blob = new Blob();
+            }
+
+            blob.Name = InputBlob.Name;
+            blob.Path = InputBlob.Path;
+            blob.Type = InputBlob.Type;
+            blob.Description = InputBlob.Description;
+            blob.Url = url;
+
+            _context.Blobs.Update(blob);
+            await _context.SaveChangesAsync();
+
+            return new RedirectToPageResult("/View");
+        }
+
+        private string BuildUrl(string path, string name, string type)
+        {
+            path = EnsurePrecedingSlash(path);
+            path = EnsureSubsequentSlash(path);
+            type = EnsurePrecedingDot(type);
+            return path + name + type;
+        }
+
+        private string EnsurePrecedingSlash(string value)
+        {
+            var c = value.FirstOrDefault();
+            if(c.Equals('/'))
+            {
+                return value;
+            }
+            return '/' + value;
+        }
+
+        private string EnsureSubsequentSlash(string value)
+        {
+            var c = value.Last();
+            if (c.Equals('/'))
+            {
+                return value;
+            }
+            return value + '/';
+        }
+
+        private string EnsurePrecedingDot(string value)
+        {
+            var c = value.FirstOrDefault();
+            if(c.Equals('.'))
+            {
+                return value;
+            }
+            return '.' + value;
+        }
     }
 }

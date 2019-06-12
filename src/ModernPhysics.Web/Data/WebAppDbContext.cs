@@ -35,8 +35,8 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Page>().Property(p => p.ModifiedBy).HasMaxLength(64);
             builder.Entity<Page>().Property(p => p.IsPublished).IsRequired().HasDefaultValue(false);
             builder.Entity<Page>().Property(p => p.IsDeleted).IsRequired().HasDefaultValue(false);
-            builder.Entity<Page>().Property(p => p.Content).HasColumnType("LONGTEXT");
-            builder.Entity<Page>().Property(p => p.Order).ValueGeneratedOnAdd();
+            builder.Entity<Page>().Property(p => p.Content).HasColumnType("MEDIUMTEXT");
+            builder.Entity<Page>().Property(p => p.Order).HasDefaultValue(0);
             builder.Entity<Page>().HasOne(p => p.Category).WithMany(p => p.Pages).IsRequired();
             builder.Entity<Page>().HasMany(p => p.PageTags).WithOne(p => p.Page).HasForeignKey(p => p.TagId);
 
@@ -57,7 +57,7 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Blob>().HasKey(p => p.Id);
             builder.Entity<Blob>().HasIndex(p => p.Url).IsUnique();
             builder.Entity<Blob>().HasIndex(p => new { p.Path, p.Name }).IsUnique();
-            builder.Entity<Blob>().Property(p => p.Url).IsRequired().HasMaxLength(2048);
+            builder.Entity<Blob>().Property(p => p.Url).IsRequired().HasMaxLength(255);
             builder.Entity<Blob>().Property(p => p.Name).IsRequired().HasMaxLength(255);
             builder.Entity<Blob>().Property(p => p.Path).IsRequired().HasMaxLength(255);
             builder.Entity<Blob>().Property(p => p.Description).HasMaxLength(255);

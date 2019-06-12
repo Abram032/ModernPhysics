@@ -25,7 +25,7 @@ namespace ModernPhysics.Web.Pages
 
         public void OnGet()
         {
-            Pages = _context.Set<Models.Page>().Include(p => p.PageTags).ThenInclude(p => p.Tag);
+            Pages = _context.Set<Models.Page>().Include(p => p.PageTags).ThenInclude(p => p.Tag).Include(p => p.Category);
             Tags = _context.Set<Tag>().Include(p => p.PageTags).ThenInclude(p => p.Page);
             Categories = _context.Set<Category>().Include(p => p.Pages);
             Blobs = _context.Set<Blob>();

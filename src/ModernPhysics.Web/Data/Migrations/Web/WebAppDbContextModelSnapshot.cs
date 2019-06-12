@@ -38,7 +38,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasMaxLength(2048);
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 
@@ -76,7 +76,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     b.Property<Guid>("CategoryId");
 
                     b.Property<string>("Content")
-                        .HasColumnType("LONGTEXT");
+                        .HasColumnType("MEDIUMTEXT");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd();
@@ -104,7 +104,8 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                         .HasMaxLength(64);
 
                     b.Property<int>("Order")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Title")
                         .IsRequired()

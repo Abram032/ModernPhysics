@@ -15,7 +15,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 255, nullable: false),
                     Path = table.Column<string>(maxLength: 255, nullable: false),
-                    Url = table.Column<string>(maxLength: 2048, nullable: false),
+                    Url = table.Column<string>(maxLength: 255, nullable: false),
                     Type = table.Column<string>(maxLength: 255, nullable: true),
                     Description = table.Column<string>(maxLength: 255, nullable: true)
                 },
@@ -61,11 +61,10 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     ModifiedAt = table.Column<DateTime>(nullable: false),
                     ModifiedBy = table.Column<string>(maxLength: 64, nullable: true),
                     CategoryId = table.Column<Guid>(nullable: false),
-                    Content = table.Column<string>(type: "LONGTEXT", nullable: true),
+                    Content = table.Column<string>(type: "MEDIUMTEXT", nullable: true),
                     IsPublished = table.Column<bool>(nullable: false, defaultValue: false),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
-                    Order = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+                    Order = table.Column<int>(nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
