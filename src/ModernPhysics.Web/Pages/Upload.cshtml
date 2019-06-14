@@ -1,0 +1,14 @@
+﻿@page
+@model ModernPhysics.Web.Pages.UploadModel
+@{
+    ViewData["Title"] = "Upload";
+}
+
+<h1>Upload</h1>
+
+<div>
+    <form method="post" enctype="multipart/form-data">
+            <input asp-for="@Model.Images">
+            <button type="submit">Upload</button>
+    </form>
+</div>
