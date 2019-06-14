@@ -35,23 +35,24 @@ namespace ModernPhysics.Web.Pages
                 return Page();
             }
 
-            Directory.CreateDirectory("/mnt");
-            Directory.CreateDirectory("/mnt/content");
+            Directory.CreateDirectory("content");
 
             var blobs = new List<Blob>();
 
             foreach (var file in Images)
             {
+                var name = file.FileName.Split('\\').Last();
+                var path = Path.Combine("content", name);
                 var blob = new Blob
                 {
-                    Name = file.FileName,
-                    Path = "/app/mnt/content/" + file.FileName,
+                    Name = name,
+                    Path = path,
                     Type = file.ContentType,
-                    Url = this.Request.Host.ToString() + "/mnt/content/" + file.FileName
+                    Url = this.Request.Host.ToString() + "/content/" + name
                 };
                 blobs.Add(blob);
 
-                using (FileStream fs = new FileStream(blob.Path, FileMode.Create))
+                using (var fs = System.IO.File.Create(blob.Path))
                 {
                     await file.CopyToAsync(fs);
                 }

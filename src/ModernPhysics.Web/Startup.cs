@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace ModernPhysics.Web
 {
@@ -86,6 +88,7 @@ namespace ModernPhysics.Web
             UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             IdentityInitializer.SeedUsers(userManager, roleManager, Configuration).Wait();
+            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "content"));
 
             if (env.IsDevelopment())
             {
@@ -99,11 +102,17 @@ namespace ModernPhysics.Web
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "content")),
+                RequestPath = "/content"
+            });
+
             app.UseCookiePolicy();
-
             app.UseAuthentication();
-
             app.UseMvc();
         }
     }
