@@ -37,12 +37,12 @@ namespace ModernPhysics.Web
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseMySql(Configuration["Sql:ConnectionString"]);
+                options.UseMySql(Configuration["SqlConnectionString"]);
                 options.EnableSensitiveDataLogging();
             });
             services.AddDbContext<WebAppDbContext>(options =>
             {
-                options.UseMySql(Configuration["Sql:ConnectionString"]);
+                options.UseMySql(Configuration["SqlConnectionString"]);
                 options.EnableSensitiveDataLogging();
             });
 
@@ -52,6 +52,7 @@ namespace ModernPhysics.Web
             //    options.EnableSensitiveDataLogging();
             //});
             services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -61,7 +62,7 @@ namespace ModernPhysics.Web
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.AllowedForNewUsers = true;
-                options.User.RequireUniqueEmail = true;
+                options.User.RequireUniqueEmail = false;
             });
 
             services.ConfigureApplicationCookie(options =>
@@ -72,12 +73,20 @@ namespace ModernPhysics.Web
                 options.SlidingExpiration = true;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizeFolder("/Admin");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+            UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            IdentityInitializer.SeedUsers(userManager, roleManager, Configuration).Wait();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -3,8 +3,15 @@
 @{
     ViewData["Title"] = "View";
 }
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration _configuration
 
 <h1>View</h1>
+
+<h4>Environment Variables</h4>
+<p>Connection string: @_configuration["SqlConnectionString"]</p>
+<p>Username: @_configuration["AdminUsername"]</p>
+<p>Password: @_configuration["AdminPassword"]</p>
 
 <h4>Pages</h4>
 @if (Model.Pages != null)

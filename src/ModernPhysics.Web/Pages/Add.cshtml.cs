@@ -7,12 +7,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ModernPhysics.Models;
 using ModernPhysics.Web.Data;
 using ModernPhysics.Extensions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace ModernPhysics.Web.Pages
 {
+    [Authorize]
     public class AddModel : PageModel
     {
         private WebAppDbContext _context;
+
         public AddModel(WebAppDbContext context)
         {
             _context = context;
@@ -53,23 +58,38 @@ namespace ModernPhysics.Web.Pages
             {
                 return new BadRequestResult();
             }
-
+            
+            //Tag operations
             var tags = new List<Tag>();
             var pageTags = new List<PageTag>();
-            tags.AddRange(InputPage.Tags.Split(' ').ToTags());
-            var category = _context.Categories.FirstOrDefault(p => p.Name.Equals(InputPage.Category));
+            var tagNames = InputPage.Tags.Split(' ');
+            foreach (var tagName in tagNames)
+            {
+                var tag = _context.Tags.Include(p => p.PageTags)
+                    .ThenInclude(p => p.Page)
+                    .FirstOrDefault(p => p.Name.Equals(tagName));
 
+                if(tag != null)
+                {
+                    tags.Add(tag);
+                }
+                else
+                {
+                    tags.Add(new Tag
+                    {
+                        Name = tagName
+                    });
+                }
+            }
+
+            //Category operations
+            var category = _context.Categories.Include(p => p.Pages).FirstOrDefault(p => p.Name.Equals(InputPage.Category));
             if (category == null)
             {
                 category = new Category
                 {
                     Name = InputPage.Category
                 };
-                _context.Categories.Add(category);
-            }
-            else
-            {
-                _context.Categories.Update(category);
             }
 
             if (category.Pages == null)
@@ -77,6 +97,7 @@ namespace ModernPhysics.Web.Pages
                 category.Pages = new List<Models.Page>();
             }
 
+            //Page operations
             var page = new Models.Page
             {
                 Title = InputPage.Title,
@@ -84,11 +105,12 @@ namespace ModernPhysics.Web.Pages
                 Content = InputPage.Content,
                 IsPublished = InputPage.IsPublished,
                 Category = category,
-                CreatedBy = "admin"
+                CreatedBy = User.Identity.Name
             };
 
             category.Pages.Add(page);
 
+            
             foreach (var tag in tags)
             {
                 var _tag = _context.Tags.FirstOrDefault(p => p.Name.Equals(tag.Name));
@@ -99,9 +121,10 @@ namespace ModernPhysics.Web.Pages
                 });
             }
 
-            await _context.Pages.AddAsync(page);
-            await _context.Tags.AddRangeAsync(tags);           
+            _context.Categories.Update(category);
+            _context.Tags.UpdateRange(tags);      
             await _context.PageTags.AddRangeAsync(pageTags);
+            await _context.Pages.AddAsync(page);
 
             await _context.SaveChangesAsync();
 
