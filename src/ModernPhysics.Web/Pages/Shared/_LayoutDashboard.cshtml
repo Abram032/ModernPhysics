@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+    <title>@ViewData["Title"] - ModernPhysics - Dashboard</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/admin/sb-admin.min.css" />
+    <link rel="stylesheet" href="~/css/admin/site.css" />
+    <link rel="stylesheet" href="~/css/cards-extension/cards.css" />
+    <link rel="stylesheet" href="~/lib/datatables/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/colors-extension/colors.css" />
+</head>
+<body id="page-top">
+    <!--Navbar-->
+    <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+        <a class="navbar-brand mr-1" href="index.html">Modern Physics</a>
+    </nav>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul id="sidebar" class="sidebar navbar-nav">
+            <li class="nav-item"><button class="btn btn-link" id="sidebarToggle" href="#"><i id="chevronToggle" class="fa fa-chevron-left"></i></button></li>
+            <!--TODO: Add active element-->
+            <li class="nav-item"><a class="nav-link" asp-page="/Admin/Index"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a class="nav-link" asp-page="/Admin/Pages"><i class="fa fa-chalkboard"></i><span>Pages</span></a></li>
+            <li class="nav-item"><a class="nav-link" asp-page="/Admin/Metrics"><i class="fa fa-chart-line"></i><span>Metrics</span></a></li>
+            <li class="nav-item"><a class="nav-link" asp-page="/Admin/Settings"><i class="fa fa-cog"></i><span>Settings</span></a></li>
+        </ul>
+
+        <!--Page Content-->
+        <div id="content-wrapper">
+            <partial name="_CookieConsentPartial" />
+            <div class="container-fluid">
+
+                <!-- Place content here -->
+                @RenderBody()
+                <!-- End of content -->
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#content-wrapper -->
+        <!-- Sticky Footer -->
+        <footer class="sticky-footer">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Adam Błaszczyk 2019</span>
+                </div>
+            </div>
+        </footer>
+        <!-- /#wrapper -->
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/admin/sb-admin.js"></script>
+    <script src="~/lib/Chart.js/Chart.bundle.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

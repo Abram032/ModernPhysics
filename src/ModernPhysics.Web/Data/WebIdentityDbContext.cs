@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ModernPhysics.Web.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class WebIdentityDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public WebIdentityDbContext(DbContextOptions<WebIdentityDbContext> options)
             : base(options)
         {
         }

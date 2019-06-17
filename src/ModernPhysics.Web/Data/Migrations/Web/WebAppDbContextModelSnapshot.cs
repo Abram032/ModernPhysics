@@ -14,7 +14,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("ModernPhysics.Models.Blob", b =>
@@ -98,9 +98,10 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                         .HasDefaultValue(false);
 
                     b.Property<DateTime>("ModifiedAt")
-                        .ValueGeneratedOnUpdate();
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("ModifiedBy")
+                        .IsRequired()
                         .HasMaxLength(64);
 
                     b.Property<int>("Order")

@@ -105,7 +105,8 @@ namespace ModernPhysics.Web.Pages
                 Content = InputPage.Content,
                 IsPublished = InputPage.IsPublished,
                 Category = category,
-                CreatedBy = User.Identity.Name
+                CreatedBy = User.Identity.Name,
+                ModifiedBy = User.Identity.Name
             };
 
             category.Pages.Add(page);

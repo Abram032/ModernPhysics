@@ -8,15 +8,15 @@ using ModernPhysics.Web.Data;
 
 namespace ModernPhysics.Web.Data.Migrations.Identity
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190607074420_InitialCreateIdentity")]
-    partial class InitialCreateIdentity
+    [DbContext(typeof(WebIdentityDbContext))]
+    [Migration("20190617091940_IdentityInit")]
+    partial class IdentityInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

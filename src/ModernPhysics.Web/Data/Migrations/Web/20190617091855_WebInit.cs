@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ModernPhysics.Web.Data.Migrations.Web
 {
-    public partial class InitialCreateWeb : Migration
+    public partial class WebInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

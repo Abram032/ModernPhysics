@@ -37,7 +37,7 @@ namespace ModernPhysics.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<WebIdentityDbContext>(options =>
             {
                 options.UseMySql(Configuration["SqlConnectionString"]);
                 options.EnableSensitiveDataLogging();
@@ -56,7 +56,7 @@ namespace ModernPhysics.Web
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<WebIdentityDbContext>();
 
             services.Configure<IdentityOptions>(options =>
             {

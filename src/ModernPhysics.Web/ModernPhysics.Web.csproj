@@ -7,21 +7,6 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Data\Migrations\Web\20190610130154_InitialCreateWeb.cs" />
-    <Compile Remove="Data\Migrations\Web\20190610130154_InitialCreateWeb.Designer.cs" />
-    <Compile Remove="Data\Migrations\Web\20190610130650_InitialCreateWeb.cs" />
-    <Compile Remove="Data\Migrations\Web\20190610130650_InitialCreateWeb.Designer.cs" />
-    <Compile Remove="Data\Migrations\Web\20190610130845_InitialCreateWeb.cs" />
-    <Compile Remove="Data\Migrations\Web\20190610130845_InitialCreateWeb.Designer.cs" />
-    <Compile Remove="Data\Migrations\Web\20190610131109_InitialCreateWeb.cs" />
-    <Compile Remove="Data\Migrations\Web\20190610131109_InitialCreateWeb.Designer.cs" />
-    <Compile Remove="Data\Migrations\Web\20190610165004_InitialCreateWeb.cs" />
-    <Compile Remove="Data\Migrations\Web\20190610165004_InitialCreateWeb.Designer.cs" />
-    <Compile Remove="Data\Migrations\Web\20190610165631_InitialCreateWeb.cs" />
-    <Compile Remove="Data\Migrations\Web\20190610165631_InitialCreateWeb.Designer.cs" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -40,7 +25,13 @@
 
 
   <ItemGroup>
-    <Folder Include="Pages\Admin\" />
+    <None Include="wwwroot\js\admin\sb-admin.js" />
+    <None Include="wwwroot\js\demo\chart-area-demo.js" />
+    <None Include="wwwroot\js\demo\chart-bar-demo.js" />
+    <None Include="wwwroot\js\demo\chart-pie-demo.js" />
+    <None Include="wwwroot\js\demo\datatables-demo.js" />
+    <None Include="wwwroot\js\sample-charts\usage.js" />
+    <None Include="wwwroot\js\site\pages.js" />
   </ItemGroup>
 
 </Project>
