@@ -17,7 +17,7 @@
 <body id="page-top">
     <!--Navbar-->
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
-        <a class="navbar-brand mr-1" href="index.html">Modern Physics</a>
+        <a class="navbar-brand mr-1" asp-page="/Admin/Index">Modern Physics</a>
     </nav>
     <div id="wrapper">
         <!-- Sidebar -->
@@ -26,8 +26,11 @@
             <!--TODO: Add active element-->
             <li class="nav-item"><a class="nav-link" asp-page="/Admin/Index"><i class="fa fa-home"></i><span>Dashboard</span></a></li>
             <li class="nav-item"><a class="nav-link" asp-page="/Admin/Pages"><i class="fa fa-chalkboard"></i><span>Pages</span></a></li>
+            <li class="nav-item"><a class="nav-link" asp-page="/Admin/Categories"><i class="fa fa-th-list"></i><span>Categories</span></a></li>
+            <li class="nav-item"><a class="nav-link" asp-page="/Admin/Tags"><i class="fa fa-tags"></i><span>Tags</span></a></li>
+            <li class="nav-item"><a class="nav-link" asp-page="/Admin/Storage"><i class="fa fa-table"></i><span>Storage</span></a></li>
             <li class="nav-item"><a class="nav-link" asp-page="/Admin/Metrics"><i class="fa fa-chart-line"></i><span>Metrics</span></a></li>
-            <li class="nav-item"><a class="nav-link" asp-page="/Admin/Settings"><i class="fa fa-cog"></i><span>Settings</span></a></li>
+            <li class="nav-item"><a class="nav-link" asp-page="/Admin/Settings"><i class="fa fa-cogs"></i><span>Settings</span></a></li>
         </ul>
 
         <!--Page Content-->

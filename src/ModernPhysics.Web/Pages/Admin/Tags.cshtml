@@ -1,0 +1,32 @@
+﻿@page
+@model ModernPhysics.Web.Pages.Admin.TagsModel
+@{
+    ViewData["Title"] = "Tags";
+    Layout = "~/Pages/Shared/_LayoutDashboard.cshtml";
+}
+
+<h1 class="display-4">Modern Physics - Tags</h1>
+<hr>
+
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div class="card card-left-outline-info">
+            <div class="card-header">
+                <h4>Current tags:</h4>
+            </div>
+            <div class="card-body h5">
+                <form method="post">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <span class="badge badge-info">
+                            <a href="#" class="badge badge-info">@tag.Name</a>
+                            <button asp-page-handler="delete" asp-route-id="@tag.Id" type="submit" class="btn btn-link badge badge-info">
+                                <span class="fa fa-times-circle danger"></span>
+                            </button>
+                        </span>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

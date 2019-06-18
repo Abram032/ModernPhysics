@@ -1,6 +1,7 @@
 ﻿using ModernPhysics.Models;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace ModernPhysics.Extensions
 {
@@ -19,6 +20,17 @@ namespace ModernPhysics.Extensions
             }
 
             return _tags;
+        }
+
+        public static string ToTagsString(this string[] tags)
+        {
+            var sb = new StringBuilder();
+            foreach (var item in tags)
+            {
+                sb.Append(item);
+                sb.Append(' ');
+            }
+            return sb.ToString();
         }
     }
 }
