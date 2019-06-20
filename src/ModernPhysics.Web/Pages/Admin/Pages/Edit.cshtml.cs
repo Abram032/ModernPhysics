@@ -80,7 +80,6 @@ namespace ModernPhysics.Web.Pages.Admin.Pages
                 .ThenInclude(p => p.Tag)
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
             var category = page.Category;
-            var pageTags = page.PageTags;
 
             //Category operations
             if (page.Category.Name != Input.Category)
@@ -99,42 +98,41 @@ namespace ModernPhysics.Web.Pages.Admin.Pages
 
             //Tag operations
             var inputTagNames = Input.Tags.Split(' ');
-            var actualTagNames = pageTags.Select(p => p.Tag.Name).ToArray();
-            var newPageTags = new List<PageTag>();
+            var currentTagNames = page.PageTags.Select(p => p.Tag.Name).ToArray();
             var tags = new List<Tag>();
-            foreach (var inputTagName in inputTagNames)
+
+            //Removing current tags that are not in input tags
+            foreach(var tagName in currentTagNames)
             {
-                if (actualTagNames.Contains(inputTagName))
+                if(!inputTagNames.Contains(tagName))
                 {
-                    newPageTags.Add(pageTags.FirstOrDefault(p => p.PageId.Equals(id)));
-                }
-                else
-                {
-                    var tag = await _context.Tags.Include(p => p.PageTags)
-                        .FirstOrDefaultAsync(p => p.Name.Equals(inputTagName));
-                    if (tag != null)
-                    {
-                        tags.Add(tag);
-                    }
-                    else
-                    {
-                        tags.Add(new Tag
-                        {
-                            Name = inputTagName
-                        });
-                    }
+                    var tag = page.PageTags.FirstOrDefault(p => p.Tag.Name.Equals(tagName));
+                    page.PageTags.Remove(tag);
                 }
             }
 
-            foreach (var tag in tags)
+            //Adding each tag that is not in current tags to page tags
+            foreach (var tagName in inputTagNames)
             {
-                newPageTags.Add(new PageTag
+                if(!currentTagNames.Contains(tagName))
                 {
-                    Page = page,
-                    Tag = tag
-                });
+                    var tag = _context.Tags.FirstOrDefault(p => p.Name.Equals(tagName));
+                    if(tag == null)
+                    {
+                        tag = new Tag
+                        {
+                            Name = tagName
+                        };
+                    }
+
+                    tags.Add(tag);
+                    page.PageTags.Add(new PageTag
+                    {
+                        Page = page,
+                        Tag = tag
+                    });
+                }
             }
-            pageTags = newPageTags;
 
             //Page operations
             page.Title = Input.Title;
@@ -144,11 +142,10 @@ namespace ModernPhysics.Web.Pages.Admin.Pages
             page.Category = category;
             page.CreatedBy = User.Identity.Name;
             page.ModifiedBy = User.Identity.Name;
-            page.PageTags = pageTags;
 
             _context.Categories.Update(category);
             _context.Tags.UpdateRange(tags);
-            _context.PageTags.UpdateRange(pageTags);
+            _context.PageTags.UpdateRange(page.PageTags);
             _context.Pages.Update(page);
 
             await _context.SaveChangesAsync();
