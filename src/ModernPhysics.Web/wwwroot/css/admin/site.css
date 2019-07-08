@@ -74,3 +74,7 @@ body.sidebar-toggled footer.sticky-footer {
 .container-fluid .row {
     margin: 0px 0px 20px 0px;
 }
+
+.sticky-footer-wrapper {
+    height: 80px;
+}
