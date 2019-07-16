@@ -17,6 +17,10 @@
     {
       "library": "jquery-easing@1.4.1",
       "destination": "wwwroot/lib/jquery-easing/"
+    },
+    {
+      "library": "baguettebox.js@1.11.0",
+      "destination": "wwwroot/lib/baguettebox.js/"
     }
   ]
 }
