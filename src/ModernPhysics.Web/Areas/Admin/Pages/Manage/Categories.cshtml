@@ -1,0 +1,32 @@
+﻿@page
+@model ModernPhysics.Web.Areas.Admin.Pages.Manage.CategoriesModel
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "~/Areas/Admin/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="display-4">Modern Physics - Categories</h1>
+<hr>
+
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div class="card card-left-outline-info">
+            <div class="card-header">
+                <h4>Current categories:</h4>
+            </div>
+            <div class="card-body h5">
+                <form method="post">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <span class="badge badge-secondary">
+                            <a href="#" class="badge badge-secondary">@category.Name</a>
+                            <button asp-page-handler="delete" asp-route-id="@category.Id" type="submit" class="btn btn-link badge badge-secondary">
+                                <span class="fa fa-times-circle danger"></span>
+                            </button>
+                        </span>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

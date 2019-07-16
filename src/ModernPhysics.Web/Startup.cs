@@ -70,8 +70,8 @@ namespace ModernPhysics.Web
             services.ConfigureApplicationCookie(options =>
             {
                 options.ExpireTimeSpan = TimeSpan.FromDays(7);
-                options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.LoginPath = "/Admin/Login";
+                options.AccessDeniedPath = "/Admin/AccessDenied";
                 options.SlidingExpiration = true;
             });
 
@@ -79,7 +79,7 @@ namespace ModernPhysics.Web
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddRazorPagesOptions(options =>
                 {
-                    options.Conventions.AuthorizeFolder("/Admin");
+                    options.Conventions.AuthorizeAreaFolder("Admin", "/Manage");
                 });
         }
 
