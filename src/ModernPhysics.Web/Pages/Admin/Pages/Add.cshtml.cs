@@ -29,6 +29,7 @@ namespace ModernPhysics.Web.Pages.Admin.Pages
             public string Content { get; set; }
             public bool IsPublished { get; set; }
             public string Category { get; set; }
+            public string CategoryIcon { get; set; }
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -67,7 +68,8 @@ namespace ModernPhysics.Web.Pages.Admin.Pages
             {
                 category = new Category
                 {
-                    Name = Input.Category
+                    Name = Input.Category,
+                    Icon = Input.CategoryIcon
                 };
             }
 

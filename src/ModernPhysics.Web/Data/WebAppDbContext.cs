@@ -52,6 +52,7 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Category>().HasKey(p => p.Id);
             builder.Entity<Category>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<Category>().Property(p => p.Name).IsRequired().HasMaxLength(64);
+            builder.Entity<Category>().Property(p => p.Icon).HasMaxLength(32);
             builder.Entity<Category>().HasMany(p => p.Pages).WithOne(p => p.Category);
 
             builder.Entity<Blob>().HasKey(p => p.Id);
