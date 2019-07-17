@@ -38,14 +38,12 @@
         </nav>
     </header>
 
-    <div>
-        <partial name="_CookieConsentPartial" />
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
+    <partial name="_CookieConsentPartial" />
+    <main role="main">
+        @RenderBody()
+    </main>
 
-    <footer class="border-top footer page-footer dark">
+    <section class="page-footer dark">
         <div class="container">
             <div class="row">
                 <div class="col-sm-3 col-lg-6">
@@ -68,8 +66,13 @@
                 </div>
             </div>
         </div>
-        <div class="footer-copyright">
-            <p>&copy; 2018 Copyright Text</p>
+    </section>
+
+    <footer class="d-flex flex-column sticky-footer-wrapper">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Adam Błaszczyk 2019</span>
+            </div>
         </div>
     </footer>
 

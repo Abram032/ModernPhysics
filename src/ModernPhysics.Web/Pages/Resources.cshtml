@@ -1,0 +1,54 @@
+﻿@page
+@model ModernPhysics.Web.Pages.ResourcesModel
+@{
+    ViewData["Title"] = "Resources";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+    <section class="clean-block clean-blog-list dark">
+        <div class="container">
+            <div class="block-heading">
+                <h2 class="text-info">Materiały</h2>
+                <p>Fizyka Atomowa</p>
+            </div>
+            <div style="margin-right: 20%;margin-left: 20%;margin-bottom: 40px;">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" type="text">
+                        <div class="input-group-prepend"></div>
+                        <div class="input-group-append"><button class="btn btn-dark btn-block" type="button"><i class="fa fa-search"></i></button></div>
+                    </div>
+                </div>
+                <div class="col">
+                    <a class="badge badge-info" style="margin-right: 5px;" href="#">tag1</a><a class="badge badge-info" style="margin-right: 5px;" href="#">tag2</a><a class="badge badge-dark" style="margin-right: 5px;" href="#">tag3</a><a class="badge badge-light"
+                                                                                                                                                                                                                                               style="margin-right: 5px;" href="#">tag4</a><a class="badge badge-danger" style="margin-right: 5px;" href="#">testing-tag</a><a class="badge badge-warning" style="margin-right: 5px;" href="#">testing</a><a class="badge badge-primary"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                             style="margin-right: 5px;" href="#">poster</a><a class="badge badge-success" style="margin-right: 5px;" href="#">kekeke</a>
+                </div>
+            </div>
+            <div class="block-content">
+                <h1 class="text-center">Wyniki wyszukiwania</h1>
+                <div class="row">
+                    <div class="col" style="margin-bottom: 10px;">
+                        <a href="post.html">
+                            <div class="card card-hover">
+                                <div class="card-body">
+                                    <h4 class="card-title">A-tom, czyli o-soba</h4>
+                                    <h6 class="text-muted card-subtitle mb-2">Fizyka Atomowa</h6><span class="badge badge-primary" style="margin-right: 5px;">tag 1</span><span class="badge badge-primary">tag 2</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-12" style="margin-bottom: 10px;">
+                        <a href="post.html">
+                            <div class="card card-hover">
+                                <div class="card-body">
+                                    <h4 class="card-title">Jak policzyć atomy?</h4>
+                                    <h6 class="text-muted card-subtitle mb-2">Fizyka Atomowa</h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
