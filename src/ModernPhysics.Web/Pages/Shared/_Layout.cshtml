@@ -29,10 +29,10 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item mr-3"><a class="nav-link" href="resources.html">Materiały</a></li>
-                    <li class="nav-item mr-3"><a class="nav-link" href="categories.html">Kategorie</a></li>
-                    <li class="nav-item mr-3"><a class="nav-link" href="about.html">O stronie</a></li>
-                    <li class="nav-item mr-3"><a class="nav-link" href="login.html">Logowanie</a></li>
+                    <li class="nav-item mr-3"><a class="nav-link" asp-page="/Resources">Materiały</a></li>
+                    <li class="nav-item mr-3"><a class="nav-link" asp-page="/Categories">Kategorie</a></li>
+                    <li class="nav-item mr-3"><a class="nav-link" asp-page="/About">O stronie</a></li>
+                    <li class="nav-item mr-3"><a class="nav-link" asp-area="Admin" asp-page="/Login">Logowanie</a></li>
                 </ul>
             </div>
         </nav>
@@ -49,11 +49,11 @@
                 <div class="col-sm-3 col-lg-6">
                     <h5>Strony</h5>
                     <ul>
-                        <li><a href="index.html">Strona domowa</a></li>
+                        <li><a asp-area="" asp-page="/Index">Strona domowa</a></li>
                         <li><a href="resources.html">Materiały</a></li>
                         <li><a href="categories.html">Kategorie</a></li>
                         <li><a href="about.html">O stronie</a></li>
-                        <li><a href="login.html">Logowanie</a></li>
+                        <li><a asp-area="Admin" asp-page="/Login">Logowanie</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3 col-lg-6">

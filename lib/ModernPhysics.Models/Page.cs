@@ -14,6 +14,7 @@ namespace ModernPhysics.Models
         public string ModifiedBy { get; set; }
         public ICollection<PageTag> PageTags { get; set; }
         public Category Category { get; set; }
+        public string Shortcut { get; set; }
         public string Content { get; set; }
         public bool IsPublished { get; set; }
         public bool IsDeleted { get; set; }

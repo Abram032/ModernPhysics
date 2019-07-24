@@ -36,6 +36,7 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Page>().Property(p => p.IsPublished).IsRequired().HasDefaultValue(false);
             builder.Entity<Page>().Property(p => p.IsDeleted).IsRequired().HasDefaultValue(false);
             builder.Entity<Page>().Property(p => p.Content).HasColumnType("MEDIUMTEXT");
+            builder.Entity<Page>().Property(p => p.Shortcut).HasMaxLength(500);
             builder.Entity<Page>().Property(p => p.Order).HasDefaultValue(0);
             builder.Entity<Page>().HasOne(p => p.Category).WithMany(p => p.Pages).IsRequired();
             builder.Entity<Page>().HasMany(p => p.PageTags).WithOne(p => p.Page).HasForeignKey(p => p.TagId);
@@ -52,6 +53,7 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Category>().HasKey(p => p.Id);
             builder.Entity<Category>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<Category>().Property(p => p.Name).IsRequired().HasMaxLength(64);
+            builder.Entity<Category>().Property(p => p.FriendlyName).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.Icon).HasMaxLength(32);
             builder.Entity<Category>().HasMany(p => p.Pages).WithOne(p => p.Category);
 
