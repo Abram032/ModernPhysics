@@ -16,7 +16,10 @@
                 <div class="form-group">
                     <div class="input-group">
                         <input class="form-control" asp-for="Search">
-                        <div class="input-group-prepend"></div>
+                        <div class="input-group-append">
+                            <select class="custom-select" asp-items="Model.Categories">
+                            </select>
+                        </div>
                         <div class="input-group-append">
                             <button class="btn btn-dark btn-block" type="submit">
                                 <i class="fa fa-search"></i>

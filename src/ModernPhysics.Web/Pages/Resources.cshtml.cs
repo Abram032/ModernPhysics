@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
 using ModernPhysics.Web.Data;
@@ -28,6 +29,8 @@ namespace ModernPhysics.Web.Pages
         [BindProperty(SupportsGet = true)]
         public string Category { get; set; }
 
+        public List<SelectListItem> Categories { get; set; }
+
         public void OnGet(string category)
         {
             if(string.IsNullOrEmpty(category))
@@ -35,16 +38,32 @@ namespace ModernPhysics.Web.Pages
                 Posts = _context.Pages.Include(p => p.Category)
                     .Include(p => p.PageTags)
                     .ThenInclude(p => p.Tag);
-                Tags = _context.Set<Tag>();
+                Tags = _context.Set<Tag>();              
             }
             else
             {
                 Posts = _context.Pages.Include(p => p.Category)
                     .Include(p => p.PageTags)
                     .ThenInclude(p => p.Tag)
-                    .Where(p => p.Category.Name.Equals(category));
+                    .Where(p => p.Category.FriendlyName.Equals(category));
                 Tags = _context.Set<Tag>();
             }
+
+            Categories = _context.Categories
+                .Select(p => new SelectListItem
+                {
+                    Value = p.FriendlyName,
+                    Text = p.Name
+                }).ToList();
+
+            Categories.Add(new SelectListItem
+            {
+                Value = null,
+                Text = "Wszystkie"
+            });
+
+            //TODO: Change from == to .IsNullOrEmpty()
+            Categories.First(p => p.Value == category).Selected = true;
         }
 
         public IActionResult OnPost(string category, string search)
@@ -61,7 +80,7 @@ namespace ModernPhysics.Web.Pages
                 Posts = _context.Pages.Include(p => p.Category)
                 .Include(p => p.PageTags)
                 .ThenInclude(p => p.Tag)
-                .Where(p => p.Category.Name.Equals(category))
+                .Where(p => p.Category.FriendlyName.Equals(category))
                 .Where(p => p.Content.Contains(search));
             }
 
@@ -70,7 +89,7 @@ namespace ModernPhysics.Web.Pages
                 Posts = _context.Pages.Include(p => p.Category)
                 .Include(p => p.PageTags)
                 .ThenInclude(p => p.Tag)
-                .Where(p => p.Category.Name.Equals(category));
+                .Where(p => p.Category.FriendlyName.Equals(category));
             }
 
             else if(string.IsNullOrEmpty(category) && !string.IsNullOrEmpty(search))
@@ -87,6 +106,22 @@ namespace ModernPhysics.Web.Pages
                .Include(p => p.PageTags)
                .ThenInclude(p => p.Tag);
             }
+
+            Categories = _context.Categories
+                .Select(p => new SelectListItem
+                {
+                    Value = p.FriendlyName,
+                    Text = p.Name
+                }).ToList();
+
+            Categories.Add(new SelectListItem
+            {
+                Value = null,
+                Text = "Wszystkie"
+            });
+
+            //TODO: Change from == to .IsNullOrEmpty()
+            Categories.First(p => p.Value == category).Selected = true;
 
             Search = search;
             Category = category;
