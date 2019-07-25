@@ -56,7 +56,7 @@ namespace ModernPhysics.Web
             //});
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
+                //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<WebIdentityDbContext>();
 
             services.Configure<IdentityOptions>(options =>
@@ -68,24 +68,25 @@ namespace ModernPhysics.Web
                 options.User.RequireUniqueEmail = false;
             });
 
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.ExpireTimeSpan = TimeSpan.FromDays(7);
-                options.LoginPath = new PathString("/Admin/Login");
-                options.AccessDeniedPath = "/Admin/AccessDenied";
-                options.SlidingExpiration = true;
-            });
-
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeAreaFolder("Admin", "/Manage");
                 });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                options.LoginPath = $"/Admin/Login";
+                options.LogoutPath = $"/Admin/Logout";
+                options.AccessDeniedPath = $"/Admin/AccessDenied";
+                options.SlidingExpiration = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             IdentityInitializer.SeedUsers(userManager, roleManager, Configuration).Wait();
