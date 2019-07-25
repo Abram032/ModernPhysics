@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ModernPhysics.Web
 {
@@ -53,7 +54,7 @@ namespace ModernPhysics.Web
             //    options.UseInMemoryDatabase("AppDb");
             //    options.EnableSensitiveDataLogging();
             //});
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<WebIdentityDbContext>();
@@ -70,7 +71,7 @@ namespace ModernPhysics.Web
             services.ConfigureApplicationCookie(options =>
             {
                 options.ExpireTimeSpan = TimeSpan.FromDays(7);
-                options.LoginPath = "/Admin/Login";
+                options.LoginPath = new PathString("/Admin/Login");
                 options.AccessDeniedPath = "/Admin/AccessDenied";
                 options.SlidingExpiration = true;
             });

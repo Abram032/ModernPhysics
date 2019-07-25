@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -13,7 +17,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
-              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
+              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
     </environment>
     <link rel="stylesheet" href="~/lib/baguettebox.js/baguetteBox.min.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
@@ -32,7 +36,19 @@
                     <li class="nav-item mr-3"><a class="nav-link" asp-page="/Resources">Materiały</a></li>
                     <li class="nav-item mr-3"><a class="nav-link" asp-page="/Categories">Kategorie</a></li>
                     <li class="nav-item mr-3"><a class="nav-link" asp-page="/About">O stronie</a></li>
-                    <li class="nav-item mr-3"><a class="nav-link" asp-area="Admin" asp-page="/Login">Logowanie</a></li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item mr-3"><a class="nav-link" asp-area="Admin" asp-page="/Manage/Index">Zarządzanie</a></li>
+                        <li class="nav-item mr-3">
+                            <form class="form-inline" asp-area="Admin" asp-page="/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                <button type="submit" class="nav-link btn btn-link">Wyloguj</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item mr-3"><a class="nav-link" asp-area="Admin" asp-page="/Login">Logowanie</a></li>
+                    }
                 </ul>
             </div>
         </nav>
@@ -50,9 +66,9 @@
                     <h5>Strony</h5>
                     <ul>
                         <li><a asp-area="" asp-page="/Index">Strona domowa</a></li>
-                        <li><a href="resources.html">Materiały</a></li>
-                        <li><a href="categories.html">Kategorie</a></li>
-                        <li><a href="about.html">O stronie</a></li>
+                        <li><a asp-page="/Resources">Materiały</a></li>
+                        <li><a asp-page="/Categories">Kategorie</a></li>
+                        <li><a asp-page="/About">O stronie</a></li>
                         <li><a asp-area="Admin" asp-page="/Login">Logowanie</a></li>
                     </ul>
                 </div>
