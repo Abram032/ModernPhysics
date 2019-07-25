@@ -63,7 +63,7 @@ namespace ModernPhysics.Web.Pages
             });
 
             //TODO: Change from == to .IsNullOrEmpty()
-            Categories.First(p => p.Value == category).Selected = true;
+            Categories.FirstOrDefault(p => p.Value == category).Selected = true;
         }
 
         public IActionResult OnPost(string category, string search)
@@ -121,7 +121,7 @@ namespace ModernPhysics.Web.Pages
             });
 
             //TODO: Change from == to .IsNullOrEmpty()
-            Categories.First(p => p.Value == category).Selected = true;
+            Categories.FirstOrDefault(p => p.Value == category).Selected = true;
 
             Search = search;
             Category = category;
