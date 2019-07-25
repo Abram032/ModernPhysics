@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/Resources/{category}/{posturl}"
 @model ModernPhysics.Web.Pages.PostModel
 @{
     ViewData["Title"] = "Post";
@@ -12,126 +12,66 @@
                 <div class="row">
                     <div class="col">
                         <h3 style="margin-bottom: 16px;">Szukaj</h3>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input class="form-control" type="text">
-                                <div class="input-group-prepend"></div>
-                                <div class="input-group-append"><button class="btn btn-dark btn-block" type="button"><i class="fa fa-search"></i></button></div>
-                            </div>
-                        </div>
-                        <h3 style="margin-bottom: 16px;">Tagi</h3>
-                        <div style="margin-bottom: 16px;">
-                            <a class="badge badge-info" style="margin-right: 5px;" href="#">tag1</a><a class="badge badge-info" style="margin-right: 5px;" href="#">tag2</a><a class="badge badge-dark" style="margin-right: 5px;" href="#">tag3</a>
-                            <a class="badge badge-light" style="margin-right: 5px;" href="#">tag4</a><a class="badge badge-danger" style="margin-right: 5px;" href="#">testing-tag</a><a class="badge badge-warning" style="margin-right: 5px;" href="#">testing</a><a class="badge badge-primary" style="margin-right: 5px;"
-                                                                                                                                                                                                                                                                       href="#">poster</a><a class="badge badge-success" style="margin-right: 5px;" href="#">kekeke</a>
-                        </div>
-                        <h3 style="margin-bottom: 16px;">Materiały</h3>
-                        <div>
-                            <div>
-                                <a class="btn text-left collapsible" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-1" href="#collapse-1" role="button"><span>Fizyka atomowa</span></a>
-                                <div class="collapse" id="collapse-1">
-                                    <ul>
-                                        <li><a href="#">A-tomos, czyli o-soba<br></a></li>
-                                        <li><a href="#">Jak policzyć atomy<br></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div>
-                                <a class="btn text-left collapsible" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-2" href="#collapse-2" role="button"><span>Fizyka molekularna</span></a>
-                                <div class="collapse" id="collapse-2">
-                                    <ul>
-                                        <li><a href="#">A-tomos, czyli o-soba<br></a></li>
-                                        <li><a href="#">Jak policzyć atomy<br></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div>
-                                <a class="btn text-left collapsible" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-3" href="#collapse-3" role="button"><span>Fizyka jądrowa</span></a>
-                                <div class="collapse" id="collapse-3">
-                                    <ul>
-                                        <li><a href="#">A-tomos, czyli o-soba<br></a></li>
-                                        <li><a href="#">Jak policzyć atomy<br></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div>
-                                <a class="btn text-left collapsible" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-4" href="#collapse-4" role="button"><span>Fizyka cząstek elementarnych</span></a>
-                                <div class="collapse" id="collapse-4">
-                                    <ul>
-                                        <li><a href="#">A-tomos, czyli o-soba<br></a></li>
-                                        <li><a href="#">Jak policzyć atomy<br></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div>
-                                <a class="btn text-left collapsible" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-5" href="#collapse-5" role="button"><span>Fizyka ciała stałego</span></a>
-                                <div class="collapse" id="collapse-5">
-                                    <ul>
-                                        <li><a href="#">A-tomos, czyli o-soba<br></a></li>
-                                        <li><a href="#">Jak policzyć atomy<br></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div>
-                                <a class="btn text-left collapsible" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-6" href="#collapse-6" role="button"><span>Astrofizyka</span></a>
-                                <div class="collapse" id="collapse-6">
-                                    <ul>
-                                        <li><a href="#">A-tomos, czyli o-soba<br></a></li>
-                                        <li><a href="#">Jak policzyć atomy<br></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div>
-                                <a class="btn text-left collapsible" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-7" href="#collapse-7" role="button"><span>Geofizyka</span></a>
-                                <div class="collapse" id="collapse-7">
-                                    <ul>
-                                        <li><a href="#">A-tomos, czyli o-soba<br></a></li>
-                                        <li><a href="#">Jak policzyć atomy<br></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div>
-                                <a class="btn text-left collapsible" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-8" href="#collapse-8" role="button"><span>Biofizyka</span></a>
-                                <div class="collapse" id="collapse-8">
-                                    <ul>
-                                        <li><a href="#">A-tomos, czyli o-soba<br></a></li>
-                                        <li><a href="#">Jak policzyć atomy<br></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8 col-lg-9">
-                        <div class="block-content">
-                            <div class="post-body">
-                                <h3>A-tomos, czyli o-soba</h3>
-                                <div class="post-info"><span>Admin</span><span>Jul 09, 2019</span></div>
-                                <div style="margin-bottom: 20px;font-size: 16px;"><a class="badge badge-primary" style="margin-right: 5px;" href="#">tag1</a><a class="badge badge-primary" style="margin-right: 5px;" href="#">tag2</a></div>
-                                <p>"<em>Tria átoma</em>" woła zawiadowca wyciągu w Tajgecie, ośnieżonym pasmie gór ciągnącym się w poprzek Peloponezu, koło Sparty, kiedy podjeżdża kolejne krzesełko.<br></p>
-                                <figure class="figure">
-                                    <img class="rounded img-fluid figure-img" src="assets/img/main/physics.jpg" alt="A generic square placeholder image with rounded corners in a figure.">
-                                    <figcaption class="figure-caption">Lorem ipsum dolor</figcaption>
-                                </figure>
-                                <p>
-                                    "A-tomos" ma dziś po grecku ciągle to samo znaczenie, jak za czasów&nbsp;<strong>Demokryta</strong>&nbsp;(<a href="http://dydaktyka.fizyka.umk.pl/Wystawy_archiwum/z_omegi/Abdera.jpg">Abdera</a>&nbsp;c.a. 460-370
-                                    p.n.e.).<br>
-                                </p>
-                                <div class="row">
-                                    <div class="col">
-                                        <p>
-                                            "Atom" według Demokryta miał dwie cechy: wielkość i kształt. Atomy łącząc się ze sobą w różnym porządku (stechiometrii i wzorze strukturalnym?) tworzą różne substancje. Atomy są w ciągłym ruchu i zderzają
-                                            się z sobą (jak w modelu gazu doskonałego Boltzmanna?); ich ruch decyduje o masie (gluonów&nbsp;m=E/c2?). Efluidy wysyłane przez atomy (fotony ?) są postrzegane przez nasze zmysły.<br>Bez wątpienia&nbsp;<strong>atom w fizyce</strong>&nbsp;nie
-                                            jest niepodzielny: elektrony, jądra a w nich protony i neutrony a w nich kwarki i gluony i jeszcze&nbsp;<a href="http://dydaktyka.fizyka.umk.pl/Wystawy_archiwum/z_omegi/higs.html">bozony W i Z</a>, itd.<br>Ale
-                                            "a-tomos" to również po włosku "in-dividuo" =&nbsp;<em>niepodzielny</em>&nbsp;- rzecz sama w sobie, po polsku "o-soba". I w tym sensie, mimo że składamy się z rąk i nóg, cząsteczek i białek, wody i żelaza,
-                                            "o-soba" pozostaje niepodzielna.<br>Jak&nbsp;<strong>a-tomos</strong>&nbsp;u Demokryta.<br>Ringrazio avv. Mario Fedrizzi per questo suggerimento ed Emanuela per la correzione<br><br>
-                                        </p>
+                        <form asp-page="/Resources" method="post">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input class="form-control" asp-for="Search">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-dark btn-block" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+                        </form>
+                        <h3 style="margin-bottom: 16px;">Tagi</h3>
+                        <div style="margin-bottom: 16px;">
+                            @foreach (var tag in Model.Tags)
+                            {
+                                <a class="badge badge-primary" style="margin-right: 5px;" href="#">@tag.Name</a>
+                            }
                         </div>
+                        <h3 style="margin-bottom: 16px;">Materiały</h3>
+                        <div>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <div>
+                                    <a class="btn text-left collapsible" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-@category.Id" href="#collapse-@category.Id" role="button">
+                                        <span>@category.Name</span>
+                                    </a>
+                                    <div class="collapse" id="collapse-@category.Id">
+                                        <ul>
+                                            @foreach (var post in category.Pages)
+                                            {
+                                                <li><a href="/Resources/@category/@post.FriendlyUrl">@post.Title</a></li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        @if (Model.Post != null)
+                        {
+                            <div class="col-md-8 col-lg-9">
+                                <div class="block-content">
+                                    <div class="post-body">
+                                        <h3>@Model.Post.Title</h3>
+                                        <div class="post-info"><span>@Model.Post.CreatedBy</span><span>@Model.Post.CreatedAt</span></div>
+                                        <div style="margin-bottom: 20px;font-size: 16px;">
+                                            @foreach (var pageTag in Model.Post.PageTags)
+                                            {
+                                                <a class="badge badge-primary" style="margin-right: 5px;" href="#">@pageTag.Tag.Name</a>
+                                            }
+                                        </div>
+                                        <div>
+                                            @Model.Post.Content
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </section>
