@@ -32,10 +32,10 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
                 return new BadRequestResult();
             }
 
-            var category = await _context.Categories.Include(p => p.Pages)
+            var category = await _context.Categories.Include(p => p.Posts)
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
 
-            var nocategory = await _context.Categories.Include(p => p.Pages)
+            var nocategory = await _context.Categories.Include(p => p.Posts)
                 .FirstOrDefaultAsync(p => p.Name.Equals("no-category"));
 
             if (nocategory == null)
@@ -48,14 +48,14 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
                 };
             }
 
-            foreach(var page in category.Pages)
+            foreach(var post in category.Posts)
             {
-                page.Category = nocategory;
+                post.Category = nocategory;
             }
 
             _context.Remove(category);
             _context.Categories.Update(nocategory);
-            _context.Pages.UpdateRange(category.Pages);
+            _context.Posts.UpdateRange(category.Posts);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Categories");

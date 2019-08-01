@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Web.Data;
+using ModernPhysics.Models;
 
 namespace ModernPhysics.Web.Pages
 {
@@ -19,17 +20,14 @@ namespace ModernPhysics.Web.Pages
             _context = context;
         }
 
-        public IEnumerable<Models.Page> Posts { get; set; }
+        public IEnumerable<Post> Posts { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string Search { get; set; }
 
         public void OnGet()
         {
-            Posts = _context.Pages.Include(p => p.Category)
-                    .Include(p => p.PageTags)
-                    .ThenInclude(p => p.Tag)
-                    .Take(2);
+            Posts = _context.Posts.Include(p => p.Category).Take(2);
         }
     }
 }

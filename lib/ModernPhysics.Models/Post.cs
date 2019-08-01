@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ModernPhysics.Models
 {
-    public class Page
+    public class Post
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -12,7 +12,6 @@ namespace ModernPhysics.Models
         public string CreatedBy { get; set; }
         public DateTime ModifiedAt { get; set; }
         public string ModifiedBy { get; set; }
-        public ICollection<PageTag> PageTags { get; set; }
         public Category Category { get; set; }
         public string Shortcut { get; set; }
         public string Content { get; set; }

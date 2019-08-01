@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
 using ModernPhysics.Web.Data;
 
-namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Pages
+namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 {
     public class AddModel : PageModel
     {
@@ -39,31 +39,10 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Pages
                 return new BadRequestResult();
             }
 
-            //Tag operations
-            var tags = new List<Tag>();
-            var pageTags = new List<PageTag>();
-            var tagNames = Input.Tags.Split(' ');
-            foreach (var tagName in tagNames)
-            {
-                var tag = _context.Tags.Include(p => p.PageTags)
-                    .ThenInclude(p => p.Page)
-                    .FirstOrDefault(p => p.Name.Equals(tagName));
-
-                if (tag != null)
-                {
-                    tags.Add(tag);
-                }
-                else
-                {
-                    tags.Add(new Tag
-                    {
-                        Name = tagName
-                    });
-                }
-            }
-
             //Category operations
-            var category = _context.Categories.Include(p => p.Pages).FirstOrDefault(p => p.Name.Equals(Input.Category));
+            var category = _context.Categories
+                .Include(p => p.Posts)
+                .FirstOrDefault(p => p.Name.Equals(Input.Category));
             if (category == null)
             {
                 category = new Category
@@ -73,13 +52,13 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Pages
                 };
             }
 
-            if (category.Pages == null)
+            if (category.Posts == null)
             {
-                category.Pages = new List<Models.Page>();
+                category.Posts = new List<Post>();
             }
 
             //Page operations
-            var page = new Models.Page
+            var post = new Post
             {
                 Title = Input.Title,
                 FriendlyUrl = Input.FriendlyUrl,
@@ -90,27 +69,11 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Pages
                 ModifiedBy = User.Identity.Name
             };
 
-            category.Pages.Add(page);
-
-
-            foreach (var tag in tags)
-            {
-                var _tag = _context.Tags.FirstOrDefault(p => p.Name.Equals(tag.Name));
-                pageTags.Add(new PageTag
-                {
-                    Page = page,
-                    Tag = tag
-                });
-            }
-
+            category.Posts.Add(post);
             _context.Categories.Update(category);
-            _context.Tags.UpdateRange(tags);
-            await _context.PageTags.AddRangeAsync(pageTags);
-            await _context.Pages.AddAsync(page);
-
             await _context.SaveChangesAsync();
 
-            return new RedirectToPageResult("/Admin/Pages");
+            return new RedirectToPageResult("/Admin/Posts");
         }
     }
 }

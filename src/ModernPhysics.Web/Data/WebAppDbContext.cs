@@ -15,9 +15,7 @@ namespace ModernPhysics.Web.Data
         {
         }
 
-        public DbSet<Page> Pages { get; set; }
-        public DbSet<Tag> Tags { get; set; }
-        public DbSet<PageTag> PageTags { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Blob> Blobs { get; set; }
 
@@ -25,37 +23,27 @@ namespace ModernPhysics.Web.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Page>().HasKey(p => p.Id);
-            builder.Entity<Page>().HasIndex(p => p.FriendlyUrl).IsUnique();
-            builder.Entity<Page>().Property(p => p.Title).IsRequired().HasMaxLength(255);
-            builder.Entity<Page>().Property(p => p.FriendlyUrl).IsRequired().HasMaxLength(255);
-            builder.Entity<Page>().Property(p => p.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-            builder.Entity<Page>().Property(p => p.CreatedBy).IsRequired().HasMaxLength(64);
-            builder.Entity<Page>().Property(p => p.ModifiedAt).ValueGeneratedOnAddOrUpdate();
-            builder.Entity<Page>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(64);
-            builder.Entity<Page>().Property(p => p.IsPublished).IsRequired().HasDefaultValue(false);
-            builder.Entity<Page>().Property(p => p.IsDeleted).IsRequired().HasDefaultValue(false);
-            builder.Entity<Page>().Property(p => p.Content).HasColumnType("MEDIUMTEXT");
-            builder.Entity<Page>().Property(p => p.Shortcut).HasMaxLength(500);
-            builder.Entity<Page>().Property(p => p.Order).HasDefaultValue(0);
-            builder.Entity<Page>().HasOne(p => p.Category).WithMany(p => p.Pages).IsRequired();
-            builder.Entity<Page>().HasMany(p => p.PageTags).WithOne(p => p.Page).HasForeignKey(p => p.TagId);
-
-            builder.Entity<Tag>().HasKey(p => p.Id);
-            builder.Entity<Tag>().HasIndex(p => p.Name).IsUnique();
-            builder.Entity<Tag>().Property(p => p.Name).HasMaxLength(64).IsRequired();
-            builder.Entity<Tag>().HasMany(p => p.PageTags).WithOne(p => p.Tag).HasForeignKey(p => p.PageId);
-
-            builder.Entity<PageTag>().HasKey(p => new { p.PageId, p.TagId });
-            builder.Entity<PageTag>().HasOne(p => p.Page).WithMany(p => p.PageTags).HasForeignKey(p => p.PageId);
-            builder.Entity<PageTag>().HasOne(p => p.Tag).WithMany(p => p.PageTags).HasForeignKey(p => p.TagId);
-
+            builder.Entity<Post>().HasKey(p => p.Id);
+            builder.Entity<Post>().HasIndex(p => p.FriendlyUrl).IsUnique();
+            builder.Entity<Post>().Property(p => p.Title).IsRequired().HasMaxLength(255);
+            builder.Entity<Post>().Property(p => p.FriendlyUrl).IsRequired().HasMaxLength(255);
+            builder.Entity<Post>().Property(p => p.CreatedAt).IsRequired().ValueGeneratedOnAdd();
+            builder.Entity<Post>().Property(p => p.CreatedBy).IsRequired().HasMaxLength(64);
+            builder.Entity<Post>().Property(p => p.ModifiedAt).ValueGeneratedOnAddOrUpdate();
+            builder.Entity<Post>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(64);
+            builder.Entity<Post>().Property(p => p.IsPublished).IsRequired().HasDefaultValue(false);
+            builder.Entity<Post>().Property(p => p.IsDeleted).IsRequired().HasDefaultValue(false);
+            builder.Entity<Post>().Property(p => p.Content).HasColumnType("MEDIUMTEXT");
+            builder.Entity<Post>().Property(p => p.Shortcut).HasMaxLength(500);
+            builder.Entity<Post>().Property(p => p.Order).HasDefaultValue(0);
+            builder.Entity<Post>().HasOne(p => p.Category).WithMany(p => p.Posts).IsRequired();
+            
             builder.Entity<Category>().HasKey(p => p.Id);
             builder.Entity<Category>().HasIndex(p => p.Name).IsUnique();
             builder.Entity<Category>().Property(p => p.Name).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.FriendlyName).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.Icon).HasMaxLength(32);
-            builder.Entity<Category>().HasMany(p => p.Pages).WithOne(p => p.Category);
+            builder.Entity<Category>().HasMany(p => p.Posts).WithOne(p => p.Category);
 
             builder.Entity<Blob>().HasKey(p => p.Id);
             builder.Entity<Blob>().HasIndex(p => p.Url).IsUnique();

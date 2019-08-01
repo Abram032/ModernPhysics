@@ -4,38 +4,39 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ModernPhysics.Models;
+using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Web.Data;
+using ModernPhysics.Models;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
 {
-    public class TagsModel : PageModel
+    public class PostsModel : PageModel
     {
         private WebAppDbContext _context;
-        public TagsModel(WebAppDbContext context)
+        public PostsModel(WebAppDbContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Tag> Tags { get; set; }
+        public IEnumerable<Post> Posts { get; set; }
 
         public void OnGet()
         {
-            Tags = _context.Tags;
+            Posts = _context.Posts.Include(p => p.Category);
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(Guid id)
         {
-            if (!ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
                 return new BadRequestResult();
             }
 
-            var tag = await _context.Tags.FindAsync(id);
-            _context.Remove(tag);
+            var post = await _context.Posts.FindAsync(id);
+            _context.Remove(post);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Tags");
+            return new RedirectToPageResult("/Admin/Posts");
         }
     }
 }

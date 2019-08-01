@@ -1,23 +1,23 @@
 ﻿@page
-@model ModernPhysics.Web.Areas.Admin.Pages.Manage.PagesModel
+@model ModernPhysics.Web.Areas.Admin.Pages.Manage.PostsModel
 @{
-    ViewData["Title"] = "Pages";
+    ViewData["Title"] = "Posts";
     Layout = "~/Areas/Admin/Pages/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1 class="display-4">Modern Physics - Pages</h1>
+<h1 class="display-4">Modern Physics - Posts</h1>
 <hr>
 
 <div class="row">
     <div class="col-lg-12 mb-4">
         <div class="card card-left-outline-info">
             <div class="card-header">
-                <h4>Current pages:</h4>
+                <h4>Current posts:</h4>
             </div>
             <!-- Filter form -->
             <div class="card-body">
                 <div class="mb-3">
-                    <a class="btn btn-success" asp-page="./Pages/Add">Add Page</a>
+                    <a class="btn btn-success" asp-page="./Posts/Add">New Post</a>
                 </div>
 
                 <!-- /.Filter form -->
@@ -29,7 +29,6 @@
                                 <th>Title</th>
                                 <th>Author</th>
                                 <th>Category</th>
-                                <th>Tags</th>
                                 <th>Date</th>
                                 <th>Published</th>
                                 <th>Edit</th>
@@ -38,26 +37,13 @@
                         </thead>
                         <tbody>
 
-                            @foreach (var item in Model.Pages)
+                            @foreach (var item in Model.Posts)
                             {
                                 <tr>
                                     <td><input type="checkbox"></td>
                                     <td><a href="#">@item.Title</a></td>
                                     <td><a href="#" class="badge badge-primary">@item.CreatedBy</a></td>
                                     <td><a href="#" class="badge badge-secondary">@item.Category.Name</a></td>
-                                    <td>
-                                        @if (item.PageTags == null)
-                                        {
-                                            <span>-</span>
-                                        }
-                                        else
-                                        {
-                                            @foreach (var tag in item.PageTags)
-                                            {
-                                                <a href="#" class="badge badge-info">@tag.Tag.Name</a>
-                                            }
-                                        }
-                                    </td>
                                     <td>@item.CreatedAt</td>
                                     <td>
                                         @if (item.IsPublished == false)
@@ -70,7 +56,7 @@
                                         }
                                     </td>
                                     <td>
-                                        <form method="get" asp-page="./Pages/Edit" asp-route-id="@item.Id">
+                                        <form method="get" asp-page="./Posts/Edit" asp-route-id="@item.Id">
                                             <button type="submit" class="btn btn-warning">
                                                 <i class="fa fa-edit"></i>
                                             </button>

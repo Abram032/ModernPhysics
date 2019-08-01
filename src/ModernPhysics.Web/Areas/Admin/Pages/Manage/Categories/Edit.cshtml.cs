@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ModernPhysics.Web.Data;
-using ModernPhysics.Extensions;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
 
@@ -40,8 +39,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
                 return new BadRequestResult();
             }
 
-            var category = await _context.Categories.Include(p => p.Pages)
-                .FirstOrDefaultAsync(p => p.Id.Equals(id));
+            var category = await _context.Categories.FirstOrDefaultAsync(p => p.Id.Equals(id));
 
             if (category == null)
             {
@@ -63,7 +61,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
                 return new BadRequestResult();
             }
 
-            var category = await _context.Categories.Include(p => p.Pages)
+            var category = await _context.Categories.Include(p => p.Posts)
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
 
             if (category == null)

@@ -24,13 +24,6 @@
                                 </div>
                             </div>
                         </form>
-                        <h3 style="margin-bottom: 16px;">Tagi</h3>
-                        <div style="margin-bottom: 16px;">
-                            @foreach (var tag in Model.Tags)
-                            {
-                                <a class="badge badge-primary" style="margin-right: 5px;" href="#">@tag.Name</a>
-                            }
-                        </div>
                         <h3 style="margin-bottom: 16px;">Materiały</h3>
                         <div>
                             @foreach (var category in Model.Categories)
@@ -41,7 +34,7 @@
                                     </a>
                                     <div class="collapse" id="collapse-@category.Id">
                                         <ul>
-                                            @foreach (var post in category.Pages)
+                                            @foreach (var post in category.Posts)
                                             {
                                                 <li><a href="/Resources/@category/@post.FriendlyUrl">@post.Title</a></li>
                                             }
@@ -57,12 +50,6 @@
                                     <div class="post-body">
                                         <h3>@Model.Post.Title</h3>
                                         <div class="post-info"><span>@Model.Post.CreatedBy</span><span>@Model.Post.CreatedAt</span></div>
-                                        <div style="margin-bottom: 20px;font-size: 16px;">
-                                            @foreach (var pageTag in Model.Post.PageTags)
-                                            {
-                                                <a class="badge badge-primary" style="margin-right: 5px;" href="#">@pageTag.Tag.Name</a>
-                                            }
-                                        </div>
                                         <div>
                                             @Model.Post.Content
                                         </div>

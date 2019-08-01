@@ -27,13 +27,6 @@
                     </div>
                 </div>
             </form>
-            <div class="col">
-                @foreach (var tag in Model.Tags)
-                {
-                    //TODO: Add href, perhaps add color too
-                    <a class="badge badge-primary" style="margin-right: 5px;" href="#">@tag.Name</a>
-                }
-            </div>
         </div>
         <div class="block-content">
             <h1 class="text-center">Wyniki wyszukiwania</h1>
@@ -50,14 +43,6 @@
                                 <div class="card-body">
                                     <h4 class="card-title">@post.Title</h4>
                                     <h6 class="text-muted card-subtitle mb-2">@post.Category.Name</h6>
-
-                                    @if (post.PageTags != null)
-                                    {
-                                        @foreach (var pageTag in post.PageTags)
-                                        {
-                                            <span class="badge badge-primary" style="margin-right: 5px;">@pageTag.Tag.Name</span>
-                                        }
-                                    }
                                 </div>
                             </div>
                         </a>

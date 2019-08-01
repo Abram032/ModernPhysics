@@ -39,15 +39,6 @@
                             <h3>@post.Title</h3>
                         </a>
                         <h5 class="text-muted">@post.Category.Name</h5>
-                        <div style="margin-bottom: 10px;">
-                            @if (post.PageTags != null)
-                            {
-                                @foreach (var pageTag in post.PageTags)
-                                {
-                                    <a class="badge badge-primary" style="margin-right: 5px;" href="#">@pageTag.Tag.Name</a>
-                                }
-                            }
-                        </div>
                         <div class="getting-started-info">
                             <p>@post.Shortcut</p>
                         </div>

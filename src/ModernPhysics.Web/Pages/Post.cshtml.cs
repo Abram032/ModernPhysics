@@ -27,20 +27,16 @@ namespace ModernPhysics.Web.Pages
         [BindProperty(SupportsGet = true)]
         public string Search { get; set; }
 
-        public Models.Page Post { get; set; }
+        public Post Post { get; set; }
         public IEnumerable<Category> Categories { get; set; }
-        public IEnumerable<Tag> Tags { get; set; }
 
         public void OnGet(string category, string posturl)
         {
-            Post = _context.Pages
+            Post = _context.Posts
                 .Include(p => p.Category)
-                .Include(p => p.PageTags)
-                .ThenInclude(p => p.Tag)
                 .FirstOrDefault(p => p.Category.Name.Equals(category) && p.FriendlyUrl.Equals(posturl));
 
-            Categories = _context.Categories.Include(p => p.Pages);
-            Tags = _context.Tags;
+            Categories = _context.Categories.Include(p => p.Posts);
         }
     }
 }

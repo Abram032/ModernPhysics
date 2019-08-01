@@ -20,8 +20,7 @@ namespace ModernPhysics.Web.Pages
             _context = context;
         }
 
-        public IEnumerable<Models.Page> Posts { get; set; }
-        public IEnumerable<Tag> Tags { get; set; }
+        public IEnumerable<Post> Posts { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string Search { get; set; }
@@ -35,18 +34,12 @@ namespace ModernPhysics.Web.Pages
         {
             if(string.IsNullOrEmpty(category))
             {
-                Posts = _context.Pages.Include(p => p.Category)
-                    .Include(p => p.PageTags)
-                    .ThenInclude(p => p.Tag);
-                Tags = _context.Set<Tag>();              
+                Posts = _context.Posts.Include(p => p.Category);
             }
             else
             {
-                Posts = _context.Pages.Include(p => p.Category)
-                    .Include(p => p.PageTags)
-                    .ThenInclude(p => p.Tag)
+                Posts = _context.Posts.Include(p => p.Category)
                     .Where(p => p.Category.FriendlyName.Equals(category));
-                Tags = _context.Set<Tag>();
             }
 
             Categories = _context.Categories
@@ -73,38 +66,28 @@ namespace ModernPhysics.Web.Pages
                 return new BadRequestResult();
             }
 
-            Tags = _context.Set<Tag>();
-
             if (!string.IsNullOrEmpty(category) && !string.IsNullOrEmpty(search))
             {
-                Posts = _context.Pages.Include(p => p.Category)
-                .Include(p => p.PageTags)
-                .ThenInclude(p => p.Tag)
+                Posts = _context.Posts.Include(p => p.Category)
                 .Where(p => p.Category.FriendlyName.Equals(category))
                 .Where(p => p.Content.Contains(search));
             }
 
             else if(!string.IsNullOrEmpty(category) && string.IsNullOrEmpty(search))
             {
-                Posts = _context.Pages.Include(p => p.Category)
-                .Include(p => p.PageTags)
-                .ThenInclude(p => p.Tag)
+                Posts = _context.Posts.Include(p => p.Category)
                 .Where(p => p.Category.FriendlyName.Equals(category));
             }
 
             else if(string.IsNullOrEmpty(category) && !string.IsNullOrEmpty(search))
             {
-                Posts = _context.Pages.Include(p => p.Category)
-                .Include(p => p.PageTags)
-                .ThenInclude(p => p.Tag)
+                Posts = _context.Posts.Include(p => p.Category)
                 .Where(p => p.Content.Contains(search));
             }
 
             else
             {
-                Posts = _context.Pages.Include(p => p.Category)
-               .Include(p => p.PageTags)
-               .ThenInclude(p => p.Tag);
+                Posts = _context.Posts.Include(p => p.Category);
             }
 
             Categories = _context.Categories
