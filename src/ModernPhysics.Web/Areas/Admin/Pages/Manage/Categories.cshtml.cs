@@ -42,7 +42,9 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
             {
                 nocategory = new Category
                 {
-                    Name = "no-category"
+                    Name = "No category",
+                    FriendlyName = "no-category",
+                    Icon = "fas fa-question"
                 };
             }
 
