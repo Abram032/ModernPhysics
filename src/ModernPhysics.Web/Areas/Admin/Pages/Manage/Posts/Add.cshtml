@@ -22,6 +22,11 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="@Model.Input.UseCustomUrl"></label>
+                <input asp-for="@Model.Input.UseCustomUrl" class="form-check-inline" />
+            </div>
+
+            <div class="form-group">
                 <label asp-for="@Model.Input.FriendlyUrl"></label>
                 <input asp-for="@Model.Input.FriendlyUrl" class="form-control" />
             </div>
@@ -33,7 +38,7 @@
             
             <div class="form-group">
                 <label asp-for="@Model.Input.Category"></label>
-                <input asp-for="@Model.Input.Category" class="form-control" />
+                <select class="custom-select" asp-items="Model.Categories" asp-for="@Model.Input.Category"></select>
             </div>
 
             <div class="form-group">

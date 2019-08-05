@@ -34,7 +34,7 @@ namespace ModernPhysics.Web.Pages
         {
             Post = _context.Posts
                 .Include(p => p.Category)
-                .FirstOrDefault(p => p.Category.Name.Equals(category) && p.FriendlyUrl.Equals(posturl));
+                .FirstOrDefault(p => p.Category.FriendlyName.Equals(category) && p.FriendlyUrl.Equals(posturl));
 
             Categories = _context.Categories.Include(p => p.Posts);
         }

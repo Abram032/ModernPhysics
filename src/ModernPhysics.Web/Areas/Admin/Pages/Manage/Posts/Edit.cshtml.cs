@@ -103,7 +103,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
             await _context.SaveChangesAsync();
 
-            return new RedirectToPageResult("/Admin/Posts");
+            return new RedirectToPageResult("/Manage/Posts", new { area = "Admin" });
         }
     }
 }

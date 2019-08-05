@@ -43,20 +43,21 @@
                                 </div>
                             }
                         </div>
-                        @if (Model.Post != null)
-                        {
-                            <div class="col-md-8 col-lg-9">
-                                <div class="block-content">
-                                    <div class="post-body">
-                                        <h3>@Model.Post.Title</h3>
-                                        <div class="post-info"><span>@Model.Post.CreatedBy</span><span>@Model.Post.CreatedAt</span></div>
-                                        <div>
-                                            @Model.Post.Content
-                                        </div>
+                    </div>
+                    @if (Model.Post != null)
+                    {
+                        <div class="col-md-8 col-lg-9">
+                            <div class="block-content">
+                                <div class="post-body">
+                                    <h3>@Model.Post.Title</h3>
+                                    <div class="post-info"><span>@Model.Post.CreatedBy</span><span>@Model.Post.CreatedAt</span></div>
+                                    <div>
+                                        @Html.Raw(@Model.Post.Content)
                                     </div>
                                 </div>
                             </div>
-                        }
+                        </div>
+                    }
                     </div>
                 </div>
             </div>

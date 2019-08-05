@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
 using ModernPhysics.Web.Data;
@@ -20,6 +21,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
         [BindProperty]
         public InputModel Input { get; set; }
+        public List<SelectListItem> Categories { get; set; }
 
         public class InputModel
         {
@@ -28,8 +30,18 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             public string Tags { get; set; }
             public string Content { get; set; }
             public bool IsPublished { get; set; }
+            public bool UseCustomUrl { get; set; }
             public string Category { get; set; }
-            public string CategoryIcon { get; set; }
+        }
+
+        public void OnGet()
+        {
+            Categories = _context.Categories
+                .Select(p => new SelectListItem
+                {
+                    Value = p.FriendlyName,
+                    Text = p.Name
+                }).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -42,13 +54,13 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             //Category operations
             var category = _context.Categories
                 .Include(p => p.Posts)
-                .FirstOrDefault(p => p.Name.Equals(Input.Category));
+                .FirstOrDefault(p => p.FriendlyName.Equals(Input.Category));
             if (category == null)
             {
                 category = new Category
                 {
                     Name = Input.Category,
-                    Icon = Input.CategoryIcon
+                    //Icon = Input.CategoryIcon
                 };
             }
 
@@ -58,6 +70,11 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             }
 
             //Page operations
+            if(Input.UseCustomUrl == false)
+            {
+                Input.FriendlyUrl = Input.Title.Replace(' ','-');
+            }
+
             var post = new Post
             {
                 Title = Input.Title,
@@ -73,7 +90,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             _context.Categories.Update(category);
             await _context.SaveChangesAsync();
 
-            return new RedirectToPageResult("/Admin/Posts");
+            return new RedirectToPageResult("/Manage/Posts", new { area = "Admin" });
         }
     }
 }
