@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernPhysics.HtmlParser", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernPhysics.Explorer", "src\ModernPhysics.Explorer\ModernPhysics.Explorer.csproj", "{FBD1114A-C1F2-433D-B0EC-C90722565E19}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModernPhysics.Extensions", "lib\ModernPhysics.Extensions\ModernPhysics.Extensions.csproj", "{A0E43A64-217F-4076-A953-E78FDE2BF0DC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,10 +43,6 @@ Global
 		{FBD1114A-C1F2-433D-B0EC-C90722565E19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBD1114A-C1F2-433D-B0EC-C90722565E19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBD1114A-C1F2-433D-B0EC-C90722565E19}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A0E43A64-217F-4076-A953-E78FDE2BF0DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0E43A64-217F-4076-A953-E78FDE2BF0DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0E43A64-217F-4076-A953-E78FDE2BF0DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0E43A64-217F-4076-A953-E78FDE2BF0DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,7 +53,6 @@ Global
 		{604DBB7E-11B4-4947-97A1-E5F5AFB20CB6} = {F2FBEC94-DA2F-4DB9-99C8-0597013C8E96}
 		{D57C0465-7E5A-4C9C-914C-CC46A6CB6347} = {DB502613-EC2F-4EFF-BC0E-C102A156C51C}
 		{FBD1114A-C1F2-433D-B0EC-C90722565E19} = {F2FBEC94-DA2F-4DB9-99C8-0597013C8E96}
-		{A0E43A64-217F-4076-A953-E78FDE2BF0DC} = {DB502613-EC2F-4EFF-BC0E-C102A156C51C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7A2AB1BD-203E-4199-A297-6DD48AE37091}
