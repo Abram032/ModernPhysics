@@ -27,7 +27,9 @@ namespace ModernPhysics.Web.Pages
 
         public void OnGet()
         {
-            Posts = _context.Posts.Include(p => p.Category).Take(2);
+            Posts = _context.Posts.Include(p => p.Category).
+                Where(p => p.IsPublished == true)
+                .Take(2);
         }
     }
 }

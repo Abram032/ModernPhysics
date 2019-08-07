@@ -34,12 +34,12 @@ namespace ModernPhysics.Web.Pages
         {
             if(string.IsNullOrEmpty(category))
             {
-                Posts = _context.Posts.Include(p => p.Category);
+                Posts = _context.Posts.Include(p => p.Category).Where(p => p.IsPublished == true);
             }
             else
             {
                 Posts = _context.Posts.Include(p => p.Category)
-                    .Where(p => p.Category.FriendlyName.Equals(category));
+                    .Where(p => p.Category.FriendlyName.Equals(category) && p.IsPublished == true);
             }
 
             Categories = _context.Categories
@@ -54,6 +54,8 @@ namespace ModernPhysics.Web.Pages
                 Value = null,
                 Text = "Wszystkie"
             });
+
+            //Categories.FirstOrDefault(p => string.IsNullOrEmpty(category)).Selected = true;
 
             //TODO: Change from == to .IsNullOrEmpty()
             Categories.FirstOrDefault(p => p.Value == category).Selected = true;
@@ -70,19 +72,22 @@ namespace ModernPhysics.Web.Pages
             {
                 Posts = _context.Posts.Include(p => p.Category)
                 .Where(p => p.Category.FriendlyName.Equals(category))
+                .Where(p => p.IsPublished == true)
                 .Where(p => p.Content.Contains(search));
             }
 
             else if(!string.IsNullOrEmpty(category) && string.IsNullOrEmpty(search))
             {
                 Posts = _context.Posts.Include(p => p.Category)
-                .Where(p => p.Category.FriendlyName.Equals(category));
+                .Where(p => p.Category.FriendlyName.Equals(category))
+                .Where(p => p.IsPublished == true);
             }
 
             else if(string.IsNullOrEmpty(category) && !string.IsNullOrEmpty(search))
             {
                 Posts = _context.Posts.Include(p => p.Category)
-                .Where(p => p.Content.Contains(search));
+                .Where(p => p.Content.Contains(search))
+                .Where(p => p.IsPublished == true);
             }
 
             else

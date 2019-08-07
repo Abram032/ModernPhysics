@@ -13,9 +13,9 @@
             </div>
             <div class="row d-lg-flex justify-content-lg-center" style="padding: 0% 10%;">
 
-                @if (Model.Categories == null)
+                @if (Model.Categories == null || Model.Categories.Count() == 0)
                 {
-                    <h3 class="text-center">No categories to show!</h3>
+                    <h5>Brak kategorii do wyświetlenia!</h5>
                 }
                 else
                 {

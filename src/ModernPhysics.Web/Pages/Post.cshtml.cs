@@ -30,13 +30,25 @@ namespace ModernPhysics.Web.Pages
         public Post Post { get; set; }
         public IEnumerable<Category> Categories { get; set; }
 
-        public void OnGet(string category, string posturl)
+        public IActionResult OnGet(string category, string posturl)
         {
             Post = _context.Posts
                 .Include(p => p.Category)
                 .FirstOrDefault(p => p.Category.FriendlyName.Equals(category) && p.FriendlyUrl.Equals(posturl));
 
+            if(Post.IsPublished == false)
+            {
+                //TODO: Change to redirect to Not Found page
+                return RedirectToPage("/Error");
+            }
+
             Categories = _context.Categories.Include(p => p.Posts);
+            foreach(var _category in Categories)
+            {
+                _category.Posts = _category.Posts.Where(p => p.IsPublished == true).ToList();
+            }
+
+            return Page();
         }
     }
 }

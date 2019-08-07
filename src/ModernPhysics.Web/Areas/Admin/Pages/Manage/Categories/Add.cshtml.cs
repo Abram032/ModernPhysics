@@ -36,19 +36,14 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
                 return new BadRequestResult();
             }
 
-            string friendlyName;
-            if(Input.UseCustomFriendlyName == true)
+            if(Input.UseCustomFriendlyName == false)
             {
-                friendlyName = Input.FriendlyName;
+                Input.FriendlyName = Input.Name.Trim().Replace(' ', '-').ToLower();
             }
-            else
-            {
-                friendlyName = Input.FriendlyName.Trim().Replace(' ', '-').ToLower();
-            }
-            
+
             var category = new Category {
                 Name = Input.Name,
-                FriendlyName = friendlyName,
+                FriendlyName = Input.FriendlyName,
                 Icon = Input.Icon
             };
 

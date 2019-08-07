@@ -30,7 +30,11 @@
         </div>
         <div class="row align-items-center">
 
-            @if (Model.Posts != null)
+            @if (Model.Posts == null || Model.Posts.Count() == 0)
+            {
+                <h5>Nie dodano jeszcze żadnych postów.</h5>
+            }
+            else
             {
                 @foreach (var post in Model.Posts)
                 {

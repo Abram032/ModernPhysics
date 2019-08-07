@@ -69,6 +69,11 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
                 return new BadRequestResult();
             }
 
+            if(Input.UseCustomFriendlyName == false)
+            {
+                Input.FriendlyName = Input.Name.Trim().Replace(' ', '-').ToLower();
+            }
+
             category.Name = Input.Name;
             category.FriendlyName = Input.FriendlyName;
             category.Icon = Input.Icon;

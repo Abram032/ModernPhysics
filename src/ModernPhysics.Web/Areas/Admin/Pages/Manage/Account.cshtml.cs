@@ -92,7 +92,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your password has been changed.";
+            StatusMessage = "Twoje hasło zostało zmienione.";
 
             return RedirectToPage();
         }
