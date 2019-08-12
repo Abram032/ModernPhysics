@@ -36,6 +36,10 @@ namespace ModernPhysics.Web.Pages
                 .Include(p => p.Category)
                 .FirstOrDefault(p => p.Category.FriendlyName.Equals(category) && p.FriendlyUrl.Equals(posturl));
 
+            if(Post == null)
+            {
+                return RedirectToPage("/Error");
+            }
             if(Post.IsPublished == false)
             {
                 //TODO: Change to redirect to Not Found page

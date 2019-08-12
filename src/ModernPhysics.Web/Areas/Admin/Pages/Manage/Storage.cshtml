@@ -34,18 +34,19 @@
         {
             <div class="col-lg-4 mb-4">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>@blob.Name</h5>
-                        <a href="https://@blob.Url" class="fa fa-eye primary"></a>
-                        <button class="btn btn-link" type="submit" asp-page-handler="delete" asp-route-id="@blob.Id">
-                            <span class="fa fa-trash danger"></span>
-                        </button>
+                    <div class="card-header d-inline">
+                            <h5>@blob.Name
+                                <button class="btn btn-danger fa fa-trash ml-1 float-right" type="submit" asp-page-handler="delete" asp-route-id="@blob.Id">
+                                </button>
+                                <a href="https://@blob.Url" class="fa fa-eye btn btn-primary ml-1 float-right"></a>
+                                <button class="btn btn-info fas fa-copy ml-1 float-right" onclick="copyToClipboard('https://@blob.Url')"></button>
+                            </h5>
                     </div>
                     <div class="card-body">
                         @switch (blob.Type)
                         {
                             case var type when type.StartsWith("image"):
-                                <img src="https://@blob.Url" alt="@blob.Description" class="img-fluid" />
+                                <img src="https://@blob.Url" alt="@blob.Description" class="img-thumbnail" />
                                 break;
                             case var type when type.Equals("text/plain"):
                                 <span class="fa fa-file-alt fa-10x"></span>
@@ -97,3 +98,14 @@
 
     </div>
 </form>
+
+@section Scripts
+{
+    function copyToClipboard(url) {
+        var textarea = document.createElement("textarea");
+        var text = document.createTextNode(url);
+        textarea.appendChild(text);
+        textarea.select();
+        document.execCommand("copy");
+    }
+}
