@@ -5,7 +5,7 @@
     Layout = "~/Areas/Admin/Pages/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1 class="display-4">Modern Physics - Categories</h1>
+<h1 class="display-4">Fizyka Współczesna - Magazyn</h1>
 <hr>
 
 <div class="row">
@@ -13,13 +13,13 @@
         <form method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="custom-file col-10">
-                    <label asp-for="@Model.Files" class="custom-file-label"></label>
+                    <label asp-for="@Model.Files" class="custom-file-label">Pliki</label>
                     <input asp-for="@Model.Files" class="custom-file-input">
                 </div>
                 <div class="col-2">
                     <button type="submit" class="btn btn-primary ml-2">
                         <span class="fa fa-cloud-upload-alt mr-1"></span>
-                        <span>Upload</span>
+                        <span>Wyślij</span>
                     </button>
                 </div>
             </div>
@@ -32,15 +32,13 @@
 
         @foreach (var blob in Model.Blobs)
         {
-            <div class="col-lg-4 mb-4">
+            <div class="col-lg-3 mb-4">
                 <div class="card">
                     <div class="card-header d-inline">
-                            <h5>@blob.Name
-                                <button class="btn btn-danger fa fa-trash ml-1 float-right" type="submit" asp-page-handler="delete" asp-route-id="@blob.Id">
-                                </button>
-                                <a href="https://@blob.Url" class="fa fa-eye btn btn-primary ml-1 float-right"></a>
-                                <button class="btn btn-info fas fa-copy ml-1 float-right" onclick="copyToClipboard('https://@blob.Url')"></button>
-                            </h5>
+                        <h5>@blob.Name</h5>
+                        <a href="https://@blob.Url" class="fa fa-eye btn btn-primary ml-1"></a>
+                        <button class="btn btn-info fas fa-copy ml-1" onclick="copyToClipboard('https://@blob.Url')"></button>       
+                        <button class="btn btn-danger fa fa-trash ml-1" type="submit" asp-page-handler="delete" asp-route-id="@blob.Id"></button>
                     </div>
                     <div class="card-body">
                         @switch (blob.Type)
@@ -54,35 +52,11 @@
                             case var type when type.Contains("application/pdf"):
                                 <span class="fa fa-file-pdf fa-10x"></span>
                                 break;
-                            case var type when type.Contains("excel")
-                               || type.Contains("spreadsheetml"):
-                                <span class="fa fa-file-excel fa-10x"></span>
-                                break;
-                            case var type when type.Equals("application/msword")
-                               || type.Contains("ms-word")
-                               || type.Contains("wordprocessingml"):
-                                <span class="fa fa-file-word fa-10x"></span>
-                                break;
-                            case var type when type.Contains("powerpoint")
-                               || type.Contains("presentationml"):
-                                <span class="fa fa-file-powerpoint fa-10x"></span>
-                                break;
                             case var type when type.StartsWith("video"):
                                 <span class="fa fa-file-video fa-10x"></span>
                                 break;
-                            case var type when type.Equals("text/csv"):
-                                <span class="fa fa-file-csv fa-10x"></span>
-                                break;
                             case var type when type.StartsWith("audio"):
                                 <span class="fa fa-file-audio fa-10x"></span>
-                                break;
-                            case var type when type.Contains("x-bzip")
-                                || type.Contains("x-rar")
-                                || type.Contains("x-7z")
-                                || type.Contains("x-zip")
-                                || type.Equals("application/zip")
-                                || type.Equals("application/x-tar"):
-                                <span class="fa fa-file-archive fa-10x"></span>
                                 break;
                             default:
                                 <span class="fa fa-file fa-10x"></span>

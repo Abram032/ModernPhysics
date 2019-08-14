@@ -5,19 +5,19 @@
     Layout = "~/Areas/Admin/Pages/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1 class="display-4">Modern Physics - Posts</h1>
+<h1 class="display-4">Fizyka Współczesna - Posty</h1>
 <hr>
 
 <div class="row">
     <div class="col-lg-12 mb-4">
         <div class="card card-left-outline-info">
             <div class="card-header">
-                <h4>Current posts:</h4>
+                <h4>Obecne posty:</h4>
             </div>
             <!-- Filter form -->
             <div class="card-body">
                 <div class="mb-3">
-                    <a class="btn btn-success" asp-page="./Posts/Add">New Post</a>
+                    <a class="btn btn-success" asp-page="./Posts/Add">Nowy post</a>
                 </div>
 
                 <!-- /.Filter form -->
@@ -26,13 +26,14 @@
                         <thead>
                             <tr>
                                 <th><input type="checkbox"></th>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Category</th>
-                                <th>Date</th>
-                                <th>Published</th>
-                                <th>Edit</th>
-                                <th>Remove</th>
+                                <th>Tytuł</th>
+                                <th>Autor</th>
+                                <th>Kategoria</th>
+                                <th>Data dodania</th>
+                                <th>Data aktualizacji</th>
+                                <th>Opublikowano</th>
+                                <th>Edytuj</th>
+                                <th>Usuń</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,6 +46,7 @@
                                     <td><a href="#" class="badge badge-primary">@item.CreatedBy</a></td>
                                     <td><a href="#" class="badge badge-secondary">@item.Category.Name</a></td>
                                     <td>@item.CreatedAt</td>
+                                    <td>@item.ModifiedAt</td>
                                     <td>
                                         @if (item.IsPublished == false)
                                         {

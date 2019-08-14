@@ -5,19 +5,19 @@
     Layout = "~/Areas/Admin/Pages/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1 class="display-4">Modern Physics - Categories</h1>
+<h1 class="display-4">Fizyka Współczesna - Kategorie</h1>
 <hr>
 
 <div class="row">
     <div class="col-lg-12 mb-4">
         <div class="card card-left-outline-info">
             <div class="card-header">
-                <h4>Current categories:</h4>
+                <h4>Obecne kategorie:</h4>
             </div>
             <div class="card-body">
 
                 <div class="mb-3">
-                    <a class="btn btn-success" asp-page="./Categories/Add">Add Category</a>
+                    <a class="btn btn-success" asp-page="./Categories/Add">Dodaj kategorię</a>
                 </div>
 
                 <div class="table-responsive">
@@ -25,11 +25,11 @@
                         <thead>
                             <tr>
                                 <th><input type="checkbox"></th>
-                                <th>Name</th>
-                                <th>Friendly Name</th>
-                                <th>Icon</th>
-                                <th>Edit</th>
-                                <th>Remove</th>
+                                <th>Nazwa</th>
+                                <th>Przyjazna nazwa</th>
+                                <th>Ikona</th>
+                                <th>Edytuj</th>
+                                <th>Usuń</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,9 +38,8 @@
                                 <tr>
                                     <td><input type="checkbox"></td>
                                     <td><a href="#">@item.Name</a></td>
-                                    <td><a href="#">@item.FriendlyName</a></td>
+                                    <td><span>@item.FriendlyName</span></td>
                                     <td><span class="@item.Icon"></span></td>
-
                                     <td>
                                         <form method="get" asp-page="./Categories/Edit" asp-route-id="@item.Id">
                                             <button type="submit" class="btn btn-warning">

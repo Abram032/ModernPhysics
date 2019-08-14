@@ -39,7 +39,7 @@
                 @foreach (var post in Model.Posts)
                 {
                     <div class="col-md-6 col-lg-6">
-                        <a href="@post.FriendlyUrl">
+                        <a href="Resources/@post.Category.Name/@post.FriendlyUrl">
                             <h3>@post.Title</h3>
                         </a>
                         <h5 class="text-muted">@post.Category.Name</h5>

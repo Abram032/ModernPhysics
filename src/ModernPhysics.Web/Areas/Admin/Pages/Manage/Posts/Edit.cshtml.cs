@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ModernPhysics.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 {
@@ -22,12 +24,15 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
         [BindProperty(SupportsGet = true)]
         public InputModel Input { get; set; }
+        public List<SelectListItem> Categories { get; set; }
+        public string BaseUrl { get; set; }
 
         public class InputModel
         {
             public Guid Id { get; set; }
             public string Title { get; set; }
             public string FriendlyUrl { get; set; }
+            public string Shortcut { get; set; }
             public string Content { get; set; }
             public bool IsPublished { get; set; }
             public string Category { get; set; }
@@ -35,6 +40,8 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
         public async Task<IActionResult> OnGet(Guid? id)
         {
+            BaseUrl = $"{Request.Scheme}://{Request.Host}";
+
             if (id == null)
             {
                 return NotFound();
@@ -49,11 +56,19 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                 return NotFound();
             }
 
+            Categories = _context.Categories
+                .Select(p => new SelectListItem
+                {
+                    Value = p.FriendlyName,
+                    Text = p.Name
+                }).ToList();
+
             Input = new InputModel
             {
                 Id = (Guid)id,
                 Title = post.Title,
                 FriendlyUrl = post.FriendlyUrl,
+                Shortcut = Input.Shortcut,
                 Content = post.Content,
                 IsPublished = post.IsPublished,
                 Category = post.Category.Name

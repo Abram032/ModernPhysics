@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ModernPhysics.Models
 {
+    //TODO: Add author and date created/updated
     public class Category
     {
         public Guid Id { get; set; }

@@ -22,12 +22,14 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
         [BindProperty]
         public InputModel Input { get; set; }
         public List<SelectListItem> Categories { get; set; }
+        public string BaseUrl { get; set; }
 
         public class InputModel
         {
             public string Title { get; set; }
             public string FriendlyUrl { get; set; }
             public string Tags { get; set; }
+            public string Shortcut { get; set; }
             public string Content { get; set; }
             public bool IsPublished { get; set; }
             public bool UseCustomUrl { get; set; }
@@ -42,6 +44,8 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                     Value = p.FriendlyName,
                     Text = p.Name
                 }).ToList();
+
+            BaseUrl = $"{Request.Scheme}://{Request.Host}";
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -79,6 +83,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             {
                 Title = Input.Title,
                 FriendlyUrl = Input.FriendlyUrl,
+                Shortcut = Input.Shortcut,
                 Content = Input.Content,
                 IsPublished = Input.IsPublished,
                 Category = category,
