@@ -43,6 +43,10 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Category>().Property(p => p.Name).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.FriendlyName).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.Icon).HasMaxLength(32);
+            builder.Entity<Category>().Property(p => p.CreatedAt).IsRequired().ValueGeneratedOnAdd();
+            builder.Entity<Category>().Property(p => p.CreatedBy).IsRequired().HasMaxLength(64);
+            builder.Entity<Category>().Property(p => p.ModifiedAt).ValueGeneratedOnAddOrUpdate();
+            builder.Entity<Category>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().HasMany(p => p.Posts).WithOne(p => p.Category);
 
             builder.Entity<Blob>().HasKey(p => p.Id);

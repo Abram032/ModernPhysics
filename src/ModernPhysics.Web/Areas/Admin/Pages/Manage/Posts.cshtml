@@ -27,9 +27,10 @@
                             <tr>
                                 <th><input type="checkbox"></th>
                                 <th>Tytuł</th>
-                                <th>Autor</th>
                                 <th>Kategoria</th>
+                                <th>Autor</th>
                                 <th>Data dodania</th>
+                                <th>Zmodyfikowano przez</th>
                                 <th>Data aktualizacji</th>
                                 <th>Opublikowano</th>
                                 <th>Edytuj</th>
@@ -43,9 +44,10 @@
                                 <tr>
                                     <td><input type="checkbox"></td>
                                     <td><a href="#">@item.Title</a></td>
-                                    <td><a href="#" class="badge badge-primary">@item.CreatedBy</a></td>
                                     <td><a href="#" class="badge badge-secondary">@item.Category.Name</a></td>
+                                    <td><a href="#" class="badge badge-primary">@item.CreatedBy</a></td>
                                     <td>@item.CreatedAt</td>
+                                    <td><a href="#" class="badge badge-primary">@item.ModifiedBy</a></td>
                                     <td>@item.ModifiedAt</td>
                                     <td>
                                         @if (item.IsPublished == false)

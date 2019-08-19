@@ -45,7 +45,9 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
                 {
                     Name = "No category",
                     FriendlyName = "no-category",
-                    Icon = "fas fa-question"
+                    Icon = "fas fa-question",
+                    CreatedBy = User.Identity.Name,
+                    ModifiedBy = User.Identity.Name
                 };
             }
 

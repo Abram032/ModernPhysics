@@ -27,6 +27,10 @@
                                 <th><input type="checkbox"></th>
                                 <th>Nazwa</th>
                                 <th>Przyjazna nazwa</th>
+                                <th>Autor</th>
+                                <th>Data dodania</th>
+                                <th>Zmodyfikowano przez</th>
+                                <th>Data aktualizacji</th>
                                 <th>Ikona</th>
                                 <th>Edytuj</th>
                                 <th>Usuń</th>
@@ -39,6 +43,10 @@
                                     <td><input type="checkbox"></td>
                                     <td><a href="#">@item.Name</a></td>
                                     <td><span>@item.FriendlyName</span></td>
+                                    <td><a href="#" class="badge badge-primary">@item.CreatedBy</a></td>
+                                    <td>@item.CreatedAt</td>
+                                    <td><a href="#" class="badge badge-primary">@item.ModifiedBy</a></td>
+                                    <td>@item.ModifiedAt</td>
                                     <td><span class="@item.Icon"></span></td>
                                     <td>
                                         <form method="get" asp-page="./Categories/Edit" asp-route-id="@item.Id">

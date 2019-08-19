@@ -44,7 +44,11 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
             var category = new Category {
                 Name = Input.Name,
                 FriendlyName = Input.FriendlyName,
-                Icon = Input.Icon
+                Icon = Input.Icon,
+                CreatedBy = User.Identity.Name,
+                ModifiedBy = User.Identity.Name
+                // CreatedAt = DateTime.UtcNow,
+                // ModifiedAt = DateTime.UtcNow
             };
 
             _context.Categories.Add(category);
