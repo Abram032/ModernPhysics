@@ -46,12 +46,11 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
                 FriendlyName = Input.FriendlyName,
                 Icon = Input.Icon,
                 CreatedBy = User.Identity.Name,
-                ModifiedBy = User.Identity.Name
-                // CreatedAt = DateTime.UtcNow,
-                // ModifiedAt = DateTime.UtcNow
+                ModifiedBy = User.Identity.Name,
+                Posts = new List<Post>()
             };
 
-            _context.Categories.Add(category);
+            await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
 
             return new RedirectToPageResult("/Manage/Categories", new { area = "Admin" });

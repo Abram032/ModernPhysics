@@ -29,21 +29,35 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
         public class InputModel
         {
-            public Guid Id { get; set; }
             public string Title { get; set; }
             public string FriendlyUrl { get; set; }
             public string Shortcut { get; set; }
             public string Content { get; set; }
             public bool IsPublished { get; set; }
+            public bool UseCustomUrl { get; set; }
             public string Category { get; set; }
         }
 
         public async Task<IActionResult> OnGet(Guid? id)
         {
+            Categories = _context.Categories
+                .Select(p => new SelectListItem
+                {
+                    Value = p.FriendlyName,
+                    Text = p.Name
+                }).ToList();
+
+            Categories.Add(new SelectListItem 
+            {
+                Value = null,
+                Text = "Bez kategorii"
+            });
+
             BaseUrl = $"{Request.Scheme}://{Request.Host}";
 
             if (id == null)
             {
+                //TODO: Change returns
                 return NotFound();
             }
 
@@ -54,24 +68,22 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             if (post == null)
             {
                 return NotFound();
+            }  
+            
+            string categoryName = null;
+            if(post.Category != null)
+            {
+                categoryName = post.Category.Name;
             }
-
-            Categories = _context.Categories
-                .Select(p => new SelectListItem
-                {
-                    Value = p.FriendlyName,
-                    Text = p.Name
-                }).ToList();
 
             Input = new InputModel
             {
-                Id = (Guid)id,
                 Title = post.Title,
                 FriendlyUrl = post.FriendlyUrl,
                 Shortcut = Input.Shortcut,
                 Content = post.Content,
                 IsPublished = post.IsPublished,
-                Category = post.Category.Name
+                Category = categoryName
             };
 
             return Page();
@@ -86,34 +98,26 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
             var post = await _context.Posts.Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
-            var category = post.Category;
 
-            //Category operations
-            if (post.Category.Name != Input.Category)
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(p => p.FriendlyName.Equals(Input.Category));
+
+            if(Input.UseCustomUrl == false)
             {
-                category = await _context.Categories.
-                    FirstOrDefaultAsync(p => p.Name.Equals(Input.Category));
-                if (category == null)
-                {
-                    category = new Category
-                    {
-                        Name = Input.Category,
-                        Posts = new List<Post>()
-                    };
-                }
-                category.Posts.Add(post);
+                Input.FriendlyUrl = Input.Title.Replace(' ','-');
             }
 
-            //Page operations
             post.Title = Input.Title;
             post.FriendlyUrl = Input.FriendlyUrl;
             post.Content = Input.Content;
             post.IsPublished = Input.IsPublished;
             post.Category = category;
-            post.CreatedBy = User.Identity.Name;
             post.ModifiedBy = User.Identity.Name;
 
-            _context.Categories.Update(category);
+            if(category != null)
+            {
+                _context.Categories.Update(category);
+            }
             _context.Posts.Update(post);
 
             await _context.SaveChangesAsync();

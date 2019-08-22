@@ -78,7 +78,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
             category.FriendlyName = Input.FriendlyName;
             category.Icon = Input.Icon;
             category.ModifiedBy = User.Identity.Name;
-            category.ModifiedAt = DateTime.UtcNow;
+            // category.ModifiedAt = DateTime.UtcNow;
 
             _context.Categories.Update(category);
             await _context.SaveChangesAsync();

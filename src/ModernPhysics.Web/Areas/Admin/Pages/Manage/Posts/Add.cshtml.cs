@@ -28,7 +28,6 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
         {
             public string Title { get; set; }
             public string FriendlyUrl { get; set; }
-            public string Tags { get; set; }
             public string Shortcut { get; set; }
             public string Content { get; set; }
             public bool IsPublished { get; set; }
@@ -45,6 +44,12 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                     Text = p.Name
                 }).ToList();
 
+            Categories.Add(new SelectListItem 
+            {
+                Value = null,
+                Text = "Bez kategorii"
+            });
+
             BaseUrl = $"{Request.Scheme}://{Request.Host}";
         }
 
@@ -55,25 +60,10 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                 return new BadRequestResult();
             }
 
-            //Category operations
             var category = _context.Categories
                 .Include(p => p.Posts)
-                .FirstOrDefault(p => p.FriendlyName.Equals(Input.Category));
-            if (category == null)
-            {
-                category = new Category
-                {
-                    Name = Input.Category,
-                    //Icon = Input.CategoryIcon
-                };
-            }
+                .FirstOrDefault(p => p.FriendlyName.Equals(Input.Category)); 
 
-            if (category.Posts == null)
-            {
-                category.Posts = new List<Post>();
-            }
-
-            //Page operations
             if(Input.UseCustomUrl == false)
             {
                 Input.FriendlyUrl = Input.Title.Replace(' ','-');
@@ -91,8 +81,17 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                 ModifiedBy = User.Identity.Name
             };
 
-            category.Posts.Add(post);
-            _context.Categories.Update(category);
+            if (category != null && category.Posts == null)
+            {
+                if(category.Posts == null)
+                {
+                    category.Posts = new List<Post>();
+                }
+                category.Posts.Add(post);
+                _context.Categories.Update(category);
+            }
+                 
+            await _context.Posts.AddAsync(post);
             await _context.SaveChangesAsync();
 
             return new RedirectToPageResult("/Manage/Posts", new { area = "Admin" });

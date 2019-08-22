@@ -24,7 +24,6 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\lib\ModernPhysics.Extensions\ModernPhysics.Extensions.csproj" />
     <ProjectReference Include="..\..\lib\ModernPhysics.Models\ModernPhysics.Models.csproj" />
   </ItemGroup>
 

@@ -8,6 +8,13 @@
 <h1 class="display-4">Fizyka Współczesna - Kategorie</h1>
 <hr>
 
+@if(TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">@TempData["ErrorMessage"]</div>
+}
+
+@* TODO: Add links to categories *@
+
 <div class="row">
     <div class="col-lg-12 mb-4">
         <div class="card card-left-outline-info">
@@ -24,7 +31,7 @@
                     <table class="table table-striped table-sm" id="pages" cellspacing="0">
                         <thead>
                             <tr>
-                                <th><input type="checkbox"></th>
+                                @*<th><input type="checkbox"></th>*@
                                 <th>Nazwa</th>
                                 <th>Przyjazna nazwa</th>
                                 <th>Autor</th>
@@ -40,7 +47,7 @@
                             @foreach (var item in Model.Categories)
                             {
                                 <tr>
-                                    <td><input type="checkbox"></td>
+                                    @*<td><input type="checkbox"></td>*@
                                     <td><a href="#">@item.Name</a></td>
                                     <td><span>@item.FriendlyName</span></td>
                                     <td><a href="#" class="badge badge-primary">@item.CreatedBy</a></td>
@@ -64,6 +71,28 @@
                                     </td>
                                 </tr>
                             }
+                            @* null category (no-category) *@
+                            <tr>
+                                @*<td><input type="checkbox"></td>*@
+                                <td><a href="#">Bez kategorii</a></td>
+                                <td><span>no-category</span></td>
+                                <td><a href="#" class="badge badge-primary">-</a></td>
+                                <td>-</td>
+                                <td><a href="#" class="badge badge-primary">-</a></td>
+                                <td>-</td>
+                                <td><span class="fas fa-question"></span></td>
+                                <td>
+                                    <button type="submit" class="btn btn-warning disabled">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-danger disabled">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @* End null category (no-category) *@
                         </tbody>
                     </table>
                 </div>
