@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ModernPhysics.Web.Data.Migrations.Web
 {
-    public partial class WebInit : Migration
+    public partial class InitWeb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,7 +29,15 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(maxLength: 64, nullable: false)
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
+                    FriendlyName = table.Column<string>(maxLength: 64, nullable: false),
+                    Icon = table.Column<string>(maxLength: 32, nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CreatedBy = table.Column<string>(maxLength: 64, nullable: false),
+                    ModifiedAt = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
+                    ModifiedBy = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,19 +45,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tags",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(maxLength: 64, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tags", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Pages",
+                name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -58,9 +54,11 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     CreatedAt = table.Column<DateTime>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CreatedBy = table.Column<string>(maxLength: 64, nullable: false),
-                    ModifiedAt = table.Column<DateTime>(nullable: false),
-                    ModifiedBy = table.Column<string>(maxLength: 64, nullable: true),
-                    CategoryId = table.Column<Guid>(nullable: false),
+                    ModifiedAt = table.Column<DateTime>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
+                    ModifiedBy = table.Column<string>(maxLength: 64, nullable: false),
+                    CategoryId = table.Column<Guid>(nullable: true),
+                    Shortcut = table.Column<string>(maxLength: 500, nullable: true),
                     Content = table.Column<string>(type: "MEDIUMTEXT", nullable: true),
                     IsPublished = table.Column<bool>(nullable: false, defaultValue: false),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
@@ -68,37 +66,13 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pages", x => x.Id);
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pages_Categories_CategoryId",
+                        name: "FK_Posts_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PageTags",
-                columns: table => new
-                {
-                    PageId = table.Column<Guid>(nullable: false),
-                    TagId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PageTags", x => new { x.PageId, x.TagId });
-                    table.ForeignKey(
-                        name: "FK_PageTags_Pages_PageId",
-                        column: x => x.PageId,
-                        principalTable: "Pages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PageTags_Tags_TagId",
-                        column: x => x.TagId,
-                        principalTable: "Tags",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -120,25 +94,14 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pages_CategoryId",
-                table: "Pages",
+                name: "IX_Posts_CategoryId",
+                table: "Posts",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pages_FriendlyUrl",
-                table: "Pages",
+                name: "IX_Posts_FriendlyUrl",
+                table: "Posts",
                 column: "FriendlyUrl",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PageTags_TagId",
-                table: "PageTags",
-                column: "TagId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tags_Name",
-                table: "Tags",
-                column: "Name",
                 unique: true);
         }
 
@@ -148,13 +111,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                 name: "Blobs");
 
             migrationBuilder.DropTable(
-                name: "PageTags");
-
-            migrationBuilder.DropTable(
-                name: "Pages");
-
-            migrationBuilder.DropTable(
-                name: "Tags");
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "Categories");

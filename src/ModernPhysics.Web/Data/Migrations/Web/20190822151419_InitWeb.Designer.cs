@@ -9,8 +9,8 @@ using ModernPhysics.Web.Data;
 namespace ModernPhysics.Web.Data.Migrations.Web
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20190819135329_UpdatedCategory")]
-    partial class UpdatedCategory
+    [Migration("20190822151419_InitWeb")]
+    partial class InitWeb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,7 +96,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("CategoryId");
+                    b.Property<Guid?>("CategoryId");
 
                     b.Property<string>("Content")
                         .HasColumnType("MEDIUMTEXT");
@@ -152,8 +152,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                 {
                     b.HasOne("ModernPhysics.Models.Category", "Category")
                         .WithMany("Posts")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CategoryId");
                 });
 #pragma warning restore 612, 618
         }
