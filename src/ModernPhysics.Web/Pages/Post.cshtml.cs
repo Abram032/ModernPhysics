@@ -28,14 +28,23 @@ namespace ModernPhysics.Web.Pages
         public string Search { get; set; }
 
         public Post Post { get; set; }
-        public IEnumerable<Category> Categories { get; set; }
+        public List<Category> Categories { get; set; }
 
         public IActionResult OnGet(string category, string posturl)
         {
-            Post = _context.Posts
+            if(category.Equals("no-category"))
+            {
+                Post = _context.Posts
+                .Include(p => p.Category)
+                .FirstOrDefault(p => p.Category.Equals(null) && p.FriendlyUrl.Equals(posturl));
+            }
+            else
+            {
+                Post = _context.Posts
                 .Include(p => p.Category)
                 .FirstOrDefault(p => p.Category.FriendlyName.Equals(category) && p.FriendlyUrl.Equals(posturl));
-
+            }
+            
             if(Post == null)
             {
                 return RedirectToPage("/Error");
@@ -46,12 +55,20 @@ namespace ModernPhysics.Web.Pages
                 return RedirectToPage("/Error");
             }
 
-            Categories = _context.Categories.Include(p => p.Posts);
+            Categories = _context.Categories.Include(p => p.Posts).ToList();
             foreach(var _category in Categories)
             {
                 _category.Posts = _category.Posts.Where(p => p.IsPublished == true).ToList();
             }
 
+            Categories.Add(new Category
+            {
+                Name = "Bez kategorii",
+                FriendlyName = "no-category",
+                Posts = _context.Posts.Where(p => p.Category == null)
+                    .Where(p => p.IsPublished == true).ToList()
+            });
+            
             return Page();
         }
     }

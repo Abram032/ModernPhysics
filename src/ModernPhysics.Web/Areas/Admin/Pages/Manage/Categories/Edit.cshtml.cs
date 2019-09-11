@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ModernPhysics.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
 {
@@ -25,8 +26,18 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
 
         public class InputModel
         {
+            [Required(ErrorMessage = "Pole Nazwa jest wymagane")]
+            [MaxLength(64, ErrorMessage = "Nazwa nie może być dłuższa niż 64 znaki")]
+            [MinLength(1, ErrorMessage = "Nazwa nie może być krótsza niż 1 znak")]
             public string Name { get; set; }
+
+            [Required]
+            [MaxLength(64, ErrorMessage = "Przyjazna nazwa nie może być dłuższa niż 64 znaki")]
+            [MinLength(1, ErrorMessage = "Przyjazna nazwa nie może być krótsza niż 1 znak")]
+            [RegularExpression("^[a-zA-Z0-9_-]*$", ErrorMessage = "Dozwolone są tylko duże i małe litery, cyfry, _ oraz -")]
             public string FriendlyName { get; set; }
+            
+            [MaxLength(32, ErrorMessage = "Nazwa ikony nie może być dłuższa niż 32 znaki")]
             public string Icon { get; set; }
             public bool UseCustomFriendlyName { get; set; }
         }

@@ -16,7 +16,7 @@
                     <div class="input-group">
                         <input class="form-control" asp-for="Search">
                         <div class="input-group-append">
-                            <select class="custom-select" asp-items="Model.Categories">
+                            <select class="custom-select" asp-items="Model.Categories" asp-for="Category">
                             </select>
                         </div>
                         <div class="input-group-append">
@@ -37,7 +37,9 @@
                 }
                 @foreach (var post in Model.Posts)
                 {
-                    <div class="col-lg-12" style="margin-bottom: 10px;">
+                <div class="col-lg-12" style="margin-bottom: 10px;">
+                    @if(post.Category != null)
+                    {
                         <a href="/Resources/@post.Category.FriendlyName/@post.FriendlyUrl">
                             <div class="card card-hover">
                                 <div class="card-body">
@@ -46,7 +48,19 @@
                                 </div>
                             </div>
                         </a>
-                    </div>
+                    }
+                    else
+                    {
+                        <a href="/Resources/no-category/@post.FriendlyUrl">
+                            <div class="card card-hover">
+                                <div class="card-body">
+                                    <h4 class="card-title">@post.Title</h4>
+                                    <h6 class="text-muted card-subtitle mb-2">Bez kategorii</h6>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
                 }
             </div>
         </div>

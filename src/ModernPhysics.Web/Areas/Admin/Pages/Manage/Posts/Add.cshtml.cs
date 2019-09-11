@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -26,10 +28,24 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
         public class InputModel
         {
+            [Required(ErrorMessage = "Pole Tytuł jest wymagane")]
+            [MaxLength(255, ErrorMessage = "Nazwa nie może być dłuższa niż 255 znaki")]
+            [MinLength(1, ErrorMessage = "Nazwa nie może być krótsza niż 1 znak")]
             public string Title { get; set; }
+            
+            [Required(ErrorMessage = "Pole przyjazny url jest wymagane")]
+            [MaxLength(255, ErrorMessage = "Url nie może być dłuższe niż 255 znaki")]
+            [MinLength(1, ErrorMessage = "Url nie może być krótszy niż 1 znak")]
+            [RegularExpression("^[a-zA-Z0-9_-]*$", ErrorMessage = "Dozwolone są tylko duże i małe litery, cyfry, _ oraz -")]
             public string FriendlyUrl { get; set; }
+
+            [MaxLength(500, ErrorMessage = "Skrót nie może być dłuższy niż 500 znaków")]
             public string Shortcut { get; set; }
+
+            [MaxLength(16777215, ErrorMessage = "Zawartość nie może być dłuższa niż 16,777,215 znaków")]
             public string Content { get; set; }
+            
+            [Required]
             public bool IsPublished { get; set; }
             public bool UseCustomUrl { get; set; }
             public string Category { get; set; }
@@ -55,6 +71,11 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if(Input.UseCustomUrl == false)
+            {
+                Input.FriendlyUrl = Regex.Replace(Input.Title, " !\"#$%&'()*+,./:;<=>?@[\\]^`{|}~", "-");
+            }
+
             if (!ModelState.IsValid)
             {
                 return new BadRequestResult();

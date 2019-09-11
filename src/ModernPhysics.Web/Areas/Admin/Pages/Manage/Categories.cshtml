@@ -48,11 +48,11 @@
                             {
                                 <tr>
                                     @*<td><input type="checkbox"></td>*@
-                                    <td><a href="#">@item.Name</a></td>
+                                    <td><a href="/Resources/@item.FriendlyName">@item.Name</a></td>
                                     <td><span>@item.FriendlyName</span></td>
-                                    <td><a href="#" class="badge badge-primary">@item.CreatedBy</a></td>
+                                    <td><span class="badge badge-primary">@item.CreatedBy</span></td>
                                     <td>@item.CreatedAt</td>
-                                    <td><a href="#" class="badge badge-primary">@item.ModifiedBy</a></td>
+                                    <td><span href="#" class="badge badge-primary">@item.ModifiedBy</span></td>
                                     <td>@item.ModifiedAt</td>
                                     <td><span class="@item.Icon"></span></td>
                                     <td>
@@ -74,11 +74,11 @@
                             @* null category (no-category) *@
                             <tr>
                                 @*<td><input type="checkbox"></td>*@
-                                <td><a href="#">Bez kategorii</a></td>
+                                <td><a href="/Resources/no-category">Bez kategorii</a></td>
                                 <td><span>no-category</span></td>
-                                <td><a href="#" class="badge badge-primary">-</a></td>
+                                <td><span class="badge badge-primary">-</span></td>
                                 <td>-</td>
-                                <td><a href="#" class="badge badge-primary">-</a></td>
+                                <td><span class="badge badge-primary">-</span></td>
                                 <td>-</td>
                                 <td><span class="fas fa-question"></span></td>
                                 <td>

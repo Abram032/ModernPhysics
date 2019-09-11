@@ -39,10 +39,20 @@
                 @foreach (var post in Model.Posts)
                 {
                     <div class="col-md-6 col-lg-6">
-                        <a href="Resources/@post.Category.Name/@post.FriendlyUrl">
-                            <h3>@post.Title</h3>
-                        </a>
-                        <h5 class="text-muted">@post.Category.Name</h5>
+                        @if(post.Category != null)
+                        {
+                            <a href="Resources/@post.Category.Name/@post.FriendlyUrl">
+                                <h3>@post.Title</h3>
+                            </a>
+                            <h5 class="text-muted">@post.Category.Name</h5>
+                        }
+                        else
+                        {
+                            <a href="Resources/no-category/@post.FriendlyUrl">
+                                <h3>@post.Title</h3>
+                            </a>
+                            <h5 class="text-muted">Bez kategorii</h5>
+                        }                 
                         <div class="getting-started-info">
                             <p>@post.Shortcut</p>
                         </div>

@@ -41,12 +41,10 @@ namespace ModernPhysics.Web
             services.AddDbContext<WebIdentityDbContext>(options =>
             {
                 options.UseMySql(Configuration["SqlConnectionString"]);
-                options.EnableSensitiveDataLogging();
             });
             services.AddDbContext<WebAppDbContext>(options =>
             {
                 options.UseMySql(Configuration["SqlConnectionString"]);
-                options.EnableSensitiveDataLogging();
             });
 
             //services.AddDbContext<WebAppDbContext>(options =>
