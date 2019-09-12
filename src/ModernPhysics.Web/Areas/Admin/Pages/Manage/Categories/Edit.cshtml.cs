@@ -9,6 +9,7 @@ using ModernPhysics.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
 {
@@ -24,22 +25,25 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
         [BindProperty(SupportsGet = true)]
         public InputModel Input { get; set; }
 
+        [TempData]
+        public string Result { get; set; }
+
         public class InputModel
         {
-            [Required(ErrorMessage = "Pole Nazwa jest wymagane")]
+            [Display(Name = "Nazwa *", Prompt = "Nazwa Kategorii")]
+            [Required(ErrorMessage = "Pole jest wymagane")]
             [MaxLength(64, ErrorMessage = "Nazwa nie może być dłuższa niż 64 znaki")]
-            [MinLength(1, ErrorMessage = "Nazwa nie może być krótsza niż 1 znak")]
+            [RegularExpression("^[a-zA-Z0-9 _-]*$", ErrorMessage = "Dozwolone są tylko duże i małe litery, cyfry, spacje, _ oraz -")]
             public string Name { get; set; }
 
-            [Required]
+            [Display(Name = "Przyjazna nazwa", Prompt = "Nazwa-Kategorii (Opcjonalne)")]
             [MaxLength(64, ErrorMessage = "Przyjazna nazwa nie może być dłuższa niż 64 znaki")]
-            [MinLength(1, ErrorMessage = "Przyjazna nazwa nie może być krótsza niż 1 znak")]
             [RegularExpression("^[a-zA-Z0-9_-]*$", ErrorMessage = "Dozwolone są tylko duże i małe litery, cyfry, _ oraz -")]
             public string FriendlyName { get; set; }
-            
+
+            [Display(Name = "Ikona", Prompt = "fas fa-book (Opcjonalne)")]
             [MaxLength(32, ErrorMessage = "Nazwa ikony nie może być dłuższa niż 32 znaki")]
             public string Icon { get; set; }
-            public bool UseCustomFriendlyName { get; set; }
         }
 
         public async Task<IActionResult> OnGet(Guid? id)
@@ -60,7 +64,6 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
             Input.Name = category.Name;
             Input.Icon = category.Icon;
             Input.FriendlyName = category.FriendlyName;
-            Input.UseCustomFriendlyName = true;
 
             return Page();
         }
@@ -69,7 +72,20 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
         {
             if (!ModelState.IsValid)
             {
-                return new BadRequestResult();
+                return Page();
+            }
+
+            if(string.IsNullOrEmpty(Input.FriendlyName))
+            {
+                Input.FriendlyName = Regex.Replace(Input.Name, "[ !\"#$%&'()*+,./:;<=>?@[\\]^`{|}~]", "-");
+            }
+
+            if(await _context.Categories.AnyAsync(p => 
+                p.FriendlyName.Equals(Input.FriendlyName) &&
+                p.Id.Equals(id) == false))
+            {
+                Result = "Przyjazna nazwa jest już zajęta!";
+                return Page();
             }
 
             var category = await _context.Categories.Include(p => p.Posts)
@@ -77,19 +93,15 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
 
             if (category == null)
             {
-                return new BadRequestResult();
-            }
-
-            if(Input.UseCustomFriendlyName == false)
-            {
-                Input.FriendlyName = Input.Name.Trim().Replace(' ', '-').ToLower();
+                Result = "Kategoria nie istnieje!";
+                return Page();
             }
 
             category.Name = Input.Name;
             category.FriendlyName = Input.FriendlyName;
             category.Icon = Input.Icon;
             category.ModifiedBy = User.Identity.Name;
-            // category.ModifiedAt = DateTime.UtcNow;
+            //category.ModifiedAt = DateTime.UtcNow;
 
             _context.Categories.Update(category);
             await _context.SaveChangesAsync();

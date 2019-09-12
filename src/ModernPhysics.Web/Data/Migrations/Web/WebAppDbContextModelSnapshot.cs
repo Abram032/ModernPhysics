@@ -83,7 +83,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("FriendlyName")
                         .IsUnique();
 
                     b.ToTable("Categories");

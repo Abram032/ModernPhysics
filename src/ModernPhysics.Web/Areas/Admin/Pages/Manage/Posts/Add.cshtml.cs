@@ -23,72 +23,82 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
         [BindProperty]
         public InputModel Input { get; set; }
+
         public List<SelectListItem> Categories { get; set; }
         public string BaseUrl { get; set; }
+        [TempData]
+        public string Result { get; set; }
 
         public class InputModel
         {
+            [Display(Name = "Tytuł *", Prompt = "Tytuł postu")]
             [Required(ErrorMessage = "Pole Tytuł jest wymagane")]
-            [MaxLength(255, ErrorMessage = "Nazwa nie może być dłuższa niż 255 znaki")]
-            [MinLength(1, ErrorMessage = "Nazwa nie może być krótsza niż 1 znak")]
+            [MaxLength(255, ErrorMessage = "Tytuł nie może być dłuższy niż 255 znaków")]
             public string Title { get; set; }
             
-            [Required(ErrorMessage = "Pole przyjazny url jest wymagane")]
-            [MaxLength(255, ErrorMessage = "Url nie może być dłuższe niż 255 znaki")]
-            [MinLength(1, ErrorMessage = "Url nie może być krótszy niż 1 znak")]
+            [Display(Name = "Przyjazny url", Prompt = "tytul-postu (Opcjonalne)")]
+            [MaxLength(255, ErrorMessage = "Przyjazny url nie może być dłuższy niż 255 znaków")]
             [RegularExpression("^[a-zA-Z0-9_-]*$", ErrorMessage = "Dozwolone są tylko duże i małe litery, cyfry, _ oraz -")]
             public string FriendlyUrl { get; set; }
 
+            [Display(Name = "Skrót", Prompt = "Skrót postu... (Opcjonalne)")]
             [MaxLength(500, ErrorMessage = "Skrót nie może być dłuższy niż 500 znaków")]
             public string Shortcut { get; set; }
 
+            [Display(Name = "Treść strony", Prompt = "Treść strony... (Opcjonalne)")]
             [MaxLength(16777215, ErrorMessage = "Zawartość nie może być dłuższa niż 16,777,215 znaków")]
             public string Content { get; set; }
             
-            [Required]
+            [Display(Name = "Opublikuj", Prompt = "Publikuje stronę po zapisaniu.")]
             public bool IsPublished { get; set; }
-            public bool UseCustomUrl { get; set; }
             public string Category { get; set; }
         }
 
         public void OnGet()
         {
-            Categories = _context.Categories
-                .Select(p => new SelectListItem
-                {
-                    Value = p.FriendlyName,
-                    Text = p.Name
-                }).ToList();
-
-            Categories.Add(new SelectListItem 
-            {
-                Value = null,
-                Text = "Bez kategorii"
-            });
-
-            BaseUrl = $"{Request.Scheme}://{Request.Host}";
+            Categories = GetCategories();
+            BaseUrl = GetBaseUrl();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if(Input.UseCustomUrl == false)
-            {
-                Input.FriendlyUrl = Regex.Replace(Input.Title, " !\"#$%&'()*+,./:;<=>?@[\\]^`{|}~", "-");
-            }
+            Categories = GetCategories();
+            BaseUrl = GetBaseUrl();
 
             if (!ModelState.IsValid)
+            {               
+                return Page();
+            }
+
+            if(string.IsNullOrEmpty(Input.FriendlyUrl))
             {
-                return new BadRequestResult();
+                Input.FriendlyUrl = Regex.Replace(Input.Title, "[ !\"#$%&'()*+,./:;<=>?@[\\]^`{|}~]", "-");
+            }
+
+            if(Input.Category == null)
+            {
+                if(await _context.Posts.AnyAsync(p =>
+                    p.FriendlyUrl.Equals(Input.FriendlyUrl) &&
+                    p.Category == null))
+                    {
+                        Result = "Ten url jest już zajęty!";
+                        return Page();
+                    }
+            }
+            else
+            {
+                if(await _context.Posts.AnyAsync(p =>
+                    p.FriendlyUrl.Equals(Input.FriendlyUrl) &&
+                    p.Category.Name.Equals(Input.Category)))
+                    {
+                        Result = "Ten url jest już zajęty!";
+                        return Page();
+                    }
             }
 
             var category = _context.Categories
                 .Include(p => p.Posts)
                 .FirstOrDefault(p => p.FriendlyName.Equals(Input.Category)); 
-
-            if(Input.UseCustomUrl == false)
-            {
-                Input.FriendlyUrl = Input.Title.Replace(' ','-');
-            }
 
             var post = new Post
             {
@@ -116,6 +126,28 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             await _context.SaveChangesAsync();
 
             return new RedirectToPageResult("/Manage/Posts", new { area = "Admin" });
+        }
+
+        private string GetBaseUrl() => $"{Request.Scheme}://{Request.Host}";
+
+        private List<SelectListItem> GetCategories()
+        {
+            var list = new List<SelectListItem>();
+
+            list = _context.Categories
+                .Select(p => new SelectListItem
+                {
+                    Value = p.FriendlyName,
+                    Text = p.Name
+                }).ToList();
+
+            list.Add(new SelectListItem 
+            {
+                Value = null,
+                Text = "Bez kategorii"
+            });
+
+            return list;
         }
     }
 }

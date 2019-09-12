@@ -88,9 +88,9 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_Name",
+                name: "IX_Categories_FriendlyName",
                 table: "Categories",
-                column: "Name",
+                column: "FriendlyName",
                 unique: true);
 
             migrationBuilder.CreateIndex(

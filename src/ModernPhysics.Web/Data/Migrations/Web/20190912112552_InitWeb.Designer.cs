@@ -9,7 +9,7 @@ using ModernPhysics.Web.Data;
 namespace ModernPhysics.Web.Data.Migrations.Web
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20190822151419_InitWeb")]
+    [Migration("20190912112552_InitWeb")]
     partial class InitWeb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,7 +85,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("FriendlyName")
                         .IsUnique();
 
                     b.ToTable("Categories");

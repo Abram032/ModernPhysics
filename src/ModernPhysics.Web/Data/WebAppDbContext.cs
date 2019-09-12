@@ -39,7 +39,7 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Post>().HasOne(p => p.Category).WithMany(p => p.Posts);
             
             builder.Entity<Category>().HasKey(p => p.Id);
-            builder.Entity<Category>().HasIndex(p => p.Name).IsUnique();
+            builder.Entity<Category>().HasIndex(p => p.FriendlyName).IsUnique();
             builder.Entity<Category>().Property(p => p.Name).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.FriendlyName).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.Icon).HasMaxLength(32);
