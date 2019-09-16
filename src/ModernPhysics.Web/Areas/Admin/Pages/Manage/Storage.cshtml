@@ -75,6 +75,7 @@
 @* TODO: (Feature) Adding to clipboard *@
 @section Scripts
 {
+    <script>
     function copyToClipboard(url) {
         var textarea = document.createElement("textarea");
         var text = document.createTextNode(url);
@@ -82,4 +83,5 @@
         textarea.select();
         document.execCommand("copy");
     }
+    </script>
 }

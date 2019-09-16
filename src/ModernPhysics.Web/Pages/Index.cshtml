@@ -7,7 +7,8 @@
 <section class="clean-block clean-hero" style="background-image: url('img/main/physics.jpg'); color: rgba(9, 162, 255, 0.5);">
     <div class="text">
         <h2>Fizyka Współczesna</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+        <p>Platforma e-learningowa zawierająca informacje oraz materiały do nauki fizyki współczesnej.</p>
+        <p>Szukaj w materiałach:</p>
         <form asp-page="/Resources" method="post">
             <div class="form-group">
                 <div class="input-group">
@@ -32,7 +33,7 @@
 
             @if (Model.Posts == null || Model.Posts.Count() == 0)
             {
-                <h5>Nie dodano jeszcze żadnych postów.</h5>
+                <h5>Nie dodano jeszcze żadnych materiałów.</h5>
             }
             else
             {

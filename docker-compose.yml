@@ -8,15 +8,14 @@ services:
       - "443:443"
     expose:
       - "3306"
-    networks:
-      - bridge
-    volume:
-      - type: volume
-        source: /home/maissae/modern-physics
+    network_mode: "bridge"
+    volumes:
+      - type: bind
+        source: <Server path>
         target: /app/content
     deploy:
       replicas: 1
     environment:
-      SqlConnectionString: "<MySql connection string>"
-      AdminUsername: "<Admin username for logging in>"
-      AdminPassword: "<Admin password for logging in>"
+      SqlConnectionString: "<MySql database connection string>"
+      AdminUsername: "<Admin login username>"
+      AdminPassword: "<Admin login password>"
