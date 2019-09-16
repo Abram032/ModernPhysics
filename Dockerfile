@@ -6,7 +6,6 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
 COPY ["src/ModernPhysics.Web/ModernPhysics.Web.csproj", "src/ModernPhysics.Web/"]
 COPY ["lib/ModernPhysics.Models/ModernPhysics.Models.csproj", "lib/ModernPhysics.Models/"]
-COPY ["lib/ModernPhysics.Extensions/ModernPhysics.Extensions.csproj", "lib/ModernPhysics.Extensions/"]
 RUN dotnet restore "src/ModernPhysics.Web/ModernPhysics.Web.csproj"
 COPY . .
 WORKDIR "/src/src/ModernPhysics.Web"

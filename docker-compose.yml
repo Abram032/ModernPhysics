@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  webapp:
+    image: maissae/modern-physics:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    expose:
+      - "3306"
+    networks:
+      - bridge
+    volume:
+      - type: volume
+        source: /home/maissae/modern-physics
+        target: /app/content
+    deploy:
+      replicas: 1
+    environment:
+      SqlConnectionString: "<MySql connection string>"
+      AdminUsername: "<Admin username for logging in>"
+      AdminPassword: "<Admin password for logging in>"
