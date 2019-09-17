@@ -33,10 +33,11 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Post>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(64);
             builder.Entity<Post>().Property(p => p.IsPublished).IsRequired().HasDefaultValue(false);
             builder.Entity<Post>().Property(p => p.IsDeleted).IsRequired().HasDefaultValue(false);
+            builder.Entity<Post>().Property(p => p.ContentType).HasDefaultValue(ContentType.Html).IsRequired();
             builder.Entity<Post>().Property(p => p.Content).HasColumnType("MEDIUMTEXT");
             builder.Entity<Post>().Property(p => p.Shortcut).HasMaxLength(500);
             builder.Entity<Post>().Property(p => p.Order).HasDefaultValue(0);
-            builder.Entity<Post>().HasOne(p => p.Category).WithMany(p => p.Posts);
+            builder.Entity<Post>().HasOne(p => p.Category).WithMany(p => p.Posts).IsRequired();
             
             builder.Entity<Category>().HasKey(p => p.Id);
             builder.Entity<Category>().HasIndex(p => p.FriendlyName).IsUnique();

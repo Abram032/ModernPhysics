@@ -13,10 +13,16 @@ namespace ModernPhysics.Models
         public DateTime ModifiedAt { get; set; }
         public string ModifiedBy { get; set; }
         public Category Category { get; set; }
+        public ContentType ContentType { get; set; }
         public string Shortcut { get; set; }
         public string Content { get; set; }
         public bool IsPublished { get; set; }
         public bool IsDeleted { get; set; }
         public int Order { get; set; }
+    }
+
+    public enum ContentType 
+    {
+        Html, Markdown, Text    
     }
 }

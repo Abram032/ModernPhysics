@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ModernPhysics.Web.Data
+namespace ModernPhysics.Web.Data.Seeders
 {
-    public class IdentityInitializer
+    public class IdentityInitializer : IIdentityInitializer
     {
-        public static async Task SeedUsers(UserManager<IdentityUser> userManager, 
+        public async Task SeedUsersAsync(UserManager<IdentityUser> userManager, 
             RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             if(await roleManager.RoleExistsAsync("Admin") == false)

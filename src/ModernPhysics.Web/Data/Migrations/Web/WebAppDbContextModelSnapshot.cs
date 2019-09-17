@@ -94,10 +94,14 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("CategoryId");
+                    b.Property<Guid>("CategoryId");
 
                     b.Property<string>("Content")
                         .HasColumnType("MEDIUMTEXT");
+
+                    b.Property<int>("ContentType")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd();
@@ -150,7 +154,8 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                 {
                     b.HasOne("ModernPhysics.Models.Category", "Category")
                         .WithMany("Posts")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

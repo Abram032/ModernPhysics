@@ -55,44 +55,38 @@
                                     <td><span href="#" class="badge badge-primary">@item.ModifiedBy</span></td>
                                     <td>@item.ModifiedAt</td>
                                     <td><span class="@item.Icon"></span></td>
-                                    <td>
+                                    @if(item.FriendlyName.Equals("No-category") == false)
+                                    {
+                                        <td>
                                         <form method="get" asp-page="./Categories/Edit" asp-route-id="@item.Id">
                                             <button type="submit" class="btn btn-warning">
                                                 <i class="fa fa-edit"></i>
                                             </button>
                                         </form>
-                                    </td>
-                                    <td>
-                                        <form method="post" asp-page-handler="delete" asp-route-id="@item.Id">
-                                            <button type="submit" class="btn btn-danger">
+                                        </td>
+                                        <td>
+                                            <form method="post" asp-page-handler="delete" asp-route-id="@item.Id">
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <button class="btn btn-warning disabled">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger disabled">
                                                 <i class="fa fa-times"></i>
                                             </button>
-                                        </form>
-                                    </td>
+                                        </td>
+                                    }
                                 </tr>
                             }
-                            @* null category (no-category) *@
-                            <tr>
-                                @*<td><input type="checkbox"></td>*@
-                                <td><a href="/Resources/no-category">Bez kategorii</a></td>
-                                <td><span>no-category</span></td>
-                                <td><span class="badge badge-primary">-</span></td>
-                                <td>-</td>
-                                <td><span class="badge badge-primary">-</span></td>
-                                <td>-</td>
-                                <td><span class="fas fa-question"></span></td>
-                                <td>
-                                    <button type="submit" class="btn btn-warning disabled">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-danger disabled">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @* End null category (no-category) *@
                         </tbody>
                     </table>
                 </div>

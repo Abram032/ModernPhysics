@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ModernPhysics.Web.Data.Migrations.Web
 {
-    public partial class InitWeb : Migration
+    public partial class WebInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,7 +57,8 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     ModifiedAt = table.Column<DateTime>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
                     ModifiedBy = table.Column<string>(maxLength: 64, nullable: false),
-                    CategoryId = table.Column<Guid>(nullable: true),
+                    CategoryId = table.Column<Guid>(nullable: false),
+                    ContentType = table.Column<int>(nullable: false, defaultValue: 0),
                     Shortcut = table.Column<string>(maxLength: 500, nullable: true),
                     Content = table.Column<string>(type: "MEDIUMTEXT", nullable: true),
                     IsPublished = table.Column<bool>(nullable: false, defaultValue: false),
@@ -72,7 +73,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

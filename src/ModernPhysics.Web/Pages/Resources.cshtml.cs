@@ -44,12 +44,6 @@ namespace ModernPhysics.Web.Pages
             Categories.Add(new SelectListItem
             {
                 Value = null,
-                Text = "Bez kategorii" 
-            });
-
-            Categories.Add(new SelectListItem
-            {
-                Value = null,
                 Text = "Wszystkie"
             });
 
@@ -59,14 +53,6 @@ namespace ModernPhysics.Web.Pages
                     .Where(p => p.IsPublished == true);
 
                 Categories.FirstOrDefault(p => p.Text.Equals("Wszystkie")).Selected = true;
-            }
-            else if(category.Equals("no-category"))
-            {
-                Posts = _context.Posts.Include(p => p.Category)
-                    .Where(p => p.Category == null)
-                    .Where(p => p.IsPublished == true);
-
-                Categories.FirstOrDefault(p => p.Text.Equals("Bez kategorii")).Selected = true;
             }
             else
             {
@@ -99,12 +85,6 @@ namespace ModernPhysics.Web.Pages
             Categories.Add(new SelectListItem
             {
                 Value = null,
-                Text = "Bez kategorii" 
-            });
-
-            Categories.Add(new SelectListItem
-            {
-                Value = null,
                 Text = "Wszystkie"
             });
 
@@ -127,27 +107,6 @@ namespace ModernPhysics.Web.Pages
                     .Where(p => p.IsPublished == true);
 
                 Categories.FirstOrDefault(p => p.Text.Equals("Wszystkie")).Selected = true;
-            }
-
-            //Search everything in no-category
-            else if(category.Equals("Bez kategorii") && string.IsNullOrEmpty(search))
-            {
-                Posts = _context.Posts.Include(p => p.Category)
-                    .Where(p => p.Category == null)
-                    .Where(p => p.IsPublished == true);
-
-                Categories.FirstOrDefault(p => p.Text.Equals("Bez kategorii")).Selected = true;
-            }
-
-            //Search *string* in no-category
-            else if(category.Equals("Bez kategorii") && !string.IsNullOrEmpty(search))
-            {
-                Posts = _context.Posts.Include(p => p.Category)
-                    .Where(p => p.Category == null)
-                    .Where(p => p.Title.Contains(search) || p.Content.Contains(search))
-                    .Where(p => p.IsPublished == true);
-
-                Categories.FirstOrDefault(p => p.Text.Equals("Bez kategorii")).Selected = true;
             }
 
             //Search everything in *category*

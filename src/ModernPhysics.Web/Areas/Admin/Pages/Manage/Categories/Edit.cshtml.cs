@@ -56,6 +56,11 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
 
             var category = await _context.Categories.FirstOrDefaultAsync(p => p.Id.Equals(id));
 
+            if(category.FriendlyName.Equals("No-category"))
+            {
+                return new BadRequestResult();
+            }
+
             if (category == null)
             {
                 return new BadRequestResult();
@@ -97,11 +102,16 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
                 return Page();
             }
 
+            if(category.FriendlyName.Equals("No-category"))
+            {
+                Result = "Kategoria nie może zostać zmodyfikowana!";
+                return Page();
+            }
+
             category.Name = Input.Name;
             category.FriendlyName = Input.FriendlyName;
             category.Icon = Input.Icon;
             category.ModifiedBy = User.Identity.Name;
-            //category.ModifiedAt = DateTime.UtcNow;
 
             _context.Categories.Update(category);
             await _context.SaveChangesAsync();

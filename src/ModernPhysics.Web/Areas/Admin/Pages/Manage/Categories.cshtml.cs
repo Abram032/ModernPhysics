@@ -36,24 +36,21 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
                 return new BadRequestResult();
             }
 
-            if(id == null)
-            {
-                ErrorMessage = "Coś poszło nie tak, kategoria nie istnieje lub nie można jej usunąć";
-                return RedirectToPage("./Categories");
-            }
-
             var category = await _context.Categories.Include(p => p.Posts)
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
 
-            if(category == null)
+            var noCategory = await _context.Categories
+                .FirstOrDefaultAsync(p => p.FriendlyName.Equals("No-category"));
+
+            if(category == null || noCategory == null || category.FriendlyName.Equals("No-category"))
             {
                 ErrorMessage = "Coś poszło nie tak, kategoria nie istnieje lub nie można jej usunąć";
                 return RedirectToPage("./Categories");
             }
-
+            
             foreach(var post in category.Posts)
             {
-                post.Category = null;
+                post.Category = noCategory;
             }
 
             _context.Remove(category);

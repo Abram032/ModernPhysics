@@ -36,7 +36,7 @@
                                         <span>@category.Name</span>
                                     </a>
                                     <div class="collapse" id="collapse-@category.Id">
-                                        <ul>
+                                        <ul class="chevrons">
                                             @foreach (var post in category.Posts)
                                             {
                                                 <li><a href="/Resources/@category.FriendlyName/@post.FriendlyUrl">@post.Title</a></li>

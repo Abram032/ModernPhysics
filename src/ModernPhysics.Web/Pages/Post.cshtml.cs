@@ -32,23 +32,17 @@ namespace ModernPhysics.Web.Pages
 
         public IActionResult OnGet(string category, string posturl)
         {
-            if(category.Equals("no-category"))
-            {
-                Post = _context.Posts
-                .Include(p => p.Category)
-                .FirstOrDefault(p => p.Category.Equals(null) && p.FriendlyUrl.Equals(posturl));
-            }
-            else
-            {
-                Post = _context.Posts
-                .Include(p => p.Category)
-                .FirstOrDefault(p => p.Category.FriendlyName.Equals(category) && p.FriendlyUrl.Equals(posturl));
-            }
             
+            Post = _context.Posts
+                .Include(p => p.Category)
+                .FirstOrDefault(p => p.Category.FriendlyName.Equals(category) && 
+                    p.FriendlyUrl.Equals(posturl));
+
             if(Post == null)
             {
                 return RedirectToPage("/Error");
             }
+
             if(Post.IsPublished == false)
             {
                 //TODO: Change to redirect to Not Found page
@@ -60,14 +54,6 @@ namespace ModernPhysics.Web.Pages
             {
                 _category.Posts = _category.Posts.Where(p => p.IsPublished == true).ToList();
             }
-
-            Categories.Add(new Category
-            {
-                Name = "Bez kategorii",
-                FriendlyName = "no-category",
-                Posts = _context.Posts.Where(p => p.Category == null)
-                    .Where(p => p.IsPublished == true).ToList()
-            });
             
             return Page();
         }

@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ModernPhysics.Web.Data.Seeders;
 
 namespace ModernPhysics.Web
 {
@@ -38,6 +39,9 @@ namespace ModernPhysics.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddTransient<IWebAppInitializer, WebAppInitializer>();
+            services.AddTransient<IIdentityInitializer, IdentityInitializer>();
+
             services.AddDbContext<WebIdentityDbContext>(options =>
             {
                 options.UseMySql(Configuration["SqlConnectionString"]);
@@ -47,14 +51,8 @@ namespace ModernPhysics.Web
                 options.UseMySql(Configuration["SqlConnectionString"]);
             });
 
-            //services.AddDbContext<WebAppDbContext>(options =>
-            //{
-            //    options.UseInMemoryDatabase("AppDb");
-            //    options.EnableSensitiveDataLogging();
-            //});
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
-                //.AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<WebIdentityDbContext>();
 
             services.Configure<IdentityOptions>(options =>
@@ -85,11 +83,9 @@ namespace ModernPhysics.Web
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
-            UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
-        {
-            IdentityInitializer.SeedUsers(userManager, roleManager, Configuration).Wait();
-            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "content"));
-
+            UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
+            WebAppDbContext context)
+        {         
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -26,6 +26,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
         [BindProperty(SupportsGet = true)]
         public InputModel Input { get; set; }
         public List<SelectListItem> Categories { get; set; }
+        public List<SelectListItem> ContentTypes { get; set; }
         public string BaseUrl { get; set; }
 
         [TempData]
@@ -47,12 +48,17 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             [MaxLength(500, ErrorMessage = "Skrót nie może być dłuższy niż 500 znaków")]
             public string Shortcut { get; set; }
 
+            [Required]
+            [Display(Name = "Typ treści", Prompt = "Typ treści zawartości postu.")]
+            public ContentType ContentType { get; set; }
+
             [Display(Name = "Treść strony", Prompt = "Treść strony... (Opcjonalne)")]
             [MaxLength(16777215, ErrorMessage = "Zawartość nie może być dłuższa niż 16,777,215 znaków")]
             public string Content { get; set; }
             
             [Display(Name = "Opublikuj", Prompt = "Publikuje stronę po zapisaniu.")]
             public bool IsPublished { get; set; }
+            [Required]
             public string Category { get; set; }
         }
 
@@ -75,12 +81,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
             Categories = GetCategories();
             BaseUrl = GetBaseUrl();
-            
-            string categoryName = null;
-            if(post.Category != null)
-            {
-                categoryName = post.Category.Name;
-            }
+            ContentTypes = GetContentTypes();
 
             Input = new InputModel
             {
@@ -89,7 +90,8 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                 Shortcut = Input.Shortcut,
                 Content = post.Content,
                 IsPublished = post.IsPublished,
-                Category = categoryName
+                Category = post.Category.Name,
+                ContentType = post.ContentType
             };
 
             return Page();
@@ -99,6 +101,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
         {
             Categories = GetCategories();
             BaseUrl = GetBaseUrl();
+            ContentTypes = GetContentTypes();
             
             if (!ModelState.IsValid)
             {
@@ -110,28 +113,14 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                 Input.FriendlyUrl = Regex.Replace(Input.Title, "[ !\"#$%&'()*+,./:;<=>?@[\\]^`{|}~]", "-");
             }
 
-            if(Input.Category == null)
-            {
-                if(await _context.Posts.AnyAsync(p =>
-                    p.FriendlyUrl.Equals(Input.FriendlyUrl) &&
-                    p.Category == null &&
-                    p.Id.Equals(id) == false))
-                    {
-                        Result = "Ten url jest już zajęty!";
-                        return Page();
-                    }
-            }
-            else
-            {
-                if(await _context.Posts.AnyAsync(p =>
-                    p.FriendlyUrl.Equals(Input.FriendlyUrl) &&
-                    p.Category.Name.Equals(Input.Category) &&
-                    p.Id.Equals(id) == false))
-                    {
-                        Result = "Ten url jest już zajęty!";
-                        return Page();
-                    }
-            }
+            if(await _context.Posts.AnyAsync(p =>
+                p.FriendlyUrl.Equals(Input.FriendlyUrl) &&
+                p.Category.Name.Equals(Input.Category) &&
+                p.Id.Equals(id) == false))
+                {
+                    Result = "Ten url jest już zajęty!";
+                    return Page();
+                }
 
             var post = await _context.Posts.Include(p => p.Category)
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
@@ -145,11 +134,9 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             post.IsPublished = Input.IsPublished;
             post.Category = category;
             post.ModifiedBy = User.Identity.Name;
+            post.ContentType = Input.ContentType;
 
-            if(category != null)
-            {
-                _context.Categories.Update(category);
-            }
+            _context.Categories.Update(category);
             _context.Posts.Update(post);
 
             await _context.SaveChangesAsync();
@@ -170,11 +157,17 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                     Text = p.Name
                 }).ToList();
 
-            list.Add(new SelectListItem 
-            {
-                Value = null,
-                Text = "Bez kategorii"
-            });
+            return list;
+        }
+
+        private List<SelectListItem> GetContentTypes()
+        {
+            var list = Enum.GetValues(typeof(ContentType))
+                .Cast<ContentType>()
+                .Select(t => new SelectListItem {
+                    Text = t.ToString(),
+                    Value = ((int)t).ToString()
+                    }).ToList();
 
             return list;
         }
