@@ -108,17 +108,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                 ModifiedBy = User.Identity.Name
             };
 
-            if (category != null && category.Posts == null)
-            {
-                if(category.Posts == null)
-                {
-                    category.Posts = new List<Post>();
-                }
-                category.Posts.Add(post);
-                _context.Categories.Update(category);
-            }
-                 
-            await _context.Posts.AddAsync(post);
+            await _context.Posts.AddAsync(post);      
             await _context.SaveChangesAsync();
 
             return new RedirectToPageResult("/Manage/Posts", new { area = "Admin" });
