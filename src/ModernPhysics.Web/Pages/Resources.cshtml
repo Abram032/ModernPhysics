@@ -10,7 +10,8 @@
             <h2 class="text-info">Materiały</h2>
             @if(Model.Category != null)
             {
-                <p>@Model.Category</p>
+                //TODO: Show name instead of showing friendly name
+                <p>@Model.Categories.FirstOrDefault(p => p.Value.Equals(Model.Category)).Text</p>
             }
             else
             {

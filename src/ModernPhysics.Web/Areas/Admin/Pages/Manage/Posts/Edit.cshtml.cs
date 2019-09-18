@@ -39,7 +39,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             [MaxLength(255, ErrorMessage = "Tytuł nie może być dłuższy niż 255 znaków")]
             public string Title { get; set; }
             
-            [Display(Name = "Przyjazny url", Prompt = "tytul-postu (Opcjonalne)")]
+            [Display(Name = "Przyjazny URL", Prompt = "tytul-postu (Opcjonalne)")]
             [MaxLength(255, ErrorMessage = "Przyjazny url nie może być dłuższy niż 255 znaków")]
             [RegularExpression("^[a-zA-Z0-9_-]*$", ErrorMessage = "Dozwolone są tylko duże i małe litery, cyfry, _ oraz -")]
             public string FriendlyUrl { get; set; }
@@ -49,7 +49,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             public string Shortcut { get; set; }
 
             [Required]
-            [Display(Name = "Typ treści", Prompt = "Typ treści zawartości postu.")]
+            [Display(Name = "Typ treści *", Prompt = "Typ treści zawartości postu.")]
             public ContentType ContentType { get; set; }
 
             [Display(Name = "Treść strony", Prompt = "Treść strony... (Opcjonalne)")]
@@ -59,6 +59,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             [Display(Name = "Opublikuj", Prompt = "Publikuje stronę po zapisaniu.")]
             public bool IsPublished { get; set; }
             [Required]
+            [Display(Name = "Kategoria *")]
             public string Category { get; set; }
         }
 
@@ -87,12 +88,20 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             {
                 Title = post.Title,
                 FriendlyUrl = post.FriendlyUrl,
-                Shortcut = Input.Shortcut,
+                Shortcut = post.Shortcut,
                 Content = post.Content,
                 IsPublished = post.IsPublished,
-                Category = post.Category.Name,
+                Category = post.Category.FriendlyName,
                 ContentType = post.ContentType
             };
+
+            var category = Categories.FirstOrDefault(p => 
+                p.Value.Equals(post.Category.FriendlyName));
+            
+            if(category != null)
+            {
+                category.Selected = true;
+            }
 
             return Page();
         }

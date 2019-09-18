@@ -36,7 +36,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
 
-            return new RedirectToPageResult("/Admin/Posts");
+            return new RedirectToPageResult("/Manage/Posts", new { area = "Admin" });
         }
     }
 }

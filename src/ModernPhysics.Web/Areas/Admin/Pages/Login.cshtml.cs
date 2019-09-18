@@ -37,13 +37,15 @@ namespace ModernPhysics.Web.Areas.Admin.Pages
         public class InputModel
         {
             [Required]
+            [Display(Name = "Nazwa użytkownika")]
             public string Username { get; set; }
 
             [Required]
+            [Display(Name = "Hasło")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Zapamiętaj mnie?")]
             public bool RememberMe { get; set; }
         }
 
