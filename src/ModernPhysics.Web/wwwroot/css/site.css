@@ -604,7 +604,7 @@ ul.chevrons li {
 ul.chevrons li::before {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
-    content: "\f0da";
+    content: "-";
     color: rgb(18,129,241);
     margin-right: 10px;
 }
