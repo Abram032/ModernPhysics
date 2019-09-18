@@ -1,0 +1,65 @@
+﻿@page "{category?}"
+@model ModernPhysics.Web.Pages.ResourcesModel
+@{
+    ViewData["Title"] = "Resources";
+}
+
+<section class="clean-block clean-blog-list dark">
+    <div class="container">
+        <div class="block-heading">
+            <h2 class="text-info">Materiały</h2>
+            @if(Model.Category != null)
+            {
+                //TODO: Show name instead of showing friendly name
+                <p>@Model.Categories.FirstOrDefault(p => p.Value.Equals(Model.Category)).Text</p>
+            }
+            else
+            {
+                <p>Wszystkie</p>
+            }
+        </div>
+        <div style="margin-right: 20%;margin-left: 20%;margin-bottom: 40px;">
+            <form method="post">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" asp-for="Search">
+                        <div class="input-group-append">
+                            <select class="custom-select" asp-items="Model.Categories" asp-for="Category">
+                            </select>
+                        </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-dark btn-block" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="block-content">
+            <h1 class="text-center">Wyniki wyszukiwania</h1>
+            <div class="row">
+                @if(Model.Posts.Count() == 0)
+                {
+                    <h5 class="text-center">Brak wyników</h5>
+                }
+                @foreach (var post in Model.Posts)
+                {
+                <div class="col-lg-12" style="margin-bottom: 10px;">
+                    @if(post.Category != null)
+                    {
+                        <a href="/Resources/@post.Category.FriendlyName/@post.FriendlyUrl">
+                            <div class="card card-hover">
+                                <div class="card-body">
+                                    <h4 class="card-title">@post.Title</h4>
+                                    <h6 class="text-muted card-subtitle mb-2">@post.Category.Name</h6>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

@@ -4,7 +4,52 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="clean-block clean-hero" style="background-image: url('img/main/physics.jpg'); color: rgba(9, 162, 255, 0.5);">
+    <div class="text">
+        <h2>Fizyka Współczesna</h2>
+        <p>Platforma e-learningowa zawierająca informacje oraz materiały do nauki fizyki współczesnej.</p>
+        <p>Szukaj w materiałach:</p>
+        <form asp-page="/Resources" method="post">
+            <div class="form-group">
+                <div class="input-group">
+                    <input class="form-control" asp-for="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-dark btn-block" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="clean-block clean-info dark">
+    <div class="container">
+        <div class="block-heading">
+            <h2 class="text-info">Ostatnio dodane</h2>
+        </div>
+        <div class="row align-items-center">
+
+            @if (Model.Posts == null || Model.Posts.Count() == 0)
+            {
+                <h5>Nie dodano jeszcze żadnych materiałów.</h5>
+            }
+            else
+            {
+                @foreach (var post in Model.Posts)
+                {
+                    <div class="col-md-6 col-lg-6">
+                        <a href="Resources/@post.Category.FriendlyName/@post.FriendlyUrl">
+                            <h3>@post.Title</h3>
+                        </a>
+                        <h5 class="text-muted">@post.Category.Name</h5>
+                        <div class="getting-started-info">
+                            <p>@post.Shortcut</p>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>

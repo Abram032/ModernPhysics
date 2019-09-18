@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "font-awesome@5.8.2",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "Chart.js@2.8.0",
+      "destination": "wwwroot/lib/Chart.js/"
+    },
+    {
+      "library": "datatables@1.10.19",
+      "destination": "wwwroot/lib/datatables/"
+    },
+    {
+      "library": "jquery-easing@1.4.1",
+      "destination": "wwwroot/lib/jquery-easing/"
+    },
+    {
+      "library": "baguettebox.js@1.11.0",
+      "destination": "wwwroot/lib/baguettebox.js/"
+    }
+  ]
+}

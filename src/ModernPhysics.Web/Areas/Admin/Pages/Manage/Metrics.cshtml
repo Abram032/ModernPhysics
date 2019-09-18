@@ -1,0 +1,94 @@
+﻿@page
+@model ModernPhysics.Web.Areas.Admin.Pages.Manage.MetricsModel
+@{
+    ViewData["Title"] = "Metrics";
+    Layout = "~/Areas/Admin/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="display-4">Modern Physics - Metrics</h1>
+<hr>
+
+<div class="row">
+
+    <div class="col-lg-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Total visitors</h4>
+            </div>
+            <div class="card-body text-center">
+                <h1 class="display-4">1,240</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Total visitors last month</h4>
+            </div>
+            <div class="card-body text-center">
+                <h1 class="display-4">317</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Total visitors today</h4>
+            </div>
+            <div class="card-body text-center">
+                <h1 class="display-4">6</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Visited pages</h4>
+            </div>
+            <div class="card-body">
+                <canvas id="chart3"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Visitors in time</h4>
+            </div>
+            <div class="card-body">
+                <canvas id="chart2"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Visitor origins</h4>
+            </div>
+            <div class="card-body">
+                <canvas id="chart1"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Visitors during throughout the day</h4>
+            </div>
+            <div class="card-body">
+                <canvas id="chart4"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/sample-charts/usage.js"></script>
+}

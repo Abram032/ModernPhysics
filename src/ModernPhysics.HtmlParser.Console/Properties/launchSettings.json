@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ModernPhysics.HtmlParser": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\AdamB\\Desktop\\unitrash\\dydaktyka C:\\Users\\AdamB\\Desktop\\unitrash\\json C:\\Users\\AdamB\\Desktop\\unitrash\\logs"
+    }
+  }
+}

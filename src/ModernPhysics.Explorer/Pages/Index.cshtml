@@ -1,0 +1,65 @@
+﻿@page "{handler?}/{SearchString?}"
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Modern Physics data explorer</h1>
+
+    <h4 style="font-weight: 300;">Powered by:</h4>
+    <a href="https://www.elastic.co/" style="text-decoration: none;">
+        <img src="https://cts.com.pl/wp-content/uploads/2017/08/elast.png"
+             width="50" height="50" alt="elasticearch" title="elasticearch" />
+    </a>
+    <a href="https://docs.microsoft.com/aspnet/core" style="text-decoration: none;">
+        <img src="https://cdn-images-1.medium.com/max/1600/1*JFlpGhBuP2u-OT2ZZu9IiA.png"
+             width="50" height="50" alt="ASP.NET Core" title="ASP.NET Core" />
+    </a>
+
+    <section class="row">
+        <div class="col-lg-4 offset-lg-2">
+            <form asp-page-handler="Search" method="get">
+                <div asp-validation-summary="All"></div>
+                <p>Search for:</p>
+                <div class="form-group">
+                    <input asp-for="@Model.SearchString" class="form-control" placeholder="Search" style="max-width: 800px">
+                    <button class="btn btn-lg btn-primary" type="submit" style="margin: 10px;">Search <i class="fa fa-search"></i></button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-4">
+            <form method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All"></div>
+                <p>Upload files:</p>
+                <div class="form-group" style="padding: 5px;">
+                    <input asp-for="@Model.Files">
+                    <button type="submit" class="btn btn-default btn-lg btn-success" style="margin: 10px;">Upload <i class="fa fa-cloud-upload-alt"></i></button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    @if (Model.PageInfos != null)
+    {
+        <h4>Pages:</h4>
+        <p>The following trash was found for '@Model.SearchString'</p>
+        <!--<p>The following results were found for '@Model.SearchString'</p>-->
+        <div class="row">
+            @foreach (var pageInfo in Model.PageInfos)
+            {
+                <div class="col-lg-4" style="margin-bottom: 20px;">
+                    <div class="card border-info" style="height: 100%;">
+                        <h5 class="card-header">@pageInfo.Title</h5>
+                        <div class="card-body">
+                            <p class="card-text">@pageInfo.Content</p>
+                            <a class="btn btn-outline-info" href="@pageInfo.Url">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

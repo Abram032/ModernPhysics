@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -13,43 +17,78 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
-              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
+              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
     </environment>
+    <link rel="stylesheet" href="~/lib/baguettebox.js/baguetteBox.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">ModernPhysics.Web</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Fizyka Współczesna</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item mr-3"><a class="nav-link" asp-page="/Resources">Materiały</a></li>
+                    <li class="nav-item mr-3"><a class="nav-link" asp-page="/Categories">Kategorie</a></li>
+                    <li class="nav-item mr-3"><a class="nav-link" asp-page="/About">O stronie</a></li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item mr-3"><a class="nav-link" asp-area="Admin" asp-page="/Manage/Index">Zarządzanie</a></li>
+                        <li class="nav-item mr-3">
+                            <form class="form-inline" asp-area="Admin" asp-page="/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                <button type="submit" class="nav-link btn btn-link">Wyloguj</button>
+                            </form>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+                    }
+                    else
+                    {
+                        <li class="nav-item mr-3"><a class="nav-link" asp-area="Admin" asp-page="/Login">Logowanie</a></li>
+                    }
+                </ul>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    <main role="main">
+        <!--<partial name="_CookieConsentPartial" />-->
+        @RenderBody()
+    </main>
+
+    <section class="page-footer dark">
         <div class="container">
-            &copy; 2019 - ModernPhysics.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-sm-3 col-lg-6">
+                    <h5>Strony</h5>
+                    <ul>
+                        <li><a asp-area="" asp-page="/Index">Strona domowa</a></li>
+                        <li><a asp-page="/Resources">Materiały</a></li>
+                        <li><a asp-page="/Categories">Kategorie</a></li>
+                        <li><a asp-page="/About">O stronie</a></li>
+                        <li><a asp-area="Admin" asp-page="/Login">Logowanie</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3 col-lg-6">
+                    <h5>Inne strony</h5>
+                    <ul>
+                        <li><a href="https://www.fizyka.umk.pl/">Strona wydziału</a></li>
+                        <li><a href="http://dydaktyka.fizyka.umk.pl">Fizyka dla każdego</a></li>
+                        <li><a href="http://dydaktyka.fizyka.umk.pl/Wystawy_archiwum/z_omegi/index-pl.html">Stara strona fizyki współczesnej</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="d-flex flex-column sticky-footer-wrapper">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Adam Błaszczyk 2019</span>
+            </div>
         </div>
     </footer>
 
@@ -72,7 +111,7 @@
         </script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+    <script src="~/lib/baguettebox.js/baguetteBox.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

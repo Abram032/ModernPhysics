@@ -13,6 +13,10 @@ using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using ModernPhysics.Web.Data.Seeders;
 
 namespace ModernPhysics.Web
 {
@@ -35,20 +39,53 @@ namespace ModernPhysics.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddTransient<IWebAppInitializer, WebAppInitializer>();
+            services.AddTransient<IIdentityInitializer, IdentityInitializer>();
 
+            services.AddDbContext<WebIdentityDbContext>(options =>
+            {
+                options.UseMySql(Configuration["SqlConnectionString"]);
+            });
+            services.AddDbContext<WebAppDbContext>(options =>
+            {
+                options.UseMySql(Configuration["SqlConnectionString"]);
+            });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<WebIdentityDbContext>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.AllowedForNewUsers = true;
+                options.User.RequireUniqueEmail = false;
+            });
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AuthorizeAreaFolder("Admin", "/Manage");
+                });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                options.LoginPath = $"/Admin/Login";
+                options.LogoutPath = $"/Admin/Logout";
+                options.AccessDeniedPath = $"/Admin/AccessDenied";
+                options.SlidingExpiration = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
+            UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
+            WebAppDbContext context)
+        {         
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -60,13 +97,18 @@ namespace ModernPhysics.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "content")),
+                RequestPath = "/content"
+            });
+
             app.UseCookiePolicy();
-
             app.UseAuthentication();
-
             app.UseMvc();
         }
     }

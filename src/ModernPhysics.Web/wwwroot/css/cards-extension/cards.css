@@ -1,0 +1,61 @@
+.card {
+    font-family: 'Segoe UI';
+    height: 100%;
+}
+
+.card h4 {
+    font-weight: 400;
+}
+
+.card-left-outline-muted {
+    border-left: 6px solid #868e96;
+}
+
+.card-left-outline-primary {
+    border-left: 6px solid #007bff;
+}
+
+.card-left-outline-success {
+    border-left: 6px solid #28a745;
+}
+
+.card-left-outline-info {
+    border-left: 6px solid #17a2b8;
+}
+
+.card-left-outline-warning {
+    border-left: 6px solid #ffc107;
+}
+
+.card-left-outline-danger {
+    border-left: 6px solid #dc3545;
+}
+
+.card-left-outline-secondary {
+    border-left: 6px solid #868e96;
+}
+
+.card-left-outline-white {
+    border-left: 6px solid #ffffff;
+}
+
+.card-left-outline-dark {
+    border-left: 6px solid #343a40;
+}
+
+.card-left-outline-light {
+    border-left: 6px solid #f8f9fa;
+}
+
+.dismiss-button {
+    color: #dc3545;
+    float: right;
+}
+
+.dismiss-button:hover {
+    color: #ba1323;
+}
+
+.dismiss-button:focus {
+    box-shadow: 0 0 0 0;
+}
