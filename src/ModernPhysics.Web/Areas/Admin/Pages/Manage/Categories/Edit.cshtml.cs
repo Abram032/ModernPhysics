@@ -23,28 +23,10 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
         }
 
         [BindProperty(SupportsGet = true)]
-        public InputModel Input { get; set; }
+        public InputCategoryModel Input { get; set; }
 
         [TempData]
         public string Result { get; set; }
-
-        public class InputModel
-        {
-            [Display(Name = "Nazwa *", Prompt = "Nazwa Kategorii")]
-            [Required(ErrorMessage = "Pole jest wymagane")]
-            [MaxLength(64, ErrorMessage = "Nazwa nie może być dłuższa niż 64 znaki")]
-            [RegularExpression("^[a-zA-Z0-9 _-]*$", ErrorMessage = "Dozwolone są tylko duże i małe litery, cyfry, spacje, _ oraz -")]
-            public string Name { get; set; }
-
-            [Display(Name = "Przyjazna nazwa", Prompt = "Nazwa-Kategorii (Opcjonalne)")]
-            [MaxLength(64, ErrorMessage = "Przyjazna nazwa nie może być dłuższa niż 64 znaki")]
-            [RegularExpression("^[a-zA-Z0-9_-]*$", ErrorMessage = "Dozwolone są tylko duże i małe litery, cyfry, _ oraz -")]
-            public string FriendlyName { get; set; }
-
-            [Display(Name = "Ikona", Prompt = "fas fa-book (Opcjonalne)")]
-            [MaxLength(32, ErrorMessage = "Nazwa ikony nie może być dłuższa niż 32 znaki")]
-            public string Icon { get; set; }
-        }
 
         public async Task<IActionResult> OnGet(Guid? id)
         {

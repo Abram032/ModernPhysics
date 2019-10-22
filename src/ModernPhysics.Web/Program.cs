@@ -48,8 +48,8 @@ namespace ModernPhysics.Web
                 var identityInit = scope.ServiceProvider.GetService<IIdentityInitializer>();
                 var configuration = scope.ServiceProvider.GetService<IConfiguration>();
 
-                await webAppInit.SeedCategoriesAsync(webAppContext, configuration);
                 await identityInit.SeedUsersAsync(userManager, roleManager, configuration);
+                await webAppInit.SeedCategoriesAsync(webAppContext, configuration);
             }
         }
     }

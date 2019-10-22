@@ -35,6 +35,7 @@
                 <span asp-validation-for="Input.ContentType" class="text-danger"></span>
             </div>
 
+            @*//TODO: Add markdown support, html syntax coloring and spacing, add text editor*@
             <div class="form-group">
                 <label asp-for="@Model.Input.Content"></label>
                 <textarea asp-for="@Model.Input.Content" rows="20" class="form-control"></textarea>

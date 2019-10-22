@@ -341,3 +341,5 @@ healthchecksdb
 
 #Static content
 src/ModernPhysics.Web/content
+.vscode/solution-explorer/*
+.vscode/solution-explorer
