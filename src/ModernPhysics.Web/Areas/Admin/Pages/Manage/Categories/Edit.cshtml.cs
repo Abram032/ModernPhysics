@@ -30,22 +30,22 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
 
         public async Task<IActionResult> OnGet(Guid? id)
         {
-            //TODO: Change returns
             if (id == null)
             {
-                return new BadRequestResult();
+                //TODO: Change into ErrorMessage and return to list
+                return RedirectToPage("/NotFound");
             }
 
             var category = await _context.Categories.FirstOrDefaultAsync(p => p.Id.Equals(id));
 
             if(category.FriendlyName.Equals("No-category"))
             {
-                return new BadRequestResult();
+                return RedirectToPage("/Error");
             }
 
             if (category == null)
             {
-                return new BadRequestResult();
+                return RedirectToPage("/Error");
             }
 
             Input.Name = category.Name;

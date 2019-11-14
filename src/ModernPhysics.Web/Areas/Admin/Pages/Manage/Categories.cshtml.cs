@@ -10,7 +10,6 @@ using ModernPhysics.Web.Data;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
 {
-    //TODO: Add author and date created/updated
     public class CategoriesModel : PageModel
     {
         private WebAppDbContext _context;

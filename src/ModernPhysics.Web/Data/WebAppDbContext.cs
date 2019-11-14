@@ -19,7 +19,6 @@ namespace ModernPhysics.Web.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Blob> Blobs { get; set; }
 
-        //TODO: Migrate new model and update views
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

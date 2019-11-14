@@ -11,11 +11,11 @@ services:
     network_mode: "bridge"
     volumes:
       - type: bind
-        source: <Server path>
+        source: /home/maissae/container
         target: /app/content
     deploy:
       replicas: 1
     environment:
-      SqlConnectionString: "<MySql database connection string>"
-      AdminUsername: "<Admin login username>"
-      AdminPassword: "<Admin login password>"
+      SqlConnectionString: "Server=172.17.0.4;Database=AppDb;Uid=root;Pwd=P@ssw0rd;"
+      AdminUsername: "admin"
+      AdminPassword: "P@ssw0rd"

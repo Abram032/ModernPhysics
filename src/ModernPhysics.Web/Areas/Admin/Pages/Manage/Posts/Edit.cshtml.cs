@@ -34,10 +34,10 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
         public async Task<IActionResult> OnGet(Guid? id)
         {
+            //TODO: Change into ErrorMessage and return to list
             if (id == null)
             {
-                //TODO: Change returns
-                return NotFound();
+                return RedirectToPage("/NotFound");
             }
 
             var post = await _context.Posts
@@ -46,7 +46,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
             if (post == null)
             {
-                return NotFound();
+                return RedirectToPage("/NotFound");
             }  
 
             Categories = GetCategories();

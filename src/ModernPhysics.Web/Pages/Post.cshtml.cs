@@ -40,13 +40,12 @@ namespace ModernPhysics.Web.Pages
 
             if(Post == null)
             {
-                return RedirectToPage("/Error");
+                return RedirectToPage("/NotFound");
             }
 
             if(Post.IsPublished == false)
             {
-                //TODO: Change to redirect to Not Found page
-                return RedirectToPage("/Error");
+                return RedirectToPage("/NotFound");
             }
 
             Categories = _context.Categories.Include(p => p.Posts).ToList();
