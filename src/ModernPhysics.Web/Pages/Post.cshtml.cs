@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
 using ModernPhysics.Web.Data;
+using Westwind.AspNetCore.Markdown;
 
 namespace ModernPhysics.Web.Pages
 {
@@ -47,11 +48,16 @@ namespace ModernPhysics.Web.Pages
             {
                 return RedirectToPage("/NotFound");
             }
-
+            
             Categories = _context.Categories.Include(p => p.Posts).ToList();
             foreach(var _category in Categories)
             {
                 _category.Posts = _category.Posts.Where(p => p.IsPublished == true).ToList();
+            }
+
+            if(Post.ContentType == ContentType.Markdown)
+            {
+                Post.Content = Markdown.Parse(Post.Content);
             }
             
             return Page();

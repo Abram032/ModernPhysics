@@ -34,6 +34,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages
         [TempData]
         public string ErrorMessage { get; set; }
 
+        //TODO: Use fluent validation
         public class InputModel
         {
             [Required]

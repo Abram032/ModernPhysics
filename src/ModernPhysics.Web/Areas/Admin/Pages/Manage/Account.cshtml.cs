@@ -34,6 +34,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
 
         public class InputModel
         {
+            //TODO: Use fluent validation
             [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Current password")]

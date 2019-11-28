@@ -71,3 +71,68 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <link rel="stylesheet" type="text/css" href="~/lib/codemirror-5.49.2/lib/codemirror.css">
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/lib/codemirror.js"></script>
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/xml/xml.js"></script>
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/javascript/javascript.js"></script>
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/css/css.js"></script>
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/htmlmixed/htmlmixed.js"></script>
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/markdown/markdown.js"></script>
+
+    <script type="text/javascript">
+        var contentType = document.getElementById("Input_ContentType");
+        var contentTextArea = document.getElementById("Input_Content");
+        var codeMirror = CodeMirror.fromTextArea(contentTextArea, {
+                lineNumbers: true,
+                mode: "text/html"
+            });
+
+        contentType.addEventListener("change", changeType);
+
+        function changeType(event) {
+            if(event.target.value == 0) {
+                codeMirror.toTextArea();
+                codeMirror = CodeMirror.fromTextArea(contentTextArea, {
+                    lineNumbers: true,
+                    mode: "text/html"
+                });
+            }
+            else if(event.target.value == 1) {
+                codeMirror.toTextArea();
+                codeMirror = CodeMirror.fromTextArea(contentTextArea, {
+                    lineNumbers: true,
+                    mode: "text/x-markdown"
+                });
+            }
+            else {
+                codeMirror.toTextArea();
+            }
+        };
+
+        /*
+
+        var contentType = document.getElementById("Input_ContentType");
+        var contentTextArea = document.getElementById("Input_Content");
+
+        var type = contentType.options[contentType.selectedIndex].text;
+
+        if(type == "Html")
+        {
+            var codeMirror = CodeMirror.fromTextArea(contentTextArea, {
+            lineNumbers: true,
+            mode: "text/html"
+            });
+        }
+        else if(type == "Markdown")
+        {   
+            var codeMirror = CodeMirror.fromTextArea(contentTextArea, {
+            lineNumbers: true,
+            mode: "text/x-markdown"
+            });
+        }
+
+        */
+    </script>
+}

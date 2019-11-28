@@ -6,7 +6,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item mr-3">
-        <a class="nav-link" asp-area="Admin" asp-page="/Manage/Index">Zarz¹dzanie</a>
+        <a class="nav-link" asp-area="Admin" asp-page="/Manage/Index">Zarzï¿½dzanie</a>
     </li>
     <li class="nav-item mr-3">
         <form class="form-inline" asp-area="Admin" asp-page="/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >

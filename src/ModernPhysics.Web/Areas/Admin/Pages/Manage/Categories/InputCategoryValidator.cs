@@ -11,7 +11,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
                 .WithMessage("Pole 'Nazwa' jest wymagane")
                 .MaximumLength(64)
                 .WithMessage("'Nazwa' nie może być dłuższa niż 64 znaki")
-                .Matches("^[a-zA-Z0-9 _-]*$")
+                .Matches("^[a-zA-Z0-9 _-ąęóśłżźćńĄĘÓŚŁŻŹĆŃ]*$")
                 .WithMessage("Dozwolone są tylko duże i małe litery, cyfry, spacje, _ oraz -");
 
             RuleFor(p => p.FriendlyName)
