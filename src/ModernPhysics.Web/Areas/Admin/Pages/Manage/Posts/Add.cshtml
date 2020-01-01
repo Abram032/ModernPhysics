@@ -86,6 +86,7 @@
         var contentTextArea = document.getElementById("Input_Content");
         var codeMirror = CodeMirror.fromTextArea(contentTextArea, {
                 lineNumbers: true,
+                lineWrapping: true,
                 mode: "text/html"
             });
 
@@ -96,6 +97,7 @@
                 codeMirror.toTextArea();
                 codeMirror = CodeMirror.fromTextArea(contentTextArea, {
                     lineNumbers: true,
+                    lineWrapping: true,
                     mode: "text/html"
                 });
             }
@@ -103,6 +105,7 @@
                 codeMirror.toTextArea();
                 codeMirror = CodeMirror.fromTextArea(contentTextArea, {
                     lineNumbers: true,
+                    lineWrapping: true,
                     mode: "text/x-markdown"
                 });
             }

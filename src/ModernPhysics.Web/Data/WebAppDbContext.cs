@@ -17,7 +17,6 @@ namespace ModernPhysics.Web.Data
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Blob> Blobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -35,7 +34,6 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Post>().Property(p => p.ContentType).HasDefaultValue(ContentType.Html).IsRequired();
             builder.Entity<Post>().Property(p => p.Content).HasColumnType("MEDIUMTEXT");
             builder.Entity<Post>().Property(p => p.Shortcut).HasMaxLength(500);
-            builder.Entity<Post>().Property(p => p.Order).HasDefaultValue(0);
             builder.Entity<Post>().HasOne(p => p.Category).WithMany(p => p.Posts).IsRequired();
             
             builder.Entity<Category>().HasKey(p => p.Id);
@@ -48,15 +46,6 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Category>().Property(p => p.ModifiedAt).ValueGeneratedOnAddOrUpdate();
             builder.Entity<Category>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().HasMany(p => p.Posts).WithOne(p => p.Category);
-
-            builder.Entity<Blob>().HasKey(p => p.Id);
-            builder.Entity<Blob>().HasIndex(p => p.Url).IsUnique();
-            builder.Entity<Blob>().HasIndex(p => new { p.Path, p.Name }).IsUnique();
-            builder.Entity<Blob>().Property(p => p.Url).IsRequired().HasMaxLength(255);
-            builder.Entity<Blob>().Property(p => p.Name).IsRequired().HasMaxLength(255);
-            builder.Entity<Blob>().Property(p => p.Path).IsRequired().HasMaxLength(255);
-            builder.Entity<Blob>().Property(p => p.Description).HasMaxLength(255);
-            builder.Entity<Blob>().Property(p => p.Type).HasMaxLength(255);
         }
     }
 }
