@@ -71,6 +71,12 @@ namespace ModernPhysics.Web
                 options.User.RequireUniqueEmail = false;
             });
 
+            services.AddAuthorization(options => 
+            {
+                options.AddPolicy("IsAdmin", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("IsAdminOrModerator", policy => policy.RequireRole("Admin", "Moderator"));
+            });
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddRazorPagesOptions(options =>

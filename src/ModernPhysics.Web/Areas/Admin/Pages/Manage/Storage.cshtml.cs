@@ -70,7 +70,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
                 {
                     Name = name,
                     Path = file,
-                    Type = type,
+                    Type = type.ToLower(),
                     Url = $"https://{this.Request.Host.ToString()}/{file}",
                     CreatedAt = System.IO.File.GetCreationTime(file)
                 });
