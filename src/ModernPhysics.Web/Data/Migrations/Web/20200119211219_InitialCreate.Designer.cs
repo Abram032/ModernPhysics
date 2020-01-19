@@ -9,8 +9,8 @@ using ModernPhysics.Web.Data;
 namespace ModernPhysics.Web.Data.Migrations.Web
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20200117220156_ChangedTypes")]
-    partial class ChangedTypes
+    [Migration("20200119211219_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,7 +29,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasMaxLength(255);
 
                     b.Property<string>("FriendlyName")
                         .IsRequired()
@@ -43,7 +43,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasMaxLength(255);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -76,11 +76,11 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasMaxLength(255);
 
                     b.Property<string>("FriendlyUrl")
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasMaxLength(255);
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -95,14 +95,14 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasMaxLength(255);
 
                     b.Property<string>("Shortcut")
                         .HasMaxLength(500);
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(256);
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 
