@@ -36,11 +36,11 @@ namespace ModernPhysics.Web
 
             using(var scope = host.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                var webAppContext = scope.ServiceProvider.GetService<WebAppDbContext>();
                 var identityContext = scope.ServiceProvider.GetService<WebIdentityDbContext>();
+                var webAppContext = scope.ServiceProvider.GetService<WebAppDbContext>();
 
-                await webAppContext.Database.MigrateAsync();
                 await identityContext.Database.MigrateAsync();
+                await webAppContext.Database.MigrateAsync();
 
                 var userManager = scope.ServiceProvider.GetService<UserManager<IdentityUser>>();
                 var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
@@ -48,8 +48,8 @@ namespace ModernPhysics.Web
                 var identityInit = scope.ServiceProvider.GetService<IIdentityInitializer>();
                 var configuration = scope.ServiceProvider.GetService<IConfiguration>();
 
-                await webAppInit.SeedCategoriesAsync(webAppContext, configuration);
                 await identityInit.SeedUsersAsync(userManager, roleManager, configuration);
+                await webAppInit.SeedCategoriesAsync(webAppContext, configuration);
             }
         }
     }

@@ -9,8 +9,8 @@ using ModernPhysics.Web.Data;
 namespace ModernPhysics.Web.Data.Migrations.Web
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20190917093858_WebInit")]
-    partial class WebInit
+    [Migration("20200119211219_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,40 +18,6 @@ namespace ModernPhysics.Web.Data.Migrations.Web
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("ModernPhysics.Models.Blob", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Type")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Url")
-                        .IsUnique();
-
-                    b.HasIndex("Path", "Name")
-                        .IsUnique();
-
-                    b.ToTable("Blobs");
-                });
 
             modelBuilder.Entity("ModernPhysics.Models.Category", b =>
                 {
@@ -63,21 +29,21 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(64);
+                        .HasMaxLength(255);
 
                     b.Property<string>("FriendlyName")
                         .IsRequired()
                         .HasMaxLength(64);
 
                     b.Property<string>("Icon")
-                        .HasMaxLength(32);
+                        .HasMaxLength(64);
 
                     b.Property<DateTime>("ModifiedAt")
                         .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
-                        .HasMaxLength(64);
+                        .HasMaxLength(255);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -99,7 +65,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     b.Property<Guid>("CategoryId");
 
                     b.Property<string>("Content")
-                        .HasColumnType("MEDIUMTEXT");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ContentType")
                         .ValueGeneratedOnAdd()
@@ -110,7 +76,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(64);
+                        .HasMaxLength(255);
 
                     b.Property<string>("FriendlyUrl")
                         .IsRequired()
@@ -129,11 +95,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.Property<int>("Order")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                        .HasMaxLength(255);
 
                     b.Property<string>("Shortcut")
                         .HasMaxLength(500);

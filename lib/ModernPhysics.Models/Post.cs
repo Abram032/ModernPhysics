@@ -18,11 +18,10 @@ namespace ModernPhysics.Models
         public string Content { get; set; }
         public bool IsPublished { get; set; }
         public bool IsDeleted { get; set; }
-        public int Order { get; set; }
     }
 
     public enum ContentType 
     {
-        Html, Markdown, Text    
+        Html, Markdown, CKEditor, Text  
     }
 }

@@ -1,10 +1,39 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Configuration
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject IConfiguration Configuration
 
 <!DOCTYPE html>
 <html>
 <head>
+    @if(string.IsNullOrEmpty(Configuration["GoogleAnalyticsTrackingId"]) == false)
+    {
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src='https://www.googletagmanager.com/gtag/js?id=@Configuration["GoogleAnalyticsTrackingId"]'></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', '@Configuration["GoogleAnalyticsTrackingId"]');
+        </script>
+        <!-- End of global site tag (gtag.js) - Google Analytics -->
+        <!-- Google Analytics -->
+        <script>
+            (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', '@Configuration["GoogleAnalyticsTrackingId"]', 'auto');
+            ga('send', 'pageview');
+        </script>
+        <!-- End of Google Analytics -->
+    }
+    
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ModernPhysics.Web</title>
@@ -25,30 +54,29 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Fizyka Współczesna</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item mr-3"><a class="nav-link" asp-page="/Resources">Materiały</a></li>
-                    <li class="nav-item mr-3"><a class="nav-link" asp-page="/Categories">Kategorie</a></li>
-                    <li class="nav-item mr-3"><a class="nav-link" asp-page="/About">O stronie</a></li>
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <li class="nav-item mr-3"><a class="nav-link" asp-area="Admin" asp-page="/Manage/Index">Zarządzanie</a></li>
-                        <li class="nav-item mr-3">
-                            <form class="form-inline" asp-area="Admin" asp-page="/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                                <button type="submit" class="nav-link btn btn-link">Wyloguj</button>
-                            </form>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item mr-3"><a class="nav-link" asp-area="Admin" asp-page="/Login">Logowanie</a></li>
-                    }
+        <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom box-shadow">
+            <a class="navbar-brand" asp-area="" asp-page="/Index">Fizyka Współczesna</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>                
+            <div id="navbarContent" class="navbar-collapse collapse">
+                <ul class="navbar-nav ml-auto">
+                <li class="nav-item mr-3"><a class="nav-link" asp-page="/Resources">Materiały</a></li>
+                <li class="nav-item mr-3"><a class="nav-link" asp-page="/Categories">Kategorie</a></li>
+                <li class="nav-item mr-3"><a class="nav-link" asp-page="/About">O stronie</a></li>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item mr-3"><a class="nav-link" asp-area="Admin" asp-page="/Manage/Index">Zarządzanie</a></li>
+                    <li class="nav-item mr-3">
+                        <form class="form-inline" asp-area="Admin" asp-page="/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                            <button type="submit" class="nav-link btn btn-link">Wyloguj</button>
+                         </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item mr-3"><a class="nav-link" asp-area="Admin" asp-page="/Login">Logowanie</a></li>
+                }
                 </ul>
             </div>
         </nav>
@@ -62,7 +90,7 @@
     <section class="page-footer dark">
         <div class="container">
             <div class="row">
-                <div class="col-sm-3 col-lg-6">
+                <div class="col-sm-12 col-md-6">
                     <h5>Strony</h5>
                     <ul>
                         <li><a asp-area="" asp-page="/Index">Strona domowa</a></li>
@@ -72,7 +100,7 @@
                         <li><a asp-area="Admin" asp-page="/Login">Logowanie</a></li>
                     </ul>
                 </div>
-                <div class="col-sm-3 col-lg-6">
+                <div class="col-sm-12 col-lg-6">
                     <h5>Inne strony</h5>
                     <ul>
                         <li><a href="https://www.fizyka.umk.pl/">Strona wydziału</a></li>

@@ -23,6 +23,17 @@ namespace ModernPhysics.Web.Data.Seeders
                 await roleManager.CreateAsync(role);
             }
 
+            if(await roleManager.RoleExistsAsync("Moderator") == false)
+            {
+                IdentityRole role = new IdentityRole
+                {
+                    Name = "Moderator",
+                    NormalizedName = "Moderator".ToUpper()
+                };
+
+                await roleManager.CreateAsync(role);
+            }
+
             if (await userManager.FindByNameAsync(configuration["AdminUsername"]) == null)
             {
                 IdentityUser user = new IdentityUser

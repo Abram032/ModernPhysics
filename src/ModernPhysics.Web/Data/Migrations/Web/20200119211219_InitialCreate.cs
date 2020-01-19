@@ -4,26 +4,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ModernPhysics.Web.Data.Migrations.Web
 {
-    public partial class WebInit : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Blobs",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(maxLength: 255, nullable: false),
-                    Path = table.Column<string>(maxLength: 255, nullable: false),
-                    Url = table.Column<string>(maxLength: 255, nullable: false),
-                    Type = table.Column<string>(maxLength: 255, nullable: true),
-                    Description = table.Column<string>(maxLength: 255, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Blobs", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -31,13 +15,13 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     FriendlyName = table.Column<string>(maxLength: 64, nullable: false),
-                    Icon = table.Column<string>(maxLength: 32, nullable: true),
+                    Icon = table.Column<string>(maxLength: 64, nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CreatedBy = table.Column<string>(maxLength: 64, nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 255, nullable: false),
                     ModifiedAt = table.Column<DateTime>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
-                    ModifiedBy = table.Column<string>(maxLength: 64, nullable: false)
+                    ModifiedBy = table.Column<string>(maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,17 +37,16 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     FriendlyUrl = table.Column<string>(maxLength: 255, nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CreatedBy = table.Column<string>(maxLength: 64, nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 255, nullable: false),
                     ModifiedAt = table.Column<DateTime>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
-                    ModifiedBy = table.Column<string>(maxLength: 64, nullable: false),
+                    ModifiedBy = table.Column<string>(maxLength: 255, nullable: false),
                     CategoryId = table.Column<Guid>(nullable: false),
                     ContentType = table.Column<int>(nullable: false, defaultValue: 0),
                     Shortcut = table.Column<string>(maxLength: 500, nullable: true),
-                    Content = table.Column<string>(type: "MEDIUMTEXT", nullable: true),
+                    Content = table.Column<string>(type: "TEXT", nullable: true),
                     IsPublished = table.Column<bool>(nullable: false, defaultValue: false),
-                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
-                    Order = table.Column<int>(nullable: false, defaultValue: 0)
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -75,18 +58,6 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Blobs_Url",
-                table: "Blobs",
-                column: "Url",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Blobs_Path_Name",
-                table: "Blobs",
-                columns: new[] { "Path", "Name" },
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_FriendlyName",
@@ -108,9 +79,6 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Blobs");
-
             migrationBuilder.DropTable(
                 name: "Posts");
 

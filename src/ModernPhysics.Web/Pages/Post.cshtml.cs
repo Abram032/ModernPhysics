@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
 using ModernPhysics.Web.Data;
+using Westwind.AspNetCore.Markdown;
 
 namespace ModernPhysics.Web.Pages
 {
@@ -38,21 +41,25 @@ namespace ModernPhysics.Web.Pages
                 .FirstOrDefault(p => p.Category.FriendlyName.Equals(category) && 
                     p.FriendlyUrl.Equals(posturl));
 
-            if(Post == null)
+            if(Post == null || Post.IsDeleted == true)
             {
-                return RedirectToPage("/Error");
+                return RedirectToPage("/NotFound");
             }
 
-            if(Post.IsPublished == false)
+            if(Post.IsPublished == false && User.Identity.IsAuthenticated == false)
             {
-                //TODO: Change to redirect to Not Found page
-                return RedirectToPage("/Error");
+                return RedirectToPage("/NotFound");
             }
-
+            
             Categories = _context.Categories.Include(p => p.Posts).ToList();
             foreach(var _category in Categories)
             {
                 _category.Posts = _category.Posts.Where(p => p.IsPublished == true).ToList();
+            }
+
+            if(Post.ContentType == ContentType.Markdown)
+            {
+                Post.Content = Markdown.Parse(Post.Content);
             }
             
             return Page();

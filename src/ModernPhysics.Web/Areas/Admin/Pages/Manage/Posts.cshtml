@@ -18,6 +18,7 @@
             <div class="card-body">
                 <div class="mb-3">
                     <a class="btn btn-success" asp-page="./Posts/Add">Nowy post</a>
+                    <a class="btn btn-danger" asp-page="./Posts/Deleted">Usunięte posty</a>
                 </div>
 
                 <!-- /.Filter form -->
@@ -44,7 +45,8 @@
                                 <tr>
                                     @*<td><input type="checkbox"></td>*@
                                     <td><a href="/Resources/@item.Category.FriendlyName/@item.FriendlyUrl">@item.Title</a></td>
-                                    <td><a href="/Resources/@item.Category.FriendlyName" class="badge badge-secondary">@item.Category.Name</a></td>      
+                                    @*<td><a href="/Resources?Category=@item.Category.FriendlyName" class="badge badge-secondary">@item.Category.Name</a></td>*@
+                                    <td><a class="badge badge-secondary" asp-page="/Resources" asp-route-category="@item.Category.FriendlyName">@item.Category.Name</a></td>
                                     <td><span class="badge badge-primary">@item.CreatedBy</span></td>
                                     <td>@item.CreatedAt</td>
                                     <td><span class="badge badge-primary">@item.ModifiedBy</span></td>
@@ -67,7 +69,7 @@
                                     <td>
                                         <form method="post" asp-page-handler="delete" asp-route-id="@item.Id">
                                             <button type="submit" class="btn btn-danger">
-                                                <i class="fa fa-times"></i>
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
                                     </td>

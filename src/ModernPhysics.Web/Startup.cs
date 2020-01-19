@@ -17,6 +17,10 @@ using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using ModernPhysics.Web.Data.Seeders;
+using FluentValidation.AspNetCore;
+using ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories;
+using FluentValidation;
+using ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts;
 
 namespace ModernPhysics.Web
 {
@@ -42,6 +46,9 @@ namespace ModernPhysics.Web
             services.AddTransient<IWebAppInitializer, WebAppInitializer>();
             services.AddTransient<IIdentityInitializer, IdentityInitializer>();
 
+            services.AddTransient<IValidator<InputCategoryModel>, InputCategoryValidator>();
+            services.AddTransient<IValidator<InputPostModel>, InputPostValidator>();
+
             services.AddDbContext<WebIdentityDbContext>(options =>
             {
                 options.UseMySql(Configuration["SqlConnectionString"]);
@@ -64,12 +71,19 @@ namespace ModernPhysics.Web
                 options.User.RequireUniqueEmail = false;
             });
 
+            services.AddAuthorization(options => 
+            {
+                options.AddPolicy("IsAdmin", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("IsAdminOrModerator", policy => policy.RequireRole("Admin", "Moderator"));
+            });
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AuthorizeAreaFolder("Admin", "/Manage");
-                });
+                })
+                .AddFluentValidation();
 
             services.ConfigureApplicationCookie(options =>
             {

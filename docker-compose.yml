@@ -11,11 +11,12 @@ services:
     network_mode: "bridge"
     volumes:
       - type: bind
-        source: <Server path>
+        source: {ServerPath}
         target: /app/content
     deploy:
       replicas: 1
     environment:
-      SqlConnectionString: "<MySql database connection string>"
-      AdminUsername: "<Admin login username>"
-      AdminPassword: "<Admin login password>"
+      SqlConnectionString: "{ConnectionString}"
+      AdminUsername: "{Username}"
+      AdminPassword: "{Password}"
+      GoogleAnalyticsTrackingId : "{UA-XXXXX-Y}"

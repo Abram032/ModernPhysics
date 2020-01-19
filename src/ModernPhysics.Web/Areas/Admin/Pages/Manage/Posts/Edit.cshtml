@@ -35,6 +35,7 @@
                 <span asp-validation-for="Input.ContentType" class="text-danger"></span>
             </div>
 
+            @*//TODO: Add markdown support, html syntax coloring and spacing, add text editor*@
             <div class="form-group">
                 <label asp-for="@Model.Input.Content"></label>
                 <textarea asp-for="@Model.Input.Content" rows="20" class="form-control"></textarea>
@@ -70,3 +71,85 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <link rel="stylesheet" type="text/css" href="~/lib/codemirror-5.49.2/lib/codemirror.css">
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/lib/codemirror.js"></script>
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/xml/xml.js"></script>
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/javascript/javascript.js"></script>
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/css/css.js"></script>
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/htmlmixed/htmlmixed.js"></script>
+    <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/markdown/markdown.js"></script>
+    <script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
+
+    <script type="text/javascript">
+        var contentType = document.getElementById("Input_ContentType");
+        var contentTextArea = document.getElementById("Input_Content");
+        var codeMirror = CodeMirror.fromTextArea(contentTextArea, {
+                lineNumbers: true,
+                lineWrapping: true,
+                mode: "text/html"
+            });
+
+        contentType.addEventListener("change", changeType);
+
+        function changeType(event) {
+            if(event.target.value == 0) {
+                if(CKEDITOR.instances.Input_Content) {
+                    CKEDITOR.instances.Input_Content.destroy();
+                }
+                codeMirror.toTextArea();
+                codeMirror = CodeMirror.fromTextArea(contentTextArea, {
+                    lineNumbers: true,
+                    lineWrapping: true,
+                    mode: "text/html"
+                });
+            }
+            else if(event.target.value == 1) {
+                if(CKEDITOR.instances.Input_Content) {
+                    CKEDITOR.instances.Input_Content.destroy();
+                }
+                codeMirror.toTextArea();
+                codeMirror = CodeMirror.fromTextArea(contentTextArea, {
+                    lineNumbers: true,
+                    lineWrapping: true,
+                    mode: "text/x-markdown"
+                });
+            }
+            else if(event.target.value == 2) {
+                codeMirror.toTextArea();
+                CKEDITOR.replace('Input_Content');
+            }
+            else {
+                if(CKEDITOR.instances.Input_Content) {
+                    CKEDITOR.instances.Input_Content.destroy();
+                }
+                codeMirror.toTextArea();
+            }
+        };
+
+        /*
+
+        var contentType = document.getElementById("Input_ContentType");
+        var contentTextArea = document.getElementById("Input_Content");
+
+        var type = contentType.options[contentType.selectedIndex].text;
+
+        if(type == "Html")
+        {
+            var codeMirror = CodeMirror.fromTextArea(contentTextArea, {
+            lineNumbers: true,
+            mode: "text/html"
+            });
+        }
+        else if(type == "Markdown")
+        {   
+            var codeMirror = CodeMirror.fromTextArea(contentTextArea, {
+            lineNumbers: true,
+            mode: "text/x-markdown"
+            });
+        }
+
+        */
+    </script>
+}

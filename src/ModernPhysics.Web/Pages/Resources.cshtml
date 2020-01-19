@@ -1,4 +1,4 @@
-﻿@page "{category?}"
+﻿@page
 @model ModernPhysics.Web.Pages.ResourcesModel
 @{
     ViewData["Title"] = "Resources";
@@ -10,8 +10,7 @@
             <h2 class="text-info">Materiały</h2>
             @if(Model.Category != null)
             {
-                //TODO: Show name instead of showing friendly name
-                <p>@Model.Categories.FirstOrDefault(p => p.Value.Equals(Model.Category)).Text</p>
+                <p>@Model.Categories.FirstOrDefault(p => p.Selected == true).Text</p>
             }
             else
             {
@@ -19,7 +18,7 @@
             }
         </div>
         <div style="margin-right: 20%;margin-left: 20%;margin-bottom: 40px;">
-            <form method="post">
+            <form method="get">
                 <div class="form-group">
                     <div class="input-group">
                         <input class="form-control" asp-for="Search">

@@ -30,9 +30,7 @@ namespace ModernPhysics.Web.Pages
 
         public List<SelectListItem> Categories { get; set; }
 
-        //? UNDONE: Should i use tracable searches? (query in url)
-
-        public void OnGet(string category)
+        public void OnGet(string category, string search)
         {
             Categories = _context.Categories
                 .Select(p => new SelectListItem
@@ -47,93 +45,43 @@ namespace ModernPhysics.Web.Pages
                 Text = "Wszystkie"
             });
 
-            if(string.IsNullOrEmpty(category))
+            if((string.IsNullOrEmpty(category) || category.Equals("Wszystkie")) && 
+                string.IsNullOrEmpty(search))
             {
                 Posts = _context.Posts.Include(p => p.Category)
-                    .Where(p => p.IsPublished == true);
+                    .Where(p => p.IsPublished == true && p.IsDeleted == false);
+                    
+                Categories.FirstOrDefault(p => p.Text.Equals("Wszystkie")).Selected = true;
+            }
+            else if((string.IsNullOrEmpty(category) || category.Equals("Wszystkie")) && 
+                string.IsNullOrEmpty(search) == false)
+            {
+                Posts = _context.Posts.Include(p => p.Category)
+                    .Where(p => p.Title.Contains(search) || p.Content.Contains(search))
+                    .Where(p => p.IsPublished == true && p.IsDeleted == false);
 
                 Categories.FirstOrDefault(p => p.Text.Equals("Wszystkie")).Selected = true;
+            }
+            else if(string.IsNullOrEmpty(category) == false && string.IsNullOrEmpty(search))
+            {
+                Posts = _context.Posts.Include(p => p.Category)
+                    .Where(p => p.Category.FriendlyName.Equals(category))
+                    .Where(p => p.IsPublished == true && p.IsDeleted == false);
+
+                Categories.FirstOrDefault(p => p.Value.Equals(category)).Selected = true;
             }
             else
             {
                 Posts = _context.Posts.Include(p => p.Category)
                     .Where(p => p.Category.FriendlyName.Equals(category))
-                    .Where(p => p.IsPublished == true);
+                    .Where(p => p.Title.Contains(search) || p.Content.Contains(search))
+                    .Where(p => p.IsPublished == true && p.IsDeleted == false);
 
                 Categories.FirstOrDefault(p => p.Value.Equals(category)).Selected = true;
             }
-            
+
             Category = category;
-        }
-
-        //TODO: Add searching after titles
-
-        public IActionResult OnPost(string category, string search)
-        {
-            if(!ModelState.IsValid)
-            {
-                return new BadRequestResult();
-            }
-
-            Categories = _context.Categories
-                .Select(p => new SelectListItem
-                {
-                    Value = p.FriendlyName,
-                    Text = p.Name
-                }).ToList();
-
-            Categories.Add(new SelectListItem
-            {
-                Value = null,
-                Text = "Wszystkie"
-            });
-
-            //Search everything
-            if((string.IsNullOrEmpty(category) || category.Equals("Wszystkie")) 
-                && string.IsNullOrEmpty(search))
-            {
-                Posts = _context.Posts.Include(p => p.Category)
-                    .Where(p => p.IsPublished == true);
-
-                Categories.FirstOrDefault(p => p.Text.Equals("Wszystkie")).Selected = true;
-            }
-
-            //Search *string* in everything
-            else if((string.IsNullOrEmpty(category) || category.Equals("Wszystkie")) 
-                && !string.IsNullOrEmpty(search))
-            {
-                Posts = _context.Posts.Include(p => p.Category)
-                    .Where(p => p.Title.Contains(search) || p.Content.Contains(search))
-                    .Where(p => p.IsPublished == true);
-
-                Categories.FirstOrDefault(p => p.Text.Equals("Wszystkie")).Selected = true;
-            }
-
-            //Search everything in *category*
-            else if(!string.IsNullOrEmpty(category) && string.IsNullOrEmpty(search))
-            {
-                Posts = _context.Posts.Include(p => p.Category)
-                    .Where(p => p.Category.FriendlyName.Equals(category))
-                    .Where(p => p.IsPublished == true);
-
-                Categories.FirstOrDefault(p => p.Value.Equals(category)).Selected = true;
-            }
-            
-            //Search *string* in *category*
-            else
-            {
-                Posts = _context.Posts.Include(p => p.Category)
-                    .Where(p => p.Category.FriendlyName.Equals(category))
-                    .Where(p => p.Title.Contains(search) || p.Content.Contains(search))
-                    .Where(p => p.IsPublished == true);
-
-                Categories.FirstOrDefault(p => p.Value.Equals(category)).Selected = true;
-            }
-
             Search = search;
-            Category = category;
-
-            return Page();
         }
     }
 }

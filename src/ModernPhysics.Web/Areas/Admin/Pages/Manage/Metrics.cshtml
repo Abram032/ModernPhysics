@@ -5,90 +5,42 @@
     Layout = "~/Areas/Admin/Pages/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1 class="display-4">Modern Physics - Metrics</h1>
+<h1 class="display-4">Fizyka Współczesna - Statystyki</h1>
 <hr>
 
 <div class="row">
-
-    <div class="col-lg-4 mb-4">
-        <div class="card">
+    <div class="col-lg-12 mb-4">
+        <div class="card card-left-outline-info">
             <div class="card-header">
-                <h4>Total visitors</h4>
-            </div>
-            <div class="card-body text-center">
-                <h1 class="display-4">1,240</h1>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-4 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h4>Total visitors last month</h4>
-            </div>
-            <div class="card-body text-center">
-                <h1 class="display-4">317</h1>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-4 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h4>Total visitors today</h4>
-            </div>
-            <div class="card-body text-center">
-                <h1 class="display-4">6</h1>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h4>Visited pages</h4>
+                <h4>Statystyki Google Analytics:</h4>
             </div>
             <div class="card-body">
-                <canvas id="chart3"></canvas>
+                <div class="row">
+                    <a href="https://analytics.google.com/" class="btn btn-lg btn-info">Przejdź do strony Google Analytics</a>
+                </div>
+                <div id="accordion">
+                    <div class="card">
+                        <div class="card-header" id="headingGA">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseGA" aria-expanded="false" aria-controls="collapseGA">
+                            Jak korzystać z Google Analytics?
+                            </button>
+                        </h5>
+                        </div>
+
+                        <div id="collapseGA" class="collapse" aria-labelledby="headingGA" data-parent="#accordion">
+                        <div class="card-body">
+                            <ol>
+                                <li>Przejdź do strony <a href="https://analytics.google.com">https://analytics.google.com</a> (lub naciśnij przycisk wyżej).</li>
+                                <li>Zaloguj się do konta które jest powiązane ze stroną.</li>
+                                <li>Wybierz projekt który jest powiązany ze stroną.</li>
+                                <li>Przejdź do głównej strony projektu</li>
+                            </ol>
+                        </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="col-lg-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h4>Visitors in time</h4>
-            </div>
-            <div class="card-body">
-                <canvas id="chart2"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h4>Visitor origins</h4>
-            </div>
-            <div class="card-body">
-                <canvas id="chart1"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-6 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h4>Visitors during throughout the day</h4>
-            </div>
-            <div class="card-body">
-                <canvas id="chart4"></canvas>
-            </div>
-        </div>
-    </div>
-
 </div>
-
-@section Scripts {
-    <script src="~/js/sample-charts/usage.js"></script>
-}

@@ -9,13 +9,13 @@
 }
 
 <section class="clean-block clean-post dark" style="background-color: rgb(255,255,255);">
-    <div class="row">
+    <div class="row margin" style="margin: 0px;">
         <div class="col">
             <div class="container">
                 <div class="row">
                     <div class="col">
                         <h3 style="margin-bottom: 16px;">Szukaj</h3>
-                        <form asp-page="/Resources" method="post">
+                        <form asp-page="/Resources" method="get">
                             <div class="form-group">
                                 <div class="input-group">
                                     <input class="form-control" asp-for="Search">
@@ -28,7 +28,7 @@
                             </div>
                         </form>
                         <h3 style="margin-bottom: 16px;">Materiały</h3>
-                        <div>
+                        <div class="mb-3">
                             @foreach (var category in Model.Categories)
                             {
                                 <div>
@@ -54,7 +54,10 @@
                                 <div class="post-body">
                                     @if (SignInManager.IsSignedIn(User))
                                     {
-                                        <a class="btn btn-warning fas fa-edit mb-3 p-2" href="/Admin/Manage/Posts/Edit/@Model.Post.Id.ToString()"> Edytuj</a>
+                                        <a class="btn btn-warning mb-3 p-2" href="/Admin/Manage/Posts/Edit/@Model.Post.Id.ToString()">
+                                            <span class="fas fa-edit"> </span>
+                                            Edytuj
+                                        </a>
                                     }
                                     <h3>@Model.Post.Title</h3>
                                     <div class="post-info"><span>@Model.Post.CreatedBy</span><span>@Model.Post.CreatedAt</span></div>
