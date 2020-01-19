@@ -16,6 +16,6 @@ services:
     deploy:
       replicas: 1
     environment:
-      SqlConnectionString: "Server=172.17.0.4;Database=AppDb;Uid=root;Pwd=P@ssw0rd;"
+      SqlConnectionString: "Server=172.17.0.2;Database=AppDb;Uid=root;Pwd=P@ssw0rd;"
       AdminUsername: "admin"
       AdminPassword: "P@ssw0rd"

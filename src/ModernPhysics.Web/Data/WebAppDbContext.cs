@@ -23,16 +23,16 @@ namespace ModernPhysics.Web.Data
             base.OnModelCreating(builder);
             builder.Entity<Post>().HasKey(p => p.Id);
             builder.Entity<Post>().HasIndex(p => p.FriendlyUrl).IsUnique();
-            builder.Entity<Post>().Property(p => p.Title).IsRequired().HasMaxLength(255);
-            builder.Entity<Post>().Property(p => p.FriendlyUrl).IsRequired().HasMaxLength(255);
+            builder.Entity<Post>().Property(p => p.Title).IsRequired().HasMaxLength(256);
+            builder.Entity<Post>().Property(p => p.FriendlyUrl).IsRequired().HasMaxLength(256);
             builder.Entity<Post>().Property(p => p.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-            builder.Entity<Post>().Property(p => p.CreatedBy).IsRequired().HasMaxLength(64);
+            builder.Entity<Post>().Property(p => p.CreatedBy).IsRequired().HasMaxLength(256);
             builder.Entity<Post>().Property(p => p.ModifiedAt).ValueGeneratedOnAddOrUpdate();
-            builder.Entity<Post>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(64);
+            builder.Entity<Post>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(256);
             builder.Entity<Post>().Property(p => p.IsPublished).IsRequired().HasDefaultValue(false);
             builder.Entity<Post>().Property(p => p.IsDeleted).IsRequired().HasDefaultValue(false);
             builder.Entity<Post>().Property(p => p.ContentType).HasDefaultValue(ContentType.Html).IsRequired();
-            builder.Entity<Post>().Property(p => p.Content).HasColumnType("MEDIUMTEXT");
+            builder.Entity<Post>().Property(p => p.Content).HasColumnType("TEXT");
             builder.Entity<Post>().Property(p => p.Shortcut).HasMaxLength(500);
             builder.Entity<Post>().HasOne(p => p.Category).WithMany(p => p.Posts).IsRequired();
             
@@ -40,11 +40,11 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Category>().HasIndex(p => p.FriendlyName).IsUnique();
             builder.Entity<Category>().Property(p => p.Name).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.FriendlyName).IsRequired().HasMaxLength(64);
-            builder.Entity<Category>().Property(p => p.Icon).HasMaxLength(32);
+            builder.Entity<Category>().Property(p => p.Icon).HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-            builder.Entity<Category>().Property(p => p.CreatedBy).IsRequired().HasMaxLength(64);
+            builder.Entity<Category>().Property(p => p.CreatedBy).IsRequired().HasMaxLength(256);
             builder.Entity<Category>().Property(p => p.ModifiedAt).ValueGeneratedOnAddOrUpdate();
-            builder.Entity<Category>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(64);
+            builder.Entity<Category>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(256);
             builder.Entity<Category>().HasMany(p => p.Posts).WithOne(p => p.Category);
         }
     }

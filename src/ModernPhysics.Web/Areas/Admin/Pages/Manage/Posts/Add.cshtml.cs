@@ -70,11 +70,12 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                 FriendlyUrl = Input.FriendlyUrl,
                 Shortcut = Input.Shortcut,
                 ContentType = Input.ContentType,
-                Content = Input.Content,
+                Content = SanitizeHtml(Input.Content),
                 IsPublished = Input.IsPublished,
                 Category = category,
                 CreatedBy = User.Identity.Name,
-                ModifiedBy = User.Identity.Name
+                ModifiedBy = User.Identity.Name,
+                IsDeleted = false
             };
 
             await _context.Posts.AddAsync(post);      
@@ -109,6 +110,25 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                     }).ToList();
 
             return list;
+        }
+
+        private string ReplaceRegex(string source, string regex, string replaceWith)
+        {
+            var matches = Regex.Matches(source, regex);
+            for (int i = 0; i < matches.Count; i++)
+            {
+                source = source.Replace(matches[i].Value, replaceWith);
+            }
+            return source;
+        }
+
+        private string SanitizeHtml(string html)
+        {
+            html = ReplaceRegex(html, @"<script(.*?)>(.*?)</script>", "");
+            html = ReplaceRegex(html, @"<object(.*?)>(.*?)</object>", "");
+            html = ReplaceRegex(html, @"<link(.*?)>(.*?)</link>", "");
+            html = ReplaceRegex(html, @"<embed(.*?)>(.*?)</embed>", "");
+            return html;
         }
     }
 }

@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ModernPhysics.Models;
 using ModernPhysics.Web.Data;
+using ModernPhysics.Models;
 
-namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
+namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 {
-    public class IndexModel : PageModel
+    public class DeletedModel : PageModel
     {
-
         private WebAppDbContext _context;
-        public IndexModel(WebAppDbContext context)
+        public DeletedModel(WebAppDbContext context)
         {
             _context = context;
         }
@@ -24,9 +23,22 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
         public void OnGet()
         {
             Posts = _context.Posts.Include(p => p.Category)
-                .Where(p => p.IsDeleted == false)
-                .OrderByDescending(p => p.ModifiedAt)
-                .Take(5);
+                .Where(p => p.IsDeleted == true);
+        }
+
+        public async Task<IActionResult> OnPostRestoreAsync(Guid id)
+        {
+            if(!ModelState.IsValid)
+            {
+                return new BadRequestResult();
+            }
+
+            var post = await _context.Posts.FindAsync(id);
+            post.IsDeleted = false;
+            _context.Update(post);
+            await _context.SaveChangesAsync();
+
+            return new RedirectToPageResult("/Manage/Posts/Deleted", new { area = "Admin" });
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(Guid id)
@@ -40,7 +52,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
 
-            return new RedirectToPageResult("/Manage/Posts", new { area = "Admin" });
+            return new RedirectToPageResult("/Manage/Posts/Deleted", new { area = "Admin" });
         }
     }
 }

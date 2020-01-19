@@ -22,6 +22,6 @@ namespace ModernPhysics.Models
 
     public enum ContentType 
     {
-        Html, Markdown, Text    
+        Html, Markdown, CKEditor, Text  
     }
 }

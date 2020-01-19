@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -39,12 +41,12 @@ namespace ModernPhysics.Web.Pages
                 .FirstOrDefault(p => p.Category.FriendlyName.Equals(category) && 
                     p.FriendlyUrl.Equals(posturl));
 
-            if(Post == null)
+            if(Post == null || Post.IsDeleted == true)
             {
                 return RedirectToPage("/NotFound");
             }
 
-            if(Post.IsPublished == false)
+            if(Post.IsPublished == false && User.Identity.IsAuthenticated == false)
             {
                 return RedirectToPage("/NotFound");
             }

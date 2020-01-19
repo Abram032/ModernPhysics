@@ -80,6 +80,7 @@
     <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/css/css.js"></script>
     <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/htmlmixed/htmlmixed.js"></script>
     <script type="text/javascript" src="~/lib/codemirror-5.49.2/mode/markdown/markdown.js"></script>
+    <script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
 
     <script type="text/javascript">
         var contentType = document.getElementById("Input_ContentType");
@@ -94,6 +95,9 @@
 
         function changeType(event) {
             if(event.target.value == 0) {
+                if(CKEDITOR.instances.Input_Content) {
+                    CKEDITOR.instances.Input_Content.destroy();
+                }
                 codeMirror.toTextArea();
                 codeMirror = CodeMirror.fromTextArea(contentTextArea, {
                     lineNumbers: true,
@@ -102,6 +106,9 @@
                 });
             }
             else if(event.target.value == 1) {
+                if(CKEDITOR.instances.Input_Content) {
+                    CKEDITOR.instances.Input_Content.destroy();
+                }
                 codeMirror.toTextArea();
                 codeMirror = CodeMirror.fromTextArea(contentTextArea, {
                     lineNumbers: true,
@@ -109,7 +116,14 @@
                     mode: "text/x-markdown"
                 });
             }
+            else if(event.target.value == 2) {
+                codeMirror.toTextArea();
+                CKEDITOR.replace('Input_Content');
+            }
             else {
+                if(CKEDITOR.instances.Input_Content) {
+                    CKEDITOR.instances.Input_Content.destroy();
+                }
                 codeMirror.toTextArea();
             }
         };

@@ -49,8 +49,8 @@ namespace ModernPhysics.Web.Pages
                 string.IsNullOrEmpty(search))
             {
                 Posts = _context.Posts.Include(p => p.Category)
-                    .Where(p => p.IsPublished == true);
-
+                    .Where(p => p.IsPublished == true && p.IsDeleted == false);
+                    
                 Categories.FirstOrDefault(p => p.Text.Equals("Wszystkie")).Selected = true;
             }
             else if((string.IsNullOrEmpty(category) || category.Equals("Wszystkie")) && 
@@ -58,7 +58,7 @@ namespace ModernPhysics.Web.Pages
             {
                 Posts = _context.Posts.Include(p => p.Category)
                     .Where(p => p.Title.Contains(search) || p.Content.Contains(search))
-                    .Where(p => p.IsPublished == true);
+                    .Where(p => p.IsPublished == true && p.IsDeleted == false);
 
                 Categories.FirstOrDefault(p => p.Text.Equals("Wszystkie")).Selected = true;
             }
@@ -66,7 +66,7 @@ namespace ModernPhysics.Web.Pages
             {
                 Posts = _context.Posts.Include(p => p.Category)
                     .Where(p => p.Category.FriendlyName.Equals(category))
-                    .Where(p => p.IsPublished == true);
+                    .Where(p => p.IsPublished == true && p.IsDeleted == false);
 
                 Categories.FirstOrDefault(p => p.Value.Equals(category)).Selected = true;
             }
@@ -75,7 +75,7 @@ namespace ModernPhysics.Web.Pages
                 Posts = _context.Posts.Include(p => p.Category)
                     .Where(p => p.Category.FriendlyName.Equals(category))
                     .Where(p => p.Title.Contains(search) || p.Content.Contains(search))
-                    .Where(p => p.IsPublished == true);
+                    .Where(p => p.IsPublished == true && p.IsDeleted == false);
 
                 Categories.FirstOrDefault(p => p.Value.Equals(category)).Selected = true;
             }

@@ -28,7 +28,8 @@ namespace ModernPhysics.Web.Pages
         public void OnGet()
         {
             Posts = _context.Posts.Include(p => p.Category)
-                .Where(p => p.IsPublished == true)
+                .Where(p => p.IsPublished == true && p.IsDeleted == false)
+                .OrderByDescending(p => p.CreatedAt)
                 .Take(2);
         }
     }

@@ -21,8 +21,8 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
                 .WithMessage("Dozwolone są tylko duże i małe litery, cyfry, _ oraz -");
 
             RuleFor(p => p.Icon)
-                .MaximumLength(32)
-                .WithMessage("Nazwa ikony nie może być dłuższa niż 32 znaki");   
+                .MaximumLength(64)
+                .WithMessage("Klasa ikony nie może być dłuższa niż 64 znaki");   
         }
     }
 }

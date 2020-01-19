@@ -22,7 +22,8 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
 
         public void OnGet()
         {
-            Posts = _context.Posts.Include(p => p.Category);
+            Posts = _context.Posts.Include(p => p.Category)
+                .Where(p => p.IsDeleted == false);
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(Guid id)
@@ -33,7 +34,8 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
             }
 
             var post = await _context.Posts.FindAsync(id);
-            _context.Posts.Remove(post);
+            post.IsDeleted = true;
+            _context.Update(post);
             await _context.SaveChangesAsync();
 
             return new RedirectToPageResult("/Manage/Posts", new { area = "Admin" });

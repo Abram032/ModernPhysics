@@ -42,6 +42,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
             var post = await _context.Posts
                 .Include(p => p.Category)
+                .Where(p => p.IsDeleted == false)
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
 
             if (post == null)
@@ -108,11 +109,12 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
             post.Title = Input.Title;
             post.FriendlyUrl = Input.FriendlyUrl;
-            post.Content = Input.Content;
+            post.Content = SanitizeHtml(Input.Content);
             post.IsPublished = Input.IsPublished;
             post.Category = category;
             post.ModifiedBy = User.Identity.Name;
             post.ContentType = Input.ContentType;
+            post.IsDeleted = false;
 
             _context.Categories.Update(category);
             _context.Posts.Update(post);
@@ -148,6 +150,25 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                     }).ToList();
 
             return list;
+        }
+
+        private string ReplaceRegex(string source, string regex, string replaceWith)
+        {
+            var matches = Regex.Matches(source, regex);
+            for (int i = 0; i < matches.Count; i++)
+            {
+                source = source.Replace(matches[i].Value, replaceWith);
+            }
+            return source;
+        }
+
+        private string SanitizeHtml(string html)
+        {
+            html = ReplaceRegex(html, @"<script(.*?)>(.*?)</script>", "");
+            html = ReplaceRegex(html, @"<object(.*?)>(.*?)</object>", "");
+            html = ReplaceRegex(html, @"<link(.*?)>(.*?)</link>", "");
+            html = ReplaceRegex(html, @"<embed(.*?)>(.*?)</embed>", "");
+            return html;
         }
     }
 }
