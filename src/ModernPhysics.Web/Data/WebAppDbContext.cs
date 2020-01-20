@@ -26,9 +26,9 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Post>().Property(p => p.Title).IsRequired().HasMaxLength(255);
             builder.Entity<Post>().Property(p => p.FriendlyUrl).IsRequired().HasMaxLength(255);
             builder.Entity<Post>().Property(p => p.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-            builder.Entity<Post>().Property(p => p.CreatedBy).IsRequired().HasMaxLength(255);
+            builder.Entity<Post>().Property(p => p.CreatedBy).IsRequired().HasMaxLength(64);
             builder.Entity<Post>().Property(p => p.ModifiedAt).ValueGeneratedOnAddOrUpdate();
-            builder.Entity<Post>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(255);
+            builder.Entity<Post>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(64);
             builder.Entity<Post>().Property(p => p.IsPublished).IsRequired().HasDefaultValue(false);
             builder.Entity<Post>().Property(p => p.IsDeleted).IsRequired().HasDefaultValue(false);
             builder.Entity<Post>().Property(p => p.ContentType).HasDefaultValue(ContentType.Html).IsRequired();
@@ -42,9 +42,9 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Category>().Property(p => p.FriendlyName).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.Icon).HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.CreatedAt).IsRequired().ValueGeneratedOnAdd();
-            builder.Entity<Category>().Property(p => p.CreatedBy).IsRequired().HasMaxLength(255);
+            builder.Entity<Category>().Property(p => p.CreatedBy).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().Property(p => p.ModifiedAt).ValueGeneratedOnAddOrUpdate();
-            builder.Entity<Category>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(255);
+            builder.Entity<Category>().Property(p => p.ModifiedBy).IsRequired().HasMaxLength(64);
             builder.Entity<Category>().HasMany(p => p.Posts).WithOne(p => p.Category);
         }
     }
