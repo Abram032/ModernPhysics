@@ -9,7 +9,7 @@ using ModernPhysics.Web.Data;
 namespace ModernPhysics.Web.Data.Migrations.Web
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20200119211219_InitialCreate")]
+    [Migration("20200120031811_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.Property<string>("FriendlyName")
                         .IsRequired()
@@ -43,7 +43,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -76,7 +76,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.Property<string>("FriendlyUrl")
                         .IsRequired()
@@ -95,7 +95,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.Property<string>("Shortcut")
                         .HasMaxLength(500);
