@@ -12,9 +12,9 @@ namespace ModernPhysics.Web.Data.Migrations.Identity
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(maxLength: 255, nullable: true),
-                    NormalizedName = table.Column<string>(maxLength: 255, nullable: true),
+                    Id = table.Column<string>(unicode: false, nullable: false),
+                    Name = table.Column<string>(maxLength: 64, nullable: true),
+                    NormalizedName = table.Column<string>(maxLength: 64, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -26,11 +26,11 @@ namespace ModernPhysics.Web.Data.Migrations.Identity
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 255, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 255, nullable: true),
-                    Email = table.Column<string>(maxLength: 255, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 255, nullable: true),
+                    Id = table.Column<string>(unicode: false, nullable: false),
+                    UserName = table.Column<string>(maxLength: 64, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 64, nullable: true),
+                    Email = table.Column<string>(unicode: false, maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(unicode: false, maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),

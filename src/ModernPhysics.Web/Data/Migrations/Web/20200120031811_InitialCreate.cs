@@ -18,10 +18,10 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     Icon = table.Column<string>(maxLength: 64, nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CreatedBy = table.Column<string>(maxLength: 255, nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 64, nullable: false),
                     ModifiedAt = table.Column<DateTime>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
-                    ModifiedBy = table.Column<string>(maxLength: 255, nullable: false)
+                    ModifiedBy = table.Column<string>(maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,10 +37,10 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                     FriendlyUrl = table.Column<string>(maxLength: 255, nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CreatedBy = table.Column<string>(maxLength: 255, nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 64, nullable: false),
                     ModifiedAt = table.Column<DateTime>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
-                    ModifiedBy = table.Column<string>(maxLength: 255, nullable: false),
+                    ModifiedBy = table.Column<string>(maxLength: 64, nullable: false),
                     CategoryId = table.Column<Guid>(nullable: false),
                     ContentType = table.Column<int>(nullable: false, defaultValue: 0),
                     Shortcut = table.Column<string>(maxLength: 500, nullable: true),

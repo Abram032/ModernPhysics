@@ -20,16 +20,17 @@ namespace ModernPhysics.Web.Data.Migrations.Identity
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .IsUnicode(false);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.Property<string>("NormalizedName")
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.HasKey("Id");
 
@@ -62,7 +63,8 @@ namespace ModernPhysics.Web.Data.Migrations.Identity
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .IsUnicode(false);
 
                     b.Property<int>("AccessFailedCount");
 
@@ -70,7 +72,8 @@ namespace ModernPhysics.Web.Data.Migrations.Identity
                         .IsConcurrencyToken();
 
                     b.Property<string>("Email")
-                        .HasMaxLength(255);
+                        .HasMaxLength(256)
+                        .IsUnicode(false);
 
                     b.Property<bool>("EmailConfirmed");
 
@@ -79,10 +82,11 @@ namespace ModernPhysics.Web.Data.Migrations.Identity
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(255);
+                        .HasMaxLength(256)
+                        .IsUnicode(false);
 
                     b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.Property<string>("PasswordHash");
 
@@ -95,7 +99,7 @@ namespace ModernPhysics.Web.Data.Migrations.Identity
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.HasKey("Id");
 

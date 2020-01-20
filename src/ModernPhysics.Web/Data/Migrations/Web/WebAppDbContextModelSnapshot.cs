@@ -27,7 +27,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.Property<string>("FriendlyName")
                         .IsRequired()
@@ -41,7 +41,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -74,7 +74,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.Property<string>("FriendlyUrl")
                         .IsRequired()
@@ -93,7 +93,7 @@ namespace ModernPhysics.Web.Data.Migrations.Web
 
                     b.Property<string>("ModifiedBy")
                         .IsRequired()
-                        .HasMaxLength(255);
+                        .HasMaxLength(64);
 
                     b.Property<string>("Shortcut")
                         .HasMaxLength(500);
