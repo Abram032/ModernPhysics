@@ -11,7 +11,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
                 .WithMessage("Pole 'Tytuł' nie może być puste")
                 .MaximumLength(255)
                 .WithMessage("'Tytuł' nie może być dłuższy niż 255 znaków")
-                .Matches("^[a-zA-Z0-9 _-ąęóśłżźćńĄĘÓŚŁŻŹĆŃ]*$")
+                .Matches("^[a-zA-Z0-9ąęóśłżźćńĄĘÓŚŁŻŹĆŃ _-]*$")
                 .WithMessage("Dozwolone są tylko duże i małe litery, cyfry, spacje, _ oraz -");
             
             RuleFor(p => p.FriendlyUrl)
