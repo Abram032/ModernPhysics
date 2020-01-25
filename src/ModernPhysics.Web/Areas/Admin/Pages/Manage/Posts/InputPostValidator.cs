@@ -9,11 +9,13 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             RuleFor(p => p.Title)
                 .NotEmpty()
                 .WithMessage("Pole 'Tytuł' nie może być puste")
-                .MaximumLength(256)
-                .WithMessage("'Tytuł' nie może być dłuższy niż 255 znaków");
+                .MaximumLength(255)
+                .WithMessage("'Tytuł' nie może być dłuższy niż 255 znaków")
+                .Matches("^[a-zA-Z0-9 _-ąęóśłżźćńĄĘÓŚŁŻŹĆŃ]*$")
+                .WithMessage("Dozwolone są tylko duże i małe litery, cyfry, spacje, _ oraz -");
             
             RuleFor(p => p.FriendlyUrl)
-                .MaximumLength(256)
+                .MaximumLength(255)
                 .WithMessage("'Przyjazny Url' nie może być dłuższy niż 255 znaków")
                 .Matches("^[a-zA-Z0-9_-]*$")
                 .WithMessage("Dozwolone są tylko duże i małe litery, cyfry, _ oraz -");

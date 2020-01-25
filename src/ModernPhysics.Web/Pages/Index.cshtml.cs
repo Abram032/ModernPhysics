@@ -30,7 +30,7 @@ namespace ModernPhysics.Web.Pages
             Posts = _context.Posts.Include(p => p.Category)
                 .Where(p => p.IsPublished == true && p.IsDeleted == false)
                 .OrderByDescending(p => p.CreatedAt)
-                .Take(2);
+                .Take(4);
         }
     }
 }

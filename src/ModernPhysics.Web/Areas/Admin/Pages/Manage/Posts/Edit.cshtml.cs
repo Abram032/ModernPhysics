@@ -11,6 +11,7 @@ using ModernPhysics.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using ModernPhysics.Web.Utils;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 {
@@ -18,9 +19,11 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
     {
 
         private WebAppDbContext _context;
-        public EditModel(WebAppDbContext context)
+        private ICharacterParser _parser;
+        public EditModel(WebAppDbContext context, ICharacterParser parser)
         {
             _context = context;
+            _parser = parser;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -90,6 +93,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             if(string.IsNullOrEmpty(Input.FriendlyUrl))
             {
                 Input.FriendlyUrl = Regex.Replace(Input.Title, "[ !\"#$%&'()*+,./:;<=>?@[\\]^`{|}~]", "-");
+                Input.FriendlyUrl = _parser.ParsePolishChars(Input.FriendlyUrl);
             }
 
             if(await _context.Posts.AnyAsync(p =>
@@ -109,6 +113,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
             post.Title = Input.Title;
             post.FriendlyUrl = Input.FriendlyUrl;
+            post.Shortcut = Input.Shortcut;
             post.Content = SanitizeHtml(Input.Content);
             post.IsPublished = Input.IsPublished;
             post.Category = category;
@@ -164,10 +169,13 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
         private string SanitizeHtml(string html)
         {
-            html = ReplaceRegex(html, @"<script(.*?)>(.*?)</script>", "");
-            html = ReplaceRegex(html, @"<object(.*?)>(.*?)</object>", "");
-            html = ReplaceRegex(html, @"<link(.*?)>(.*?)</link>", "");
-            html = ReplaceRegex(html, @"<embed(.*?)>(.*?)</embed>", "");
+            if(string.IsNullOrEmpty(html) == false)
+            {
+                html = ReplaceRegex(html, @"<script(.*?)>(.*?)</script>", "");
+                html = ReplaceRegex(html, @"<object(.*?)>(.*?)</object>", "");
+                html = ReplaceRegex(html, @"<link(.*?)>(.*?)</link>", "");
+                html = ReplaceRegex(html, @"<embed(.*?)>(.*?)</embed>", "");
+            }
             return html;
         }
     }

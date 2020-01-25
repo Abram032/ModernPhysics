@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using ModernPhysics.Web.Utils;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
 {
@@ -17,9 +18,11 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
     {
 
         private WebAppDbContext _context;
-        public EditModel(WebAppDbContext context)
+        private ICharacterParser _parser;
+        public EditModel(WebAppDbContext context, ICharacterParser parser)
         {
             _context = context;
+            _parser = parser;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -65,6 +68,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
             if(string.IsNullOrEmpty(Input.FriendlyName))
             {
                 Input.FriendlyName = Regex.Replace(Input.Name, "[ !\"#$%&'()*+,./:;<=>?@[\\]^`{|}~]", "-");
+                Input.FriendlyName = _parser.ParsePolishChars(Input.FriendlyName);
             }
 
             if(await _context.Categories.AnyAsync(p => 

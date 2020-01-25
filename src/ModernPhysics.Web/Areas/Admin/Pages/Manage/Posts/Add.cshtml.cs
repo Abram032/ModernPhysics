@@ -10,15 +10,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
 using ModernPhysics.Web.Data;
+using ModernPhysics.Web.Utils;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 {
     public class AddModel : PageModel
     {
         private WebAppDbContext _context;
-        public AddModel(WebAppDbContext context)
+        private ICharacterParser _parser;
+        public AddModel(WebAppDbContext context, ICharacterParser parser)
         {
             _context = context;
+            _parser = parser;
         }
 
         [BindProperty]
@@ -50,6 +53,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             if(string.IsNullOrEmpty(Input.FriendlyUrl))
             {
                 Input.FriendlyUrl = Regex.Replace(Input.Title, "[ !\"#$%&'()*+,./:;<=>?@[\\]^`{|}~]", "-");
+                Input.FriendlyUrl = _parser.ParsePolishChars(Input.FriendlyUrl);
             }
 
             if(await _context.Posts.AnyAsync(p =>
@@ -124,10 +128,13 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
         private string SanitizeHtml(string html)
         {
-            html = ReplaceRegex(html, @"<script(.*?)>(.*?)</script>", "");
-            html = ReplaceRegex(html, @"<object(.*?)>(.*?)</object>", "");
-            html = ReplaceRegex(html, @"<link(.*?)>(.*?)</link>", "");
-            html = ReplaceRegex(html, @"<embed(.*?)>(.*?)</embed>", "");
+            if(string.IsNullOrEmpty(html) == false)
+            {
+                html = ReplaceRegex(html, @"<script(.*?)>(.*?)</script>", "");
+                html = ReplaceRegex(html, @"<object(.*?)>(.*?)</object>", "");
+                html = ReplaceRegex(html, @"<link(.*?)>(.*?)</link>", "");
+                html = ReplaceRegex(html, @"<embed(.*?)>(.*?)</embed>", "");
+            }
             return html;
         }
     }

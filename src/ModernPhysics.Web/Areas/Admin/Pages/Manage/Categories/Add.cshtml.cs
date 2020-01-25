@@ -9,15 +9,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
 using ModernPhysics.Web.Data;
+using ModernPhysics.Web.Utils;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
 {
     public class AddModel : PageModel
     {
         private WebAppDbContext _context;
-        public AddModel(WebAppDbContext context)
+        private ICharacterParser _parser;
+        public AddModel(WebAppDbContext context, ICharacterParser parser)
         {
             _context = context;
+            _parser = parser;
         }
 
         [BindProperty]
@@ -36,6 +39,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories
             if(string.IsNullOrEmpty(Input.FriendlyName))
             {
                 Input.FriendlyName = Regex.Replace(Input.Name, "[ !\"#$%&'()*+,./:;<=>?@[\\]^`{|}~]", "-");
+                Input.FriendlyName = _parser.ParsePolishChars(Input.FriendlyName);
             }
 
             if(await _context.Categories.AnyAsync(p => p.FriendlyName.Equals(Input.FriendlyName)))
