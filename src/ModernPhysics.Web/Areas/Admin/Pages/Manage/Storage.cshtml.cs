@@ -20,6 +20,8 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
         [TempData]
         public string ErrorMessage { get; set; }
         public string CurrentPath { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string RootPath { get; set; }
 
         [BindProperty]
         public List<IFormFile> UploadFiles { get; set; }
@@ -29,24 +31,38 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
         public List<Models.Directory> Directories { get; set; }
         public List<Blob> Files { get; set; }
 
-        public void OnGet(string path)
+        public IActionResult OnGet(string path)
         {
-            IEnumerable<string> files;
-            IEnumerable<string> directories;
+            List<string> files;
+            List<string> directories;
             Files = new List<Blob>();
             Directories = new List<Models.Directory>();
             
-            if(string.IsNullOrEmpty(path))
+            if(string.IsNullOrEmpty(path) || path.Equals("content"))
             {
                 directories = System.IO.Directory.EnumerateDirectories("content").ToList();
-                files = System.IO.Directory.EnumerateFiles("content");
+                files = System.IO.Directory.EnumerateFiles("content").ToList();
                 CurrentPath = "content";
+                RootPath = null;
             }
             else
             {
+                //Sanitizing route
+                path = path.Replace('\\', '/');
+                
+                if(path.Contains("/.."))
+                {
+                    return RedirectToPage("./NotFound");
+                }
+
+                if(System.IO.Directory.Exists(path) == false)
+                {
+                    return RedirectToPage("./NotFound");
+                }
                 directories = System.IO.Directory.EnumerateDirectories(path).ToList();
-                files = System.IO.Directory.EnumerateFiles(path);
+                files = System.IO.Directory.EnumerateFiles(path).ToList();
                 CurrentPath = path;
+                RootPath = path.Replace("/" + path.Split('/').Last(), "");
             }
 
             foreach(var dir in directories)
@@ -75,6 +91,8 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
                     CreatedAt = System.IO.File.GetCreationTime(file)
                 });
             }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostUploadFilesAsync(string path)
@@ -104,7 +122,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
                 }
             }
 
-            return RedirectToPage("./Storage");
+            return RedirectToPage("./Storage", new { path = path });
         }
 
         public IActionResult OnPostCreateDirectory(string path)
@@ -124,38 +142,38 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
                 System.IO.Directory.CreateDirectory(dirPath);
             }
 
-            return RedirectToPage("./Storage");
+            return RedirectToPage("./Storage", new { path = path });
         }
 
-        public IActionResult OnPostDeleteFileAsync(string path)
+        public IActionResult OnPostDeleteFileAsync(string path, string filename)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            System.IO.File.Delete(path);
+            System.IO.File.Delete(Path.Combine(path, filename));
 
-            return RedirectToPage("./Storage");
+            return RedirectToPage("./Storage", new { path = path });
         }
 
-        public IActionResult OnPostDeleteDirectoryAsync(string path)
+        public IActionResult OnPostDeleteDirectoryAsync(string path, string dirname)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            if(System.IO.Directory.EnumerateFileSystemEntries(path).Any() == false)
+            if(System.IO.Directory.EnumerateFileSystemEntries(Path.Combine(path, dirname)).Any() == false)
             {
-                System.IO.Directory.Delete(path);
+                System.IO.Directory.Delete(Path.Combine(path, dirname));
             }
             else
             {
                 ErrorMessage = "Katalog nie jest pusty lub nie może zostać usunięty!";
             }
 
-            return RedirectToPage("./Storage");
+            return RedirectToPage("./Storage", new { path = path });
         }
     }
 }

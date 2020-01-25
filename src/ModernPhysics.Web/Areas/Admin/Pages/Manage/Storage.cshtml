@@ -28,7 +28,7 @@
                             <input asp-for="@Model.UploadFiles" class="custom-file-input">
                         </div>
                         <div class="col-2">
-                            <button type="submit" class="btn btn-primary ml-2" asp-page-handler="uploadfiles">
+                            <button type="submit" class="btn btn-primary ml-2" asp-page-handler="uploadfiles" asp-route-path="@Model.CurrentPath">
                                 <span class="fa fa-cloud-upload-alt mr-1"></span>
                                 <span>Wyślij</span>
                             </button>
@@ -49,6 +49,15 @@
                         </div>
                     </div>
                 </form>
+
+                @if(string.IsNullOrEmpty(Model.RootPath) == false)
+                {
+                    <div class="row">
+                        <div class="col-2">
+                            <a class="btn btn-info" asp-area="Admin" asp-page="/Manage/Storage" asp-route-path="@Model.RootPath">Wróć do katalogu macierzystego</a>
+                        </div>
+                    </div>            
+                }
 
                 <!-- /.Filter form -->
                 <div class="table-responsive">
@@ -73,7 +82,7 @@
                                     <td></td>
                                     <td>
                                         <form method="post" class="text-right">   
-                                            <button class="btn btn-danger fa fa-trash ml-1" type="submit" asp-page-handler="deletedirectory" asp-route-path="@item.Path"></button>
+                                            <button class="btn btn-danger fa fa-trash ml-1" type="submit" asp-page-handler="deletedirectory" asp-route-path="@Model.CurrentPath" asp-route-dirname="@item.Name"></button>
                                         </form>
                                     </td>
                                 </tr>
@@ -87,7 +96,7 @@
                                     <td><button class="btn btn-info fas fa-copy ml-1" onclick="copyToClipboard('@item.Url')"></button></td>
                                     <td>
                                         <form method="post" class="text-right">   
-                                            <button class="btn btn-danger fa fa-trash ml-1" type="submit" asp-page-handler="deletefile" asp-route-path="@item.Path"></button>
+                                            <button class="btn btn-danger fa fa-trash ml-1" type="submit" asp-page-handler="deletefile" asp-route-path="@Model.CurrentPath" asp-route-filename="@item.Name"></button>
                                         </form>
                                     </td>
                                 </tr>

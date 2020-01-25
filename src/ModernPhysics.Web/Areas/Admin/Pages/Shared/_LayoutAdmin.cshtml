@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/colors-extension/colors.css" />
 </head>
-<body id="page-top">
+<body id="page-top" onload="onLoad()">
     <!--Navbar-->
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
         <a class="navbar-brand mr-1" asp-area="Admin" asp-page="/Manage/Index">Fizyka Współczesna</a>
@@ -78,6 +78,56 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
-    
+
+    <script>
+        function onLoad() {
+            checkCookie();
+            var sidebarToggle = document.getElementById("sidebarToggle");
+            sidebarToggle.addEventListener("click", updateCookie);
+        }
+        function checkCookie() {
+            var toggled = getCookie("sidebarToggled");
+            if(toggled != "") {
+                if(toggled === "true") {
+                    var body = document.getElementById("page-top").classList.add("sidebar-toggled");
+                    var sidebar = document.getElementById("sidebar").classList.add("toggled");
+                    var chevron = document.getElementById("chevronToggle").className = "fa fa-chevron-right";
+                }             
+            } 
+            else {
+                setCookie("sidebarToggled=false;")
+            }
+        }
+        function getCookie(name) {
+            var cookies = document.cookie.split(';');
+            for(var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i];
+                var cname = cookie.split('=')[0];
+                if(cname === name)
+                {
+                    return cookie.split('=')[1];
+                }
+            }
+            return "";
+        }
+        function setCookie(cookie) {
+            var date = new Date();
+            date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000)); //30 days
+            var expires = "expires=" + date.toUTCString() + ";";
+            var path = "path=/Admin/Manage;";
+            document.cookie = cookie + expires + path;
+        }
+        function updateCookie() {
+            var classList = document.getElementById("sidebar").classList;
+            for(var i = 0; i < classList.length; i++) {
+                var _class = classList[i];
+                if(_class === "toggled") {
+                    setCookie("sidebarToggled=true;");
+                    return;
+                }
+            }
+            setCookie("sidebarToggled=false;");
+        }
+    </script>
 </body>
 </html>
