@@ -43,7 +43,7 @@
                         <a href="Resources/@post.Category.FriendlyName/@post.FriendlyUrl">
                             <h3>@post.Title</h3>
                         </a>
-                        <a href="Resources/@post.Category.Name">
+                        <a asp-page="/Resources" asp-route-category="@post.Category.FriendlyName">
                             <h5 class="text-muted">@post.Category.Name</h5>
                         </a>
                         <p>@post.Shortcut</p>     

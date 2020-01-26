@@ -30,14 +30,15 @@ namespace ModernPhysics.Web.Areas.Admin.Pages
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            if (returnUrl != null)
-            {
-                return LocalRedirect(returnUrl);
-            }
-            else
-            {
-                return Page();
-            }
+            return RedirectToPage("/Index");
+            // if (returnUrl != null)
+            // {
+            //     return LocalRedirect(returnUrl);
+            // }
+            // else
+            // {
+            //     return Page();
+            // }
         }
     }
 }
