@@ -43,9 +43,29 @@ namespace ModernPhysics.Web
                 if(await identityContext.Database.GetService<IRelationalDatabaseCreator>().ExistsAsync() == false)
                 {
                     await identityContext.Database.MigrateAsync();
+                }
+                else
+                {
+                    var migrations = await identityContext.Database.GetPendingMigrationsAsync();
+                    if(migrations.ToList().Count > 0)
+                    {
+                        await identityContext.Database.MigrateAsync();
+                    }
+                }
+
+                if(await webAppContext.Database.GetService<IRelationalDatabaseCreator>().ExistsAsync() == false)
+                {
                     await webAppContext.Database.MigrateAsync();
                 }
-        
+                else
+                {
+                    var migrations = await webAppContext.Database.GetPendingMigrationsAsync();
+                    if(migrations.ToList().Count > 0)
+                    {
+                        await webAppContext.Database.MigrateAsync();
+                    }
+                }
+    
                 var userManager = scope.ServiceProvider.GetService<UserManager<IdentityUser>>();
                 var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
                 var webAppInit = scope.ServiceProvider.GetService<IWebAppInitializer>();
