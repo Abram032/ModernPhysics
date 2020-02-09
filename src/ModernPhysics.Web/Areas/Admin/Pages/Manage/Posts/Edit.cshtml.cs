@@ -92,7 +92,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 
             if(string.IsNullOrEmpty(Input.FriendlyUrl))
             {
-                Input.FriendlyUrl = Regex.Replace(Input.Title, "[ !\"#$%&'()*+,./:;<=>?@[\\]^`{|}~]", "-");
+                Input.FriendlyUrl = Regex.Replace(Input.Title, "[ !?\"#$%&'()*+,./:;<=>@[\\]^`{|}~]", "-");
                 Input.FriendlyUrl = _parser.ParsePolishChars(Input.FriendlyUrl);
             }
 
