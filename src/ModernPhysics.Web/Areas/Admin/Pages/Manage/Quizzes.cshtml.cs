@@ -1,32 +1,28 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ModernPhysics.Models;
 using ModernPhysics.Web.Data;
+using ModernPhysics.Models;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
 {
-    public class IndexModel : PageModel
+    public class QuizzesModel : PageModel
     {
-
         private WebAppDbContext _context;
-        public IndexModel(WebAppDbContext context)
+        public QuizzesModel(WebAppDbContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Post> Posts { get; set; }
+        public IEnumerable<Quiz> Quizzes { get; set; }
 
         public void OnGet()
         {
-            Posts = _context.Posts.Include(p => p.Category)
-                .Where(p => p.IsDeleted == false)
-                .OrderByDescending(p => p.ModifiedAt)
-                .Take(5);
+            Quizzes = _context.Quizzes;
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(Guid id)
@@ -36,12 +32,12 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
                 return new BadRequestResult();
             }
 
-            var post = await _context.Posts.FindAsync(id);
-            post.IsDeleted = true;
-            _context.Update(post);
+            var quiz = await _context.Quizzes.FindAsync(id);
+            quiz.IsDeleted = true;
+            _context.Update(quiz);
             await _context.SaveChangesAsync();
 
-            return new RedirectToPageResult("/Manage/Posts", new { area = "Admin" });
+            return new RedirectToPageResult("/Manage/Quizzes", new { area = "Admin" });
         }
     }
 }

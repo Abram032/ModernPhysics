@@ -10,10 +10,10 @@ using ModernPhysics.Models;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
 {
-    public class DeletedModel : PageModel
+    public class DeleteModel : PageModel
     {
         private WebAppDbContext _context;
-        public DeletedModel(WebAppDbContext context)
+        public DeleteModel(WebAppDbContext context)
         {
             _context = context;
         }

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace ModernPhysics.Models
 {
-    public class Post
+    public class Quiz
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -12,17 +12,13 @@ namespace ModernPhysics.Models
         public string CreatedBy { get; set; }
         public DateTime ModifiedAt { get; set; }
         public string ModifiedBy { get; set; }
-        public Category Category { get; set; }
-        public ContentType ContentType { get; set; }
-        public string Shortcut { get; set; }
-        public string Content { get; set; }
+        public ICollection<Question> Questions { get; set; }
+        public int TimesSolved { get; set; }
+        public int TimesSolvedCorrectly { get; set; }
         public bool IsPublished { get; set; }
         public bool IsDeleted { get; set; }
-        public Quiz Quiz { get; set; }
-    }
 
-    public enum ContentType 
-    {
-        Html, Markdown, CKEditor, Text  
+        public Guid PostId { get; set; }
+        public Post Post { get; set; }
     }
 }

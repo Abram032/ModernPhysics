@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ModernPhysics.Web.Data;
 
 namespace ModernPhysics.Web.Data.Migrations.Web
 {
     [DbContext(typeof(WebAppDbContext))]
-    partial class WebAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200328180903_AddedQuizzes")]
+    partial class AddedQuizzes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,14 +186,6 @@ namespace ModernPhysics.Web.Data.Migrations.Web
                         .HasMaxLength(64);
 
                     b.Property<Guid>("PostId");
-
-                    b.Property<int>("TimesSolved")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("TimesSolvedCorrectly")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
 
                     b.Property<string>("Title")
                         .IsRequired()
