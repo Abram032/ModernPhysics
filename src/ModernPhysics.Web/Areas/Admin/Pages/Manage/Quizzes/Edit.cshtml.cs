@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ModernPhysics.Web.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ModernPhysics.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
+using ModernPhysics.Web.Data;
 using ModernPhysics.Web.Utils;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes
 {
     public class EditModel : PageModel
     {
-
         private WebAppDbContext _context;
         private ICharacterParser _parser;
         public EditModel(WebAppDbContext context, ICharacterParser parser)
@@ -26,136 +24,169 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes
             _parser = parser;
         }
 
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
         public InputQuizModel Input { get; set; }
-        public List<SelectListItem> Categories { get; set; }
-        public List<SelectListItem> ContentTypes { get; set; }
+        public List<SelectListItem> Posts { get; set; }
         public string BaseUrl { get; set; }
-
         [TempData]
         public string Result { get; set; }
 
         public async Task<IActionResult> OnGet(Guid? id)
         {
-            // //TODO: Change into ErrorMessage and return to list
-            // if (id == null)
-            // {
-            //     return RedirectToPage("/NotFound");
-            // }
+            if (id == null)
+            {
+                return RedirectToPage("/NotFound");
+            }
 
-            // var post = await _context.Posts
-            //     .Include(p => p.Category)
-            //     .Where(p => p.IsDeleted == false)
-            //     .FirstOrDefaultAsync(p => p.Id.Equals(id));
+            Posts = _context.Posts
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id.ToString(),
+                    Text = p.Title
+                }).ToList();
 
-            // if (post == null)
-            // {
-            //     return RedirectToPage("/NotFound");
-            // }  
+            Posts.Add(new SelectListItem {
+                Value = null,
+                Text = "Wybierz..."
+            });
 
-            // Categories = GetCategories();
-            // BaseUrl = GetBaseUrl();
-            // ContentTypes = GetContentTypes();
+            var quiz = await _context.Quizzes
+                .Include(p => p.Post)
+                .Include(p => p.Questions)
+                .ThenInclude(p => p.Answers)
+                .Where(p => p.IsDeleted == false)
+                .FirstOrDefaultAsync(p => p.Id.Equals(id));
 
-            // Input = new InputPostModel
-            // {
-            //     Title = post.Title,
-            //     FriendlyUrl = post.FriendlyUrl,
-            //     Shortcut = post.Shortcut,
-            //     Content = post.Content,
-            //     IsPublished = post.IsPublished,
-            //     Category = post.Category.FriendlyName,
-            //     ContentType = post.ContentType
-            // };
+            if (quiz == null)
+            {
+                return RedirectToPage("/NotFound");
+            }
 
-            // var category = Categories.FirstOrDefault(p => 
-            //     p.Value.Equals(post.Category.FriendlyName));
+            if(quiz.Post != null)
+            {
+                var item = Posts.FirstOrDefault(p => p.Value.Equals(quiz.Post.Id.ToString()));
+                item.Selected = true;
+            }
+            else
+            {
+                var item = Posts.FirstOrDefault(p => p.Value == null);
+                item.Selected = true;
+            }
+
+            BaseUrl = GetBaseUrl();
+
+            var questions = new List<Question>();
+            if(quiz.Questions != null)
+            {
+                foreach(var question in quiz.Questions)
+                {
+                    var answers = new List<Answer>();
+                    if(question.Answers != null)
+                    {
+                        foreach(var answer in question.Answers)
+                        {
+                            answers.Add(new Answer
+                            {
+                                Id = answer.Id,
+                                Text = answer.Text,
+                                IsCorrect = answer.IsCorrect
+                            });
+                        }
+                    }
+                    questions.Add(new Question 
+                    {
+                        Id = question.Id,
+                        Text = question.Text,
+                        Answers = answers
+                    });
+                }
+            }
+
+            Input = new InputQuizModel
+            {
+                Title = quiz.Title,
+                FriendlyUrl = quiz.FriendlyUrl,
+                IsPublished = quiz.IsPublished,
+                Questions = questions
+            };
             
-            // if(category != null)
-            // {
-            //     category.Selected = true;
-            // }
-
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid id)
         {
-            // Categories = GetCategories();
-            // BaseUrl = GetBaseUrl();
-            // ContentTypes = GetContentTypes();
-            
-            // if (!ModelState.IsValid)
-            // {
-            //     return Page();
-            // }
+            BaseUrl = GetBaseUrl();
 
-            // if(string.IsNullOrEmpty(Input.FriendlyUrl))
-            // {
-            //     Input.FriendlyUrl = Regex.Replace(Input.Title, "[ !?\"#$%&'()*+,./:;<=>@[\\]^`{|}~]", "-");
-            //     Input.FriendlyUrl = _parser.ParsePolishChars(Input.FriendlyUrl);
-            // }
+            if (!ModelState.IsValid)
+            {               
+                return Page();
+            }
 
-            // if(await _context.Posts.AnyAsync(p =>
-            //     p.FriendlyUrl.Equals(Input.FriendlyUrl) &&
-            //     p.Category.Name.Equals(Input.Category) &&
-            //     p.Id.Equals(id) == false))
-            //     {
-            //         Result = "Ten url jest już zajęty!";
-            //         return Page();
-            //     }
+            if(Input.Questions == null)
+            {
+                Result = "Quiz nie może być pusty";
+                return Page();
+            }
 
-            // var post = await _context.Posts.Include(p => p.Category)
-            //     .FirstOrDefaultAsync(p => p.Id.Equals(id));
+            if(string.IsNullOrEmpty(Input.FriendlyUrl))
+            {
+                Input.FriendlyUrl = Regex.Replace(Input.Title, "[ !?\"#$%&'()*+,./:;<=>@[\\]^`{|}~]", "-");
+                Input.FriendlyUrl = _parser.ParsePolishChars(Input.FriendlyUrl);
+            }
 
-            // var category = await _context.Categories
-            //     .FirstOrDefaultAsync(p => p.FriendlyName.Equals(Input.Category));
+            if(await _context.Quizzes.AnyAsync(p => p.FriendlyUrl.Equals(Input.FriendlyUrl) && p.Id.Equals(id) == false))
+            {
+                Result = "Ten url jest już zajęty!";
+                return Page();
+            }
 
-            // post.Title = Input.Title;
-            // post.FriendlyUrl = Input.FriendlyUrl;
-            // post.Shortcut = Input.Shortcut;
-            // post.Content = SanitizeHtml(Input.Content);
-            // post.IsPublished = Input.IsPublished;
-            // post.Category = category;
-            // post.ModifiedBy = User.Identity.Name;
-            // post.ContentType = Input.ContentType;
-            // post.IsDeleted = false;
+            var quiz = await _context.Quizzes.Include(p => p.Questions)
+                .ThenInclude(p => p.Answers)
+                .FirstOrDefaultAsync(p => p.Id.Equals(id));
+                
+            var post = _context.Posts.FirstOrDefault(p => p.Id == Input.PostId);
 
-            // _context.Categories.Update(category);
-            // _context.Posts.Update(post);
+            quiz.Title = Input.Title;
+            quiz.FriendlyUrl = Input.FriendlyUrl;
+            quiz.IsPublished = Input.IsPublished;
+            quiz.ModifiedBy = User.Identity.Name;
+            quiz.PostId = Input.PostId;
+            quiz.Post = post;
 
-            // await _context.SaveChangesAsync();
+            var _questions = new List<Models.Question>();
+            foreach(var question in Input.Questions)
+            {
+                var _question = new Models.Question
+                {
+                    Id = question.Id,
+                    Text = question.Text,
+                    Answers = new List<Models.Answer>(),
+                    Quiz = quiz
+                };                
+
+                foreach(var answer in question.Answers)
+                {
+                    var _answer = new Models.Answer
+                    {
+                        Id = answer.Id,
+                        Text = answer.Text,
+                        IsCorrect = answer.IsCorrect,
+                        Question = _question
+                    };
+                    _question.Answers.Add(_answer);
+                }
+                _questions.Add(_question);
+            }
+
+            quiz.Questions = _questions;
+
+            _context.Quizzes.Update(quiz);      
+            await _context.SaveChangesAsync();
 
             return new RedirectToPageResult("/Manage/Quizzes", new { area = "Admin" });
         }
 
         private string GetBaseUrl() => $"{Request.Scheme}://{Request.Host}";
-
-        private List<SelectListItem> GetCategories()
-        {
-            var list = new List<SelectListItem>();
-
-            list = _context.Categories
-                .Select(p => new SelectListItem
-                {
-                    Value = p.FriendlyName,
-                    Text = p.Name
-                }).ToList();
-
-            return list;
-        }
-
-        private List<SelectListItem> GetContentTypes()
-        {
-            var list = Enum.GetValues(typeof(ContentType))
-                .Cast<ContentType>()
-                .Select(t => new SelectListItem {
-                    Text = t.ToString(),
-                    Value = ((int)t).ToString()
-                    }).ToList();
-
-            return list;
-        }
 
         private string ReplaceRegex(string source, string regex, string replaceWith)
         {
@@ -165,18 +196,6 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes
                 source = source.Replace(matches[i].Value, replaceWith);
             }
             return source;
-        }
-
-        private string SanitizeHtml(string html)
-        {
-            if(string.IsNullOrEmpty(html) == false)
-            {
-                html = ReplaceRegex(html, @"<script(.*?)>(.*?)</script>", "");
-                html = ReplaceRegex(html, @"<object(.*?)>(.*?)</object>", "");
-                html = ReplaceRegex(html, @"<link(.*?)>(.*?)</link>", "");
-                html = ReplaceRegex(html, @"<embed(.*?)>(.*?)</embed>", "");
-            }
-            return html;
         }
     }
 }

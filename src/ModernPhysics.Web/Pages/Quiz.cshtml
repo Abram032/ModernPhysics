@@ -1,0 +1,111 @@
+﻿@page "/Quizzes/{quizurl}"
+@model ModernPhysics.Web.Pages.QuizModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Quiz";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<section class="clean-block clean-post dark" style="background-color: rgb(255,255,255);">
+    <div class="row margin" style="margin: 0px;">
+        <div class="col">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <h3 style="margin-bottom: 16px;">Szukaj</h3>
+                        <form asp-page="/Resources" method="get">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input class="form-control" asp-for="Search">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-dark btn-block" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <h3 style="margin-bottom: 16px;">Materiały</h3>
+                        <div class="mb-3">
+                            @foreach (var category in Model.Categories)
+                            {
+                                <div>
+                                    <a class="btn text-left collapsible" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-@category.Id" href="#collapse-@category.Id" role="button">
+                                        <span>@category.Name</span>
+                                    </a>
+                                    <div class="collapse" id="collapse-@category.Id">
+                                        <ul class="chevrons">
+                                            @foreach (var post in category.Posts)
+                                            {
+                                                <li><a href="/Resources/@category.FriendlyName/@post.FriendlyUrl">@post.Title</a></li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    @if (Model.Input != null)
+                    {
+                        <div class="col-md-8 col-lg-9">
+                            <div class="block-content">
+                                <div class="post-body">
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+                                        <a class="btn btn-warning mb-3 p-2" href="/Admin/Manage/Quizzes/Edit/@Model.Input.Id.ToString()">
+                                            <span class="fas fa-edit"> </span>
+                                            Edytuj
+                                        </a>
+                                    }
+                                    <h3>@Model.Input.Title</h3>
+                                    <div>
+                                        <form method="post">
+                                            <div class="form-group">
+                                                <div class="row ml-3">
+                                                    <div id="Questions" class="col-12">
+                                                    @if(Model.Input.Questions != null)
+                                                    {
+                                                        @for(int i = 0; i < Model.Input.Questions.Count; i++)
+                                                        {
+                                                            <div id="Question_[@i]" class="row p-3">
+                                                                <input asp-for="@Model.Input.Questions[@i].Text" type="hidden" class="form-control mb-1" />
+                                                                <span class="mb-3">@Model.Input.Questions[i].Text</span>
+                                                                <div id="Question_[@i]_Answers" class="col-12">
+                                                                    @if(Model.Input.Questions[i].Answers != null)
+                                                                    {
+                                                                        @for(int a = 0; a < Model.Input.Questions[i].Answers.Count; a++)
+                                                                        {
+                                                                            <div id="Question_[@i]_Answer_[@a]" class="row">
+                                                                                <div class="col-1">
+                                                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].IsCorrect" class="mb-1" />
+                                                                                </div>
+                                                                                <div class="col-11">
+                                                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].Text" type="hidden" class="form-control mb-1" />
+                                                                                    <span>@Model.Input.Questions[i].Answers[a].Text</span>
+                                                                                </div>     
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }     
+                                                    </div>           
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-primary" type="submit">Sprawdź</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>

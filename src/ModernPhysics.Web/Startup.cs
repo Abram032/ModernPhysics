@@ -22,6 +22,7 @@ using ModernPhysics.Web.Areas.Admin.Pages.Manage.Categories;
 using FluentValidation;
 using ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts;
 using ModernPhysics.Web.Utils;
+using ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes;
 
 namespace ModernPhysics.Web
 {
@@ -49,6 +50,7 @@ namespace ModernPhysics.Web
 
             services.AddTransient<IValidator<InputCategoryModel>, InputCategoryValidator>();
             services.AddTransient<IValidator<InputPostModel>, InputPostValidator>();
+            services.AddTransient<IValidator<InputQuizModel>, InputQuizValidator>();
 
             services.AddTransient<ICharacterParser, CharacterParser>();
 

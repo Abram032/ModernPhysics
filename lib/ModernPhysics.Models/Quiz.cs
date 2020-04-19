@@ -18,7 +18,7 @@ namespace ModernPhysics.Models
         public bool IsPublished { get; set; }
         public bool IsDeleted { get; set; }
 
-        public Guid PostId { get; set; }
+        public Guid? PostId { get; set; }
         public Post Post { get; set; }
     }
 }

@@ -38,6 +38,7 @@ namespace ModernPhysics.Web.Pages
             
             Post = _context.Posts
                 .Include(p => p.Category)
+                .Include(p => p.Quiz)
                 .FirstOrDefault(p => p.Category.FriendlyName.Equals(category) && 
                     p.FriendlyUrl.Equals(posturl));
 

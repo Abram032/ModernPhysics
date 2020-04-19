@@ -1,7 +1,7 @@
-﻿@page
+﻿@page "{id:Guid?}"
 @model ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes.EditModel
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Pages/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -10,7 +10,7 @@
 
 <div class="row">
     <div class="col-lg-12 mb-4">
-        <form method="post">
+        <form id="form" method="post">
 
             @if(Model.Result != null)
             {
@@ -33,18 +33,56 @@
                     <span asp-validation-for="Input.FriendlyUrl" class="text-danger"></span>
                 </div>
             </div>
+            
+            <div class="form-group">
+                <label asp-for="@Model.Input.PostId"></label>
+                <select class="custom-select" asp-items="Model.Posts" asp-for="@Model.Input.PostId"></select>
+                <span asp-validation-for="Input.PostId" class="text-danger"></span>
+            </div>
 
             <div class="form-group">
                 <label asp-for="@Model.Input.Questions"></label>
-                <div class="input-group">
-                    <input asp-for="@Model.Input.Questions" class="form-control">
-                    <div class="input-group">
-                        <input type="text" class="form-control">
-                        <input type="checkbox" class="form-control">
-                        <button class="btn btn-success">Dodaj odpowiedź</button>
-                    </div>
+                <div class="row ml-3">
+                    <div id="Questions" class="col-12">
+                    @if(Model.Input.Questions != null)
+                    {
+                        @for(int i = 0; i < Model.Input.Questions.Count; i++)
+                        {
+                            <div id="Question_[@i]" class="row">
+                                <label id="Question_[@i]_Label">Pytanie @(i+1): </label>
+                                <input asp-for="@Model.Input.Questions[@i].Text" class="form-control mb-1" />
+                                <div id="Question_[@i]_Answers" class="col-12">
+                                    @if(Model.Input.Questions[i].Answers != null)
+                                    {
+                                        <div id="Question_[@i]_Answer_Labels" class="row">
+                                            <div class="col-9">Odpowiedzi</div>
+                                            <div class="col-2">Czy poprawna</div>
+                                            <div class="col-1">Usuń</div>
+                                        </div>
+                                        @for(int a = 0; a < Model.Input.Questions[i].Answers.Count; a++)
+                                        {
+                                            <div id="Question_[@i]_Answer_[@a]" class="row">
+                                                <div class="col-9">
+                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].Text" class="form-control mb-1" />
+                                                </div>
+                                                <div class="col-2">
+                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].IsCorrect" class="form-control mb-1" />
+                                                </div>
+                                                <div class="col-1">
+                                                    <button type="button" id="Question_[@i]_Answer_[@a]_Remove" class="btn btn-danger fas fa-trash form-control mb-1" onclick="removeAnswer(@i, @a)"></button> 
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <button type="button" id="Question_[@i]_AddAnswer" class="btn btn-success mt-1 ml-3" onclick="addAnswer(@i)">Dodaj odpowiedź</button>
+                                <button type="button" id="Question_[@i]_Remove" class="btn btn-danger mt-1 ml-3" onclick="removeQuestion(@i)">Usuń pytanie</button>
+                            </div>
+                        }
+                    }     
+                    </div>           
                 </div>
-                <button class="btn btn-success">Dodaj pytanie</button>
+                <button type="button" class="btn btn-success ml-3" onclick="addQuestion()">Dodaj pytanie</button>
             </div>
 
             <div class="form-group">
@@ -54,7 +92,7 @@
             </div>
 
             <div class="form-group">
-                <button class="btn btn-success" type="submit">Dodaj</button>
+                <button class="btn btn-success" type="submit">Zapisz</button>
             </div>
         </form>
     </div>
@@ -62,6 +100,211 @@
 
 @section Scripts {
     <script>
+        function removeCheckboxDuplicates() {
+            let form = document.getElementById("form");
+            let toRemove = [];
+            for(i = 0; i < form.childNodes.length; i++) {
+                let child = form.childNodes[i];
+                if(child.tagName === "INPUT" && 
+                    child.name !== undefined && 
+                    child.name.startsWith("Input.")) {
+                        toRemove.push(child);
+                }
+            }
+            for(i = 0; i < toRemove.length; i++) {
+                let element = toRemove[i];
+                form.removeChild(element);
+            }
+        }
 
+        function removeQuestion(index) {
+            let element = document.getElementById(`Question_[${index}]`);
+            element.parentNode.removeChild(element);
+
+            recalculateForm();
+            removeCheckboxDuplicates();
+        }
+
+        function removeAnswer(index_question, index_answer) {
+            let element = document.getElementById(`Question_[${index_question}]_Answer_[${index_answer}]`);
+            let parent = element.parentNode;
+            parent.removeChild(element);
+            if(parent.childElementCount === 1) {
+                let labels = document.getElementById(`Question_[${index_question}]_Answer_Labels`);
+                parent.removeChild(labels);
+            }
+
+            recalculateForm();
+            removeCheckboxDuplicates();
+        }
+
+        function recalculateForm() {
+            let questions = document.getElementById("Questions");
+            for(i = 0; i < questions.children.length; i++)
+            {
+                //Questions
+                let child = questions.children[i];
+                child.id = `Question_[${i}]`;
+                let label = child.children[0];
+                label.id = `Question_[${i}]_Label`;
+                label.innerHTML = `Pytanie ${i+1}:`;
+                let input = child.children[1];
+                input.id = `Input_Questions_${i}__Text`
+                input.name = `Input.Questions[${i}].Text`;
+                let div = child.children[2];
+                div.id = `Question_[${i}]_Answers`;
+                //Answers
+                for(j = 0; j < div.children.length; j++) {
+                    let answers = div.children;
+                    //Labels
+                    if(j === 0) {
+                        let answer_div = answers[j];
+                        answer_div.id = `Question_[${i}]_Answer_Labels`;
+                    }
+                    //Other answers
+                    else {
+                        let answer_div = answers[j];
+                        answer_div.id = `Question_[${i}]_Answer_[${j-1}]`;
+                        let answer_input = answer_div.children[0].children[0];
+                        let answer_checkbox = answer_div.children[1].children[0];
+                        let answer_button = answer_div.children[2].children[0];
+                        answer_input.id = `Input_Questions_${i}__Answers_${j-1}__Text`;
+                        answer_input.name = `Input.Questions[${i}].Answers[${j-1}].Text`;
+                        answer_checkbox.id = `Input_Questions_${i}__Answers_${j-1}__IsCorrect`;
+                        answer_checkbox.name = `Input.Questions[${i}].Answers[${j-1}].IsCorrect`;
+                        answer_button.id = `Question_[${i}]_Answer_[${j-1}]_Remove`;
+                        answer_button.name = `Question_[${i}]_Answer_[${j-1}]_Remove`;
+                        answer_button.setAttribute("onClick", `removeAnswer(${i}, ${j-1})`);
+                    }
+                }
+                let add_answer = child.children[3];
+                add_answer.id = `Question_[${i}]_AddAnswer`;
+                add_answer.setAttribute("onClick", `addAnswer(${i})`);
+                let remove_question = child.children[4];
+                remove_question.id = `Question_[${i}]_Remove`;
+                remove_question.setAttribute("onClick", `removeQuestion(${i})`);
+            }
+        }
+
+        function addQuestion() {
+            let questions = document.getElementById("Questions");
+
+            let question_div = document.createElement("div");
+            question_div.id = `Question_[${questions.children.length}]`;
+            question_div.className = "row";
+
+            let label = document.createElement("label");
+            label.id = `Question_[${questions.children.length}]_Label`;
+            label.innerHTML = `Pytanie ${questions.children.length+1}:`;
+            question_div.appendChild(label);
+
+            let input = document.createElement("input");
+            input.id = `Input_Questions_${questions.children.length}__Text`;
+            input.name = `Input.Questions[${questions.children.length}].Text`;
+            input.type = `text`;
+            input.placeholder = `Treść pytania`;
+            input.className = "form-control mb-1";
+            input.value = "";
+            question_div.appendChild(input);
+
+            let answers_div = document.createElement("div");
+            answers_div.id = `Question_[${questions.children.length}]_Answers`;
+            answers_div.className = "col-12";
+            question_div.appendChild(answers_div);
+
+            let add_answer_button = document.createElement("button");
+            add_answer_button.id = `Question_[${questions.children.length}]_AddAnswer`;
+            add_answer_button.className = "btn btn-success mt-1 ml-3";
+            add_answer_button.innerHTML = `Dodaj odpowiedź`;
+            add_answer_button.setAttribute("onClick", `addAnswer(${questions.children.length})`);
+            add_answer_button.type = `button`;
+            question_div.appendChild(add_answer_button);
+
+            let remove_question_button = document.createElement("button");
+            remove_question_button.id = `Question_[${questions.children.length}]_Remove`;
+            remove_question_button.className = "btn btn-danger mt-1 ml-3";
+            remove_question_button.innerHTML = `Usuń pytanie`;
+            remove_question_button.setAttribute("onClick", `removeQuestion(${questions.children.length})`);
+            remove_question_button.type = `button`;
+            question_div.appendChild(remove_question_button);
+            
+            questions.appendChild(question_div);
+
+            recalculateForm();
+            removeCheckboxDuplicates();
+        }
+
+        function addAnswer(index) {
+            let answers = document.getElementById(`Question_[${index}]_Answers`);
+            if(answers.children.length === 0)
+            {
+                let label_div = document.createElement(`div`);
+                label_div.id = `Question_[${index}]_Answer_Labels`;
+                label_div.className = "row";
+
+                let label_answer_div = document.createElement(`div`);
+                label_answer_div.className = "col-9";
+                label_answer_div.innerHTML = "Odpowiedzi";
+                label_div.appendChild(label_answer_div);
+
+                let label_iscorrect_div = document.createElement(`div`);
+                label_iscorrect_div.className = "col-2";
+                label_iscorrect_div.innerHTML = "Czy poprawna";
+                label_div.appendChild(label_iscorrect_div);
+
+                let label_delete_div = document.createElement(`div`);
+                label_delete_div.className = "col-1";
+                label_delete_div.innerHTML = "Usuń";
+                label_div.appendChild(label_delete_div);
+
+                answers.appendChild(label_div);
+            }
+
+            let answer_div = document.createElement(`div`);
+            answer_div.id = `Question_[${index}]_Answer_[${answers.children.length-1}]`;
+            answer_div.className = `row`;
+
+            let textbox_div = document.createElement(`div`);
+            textbox_div.className = "col-9";
+
+            let textbox_input = document.createElement(`input`);
+            textbox_input.className = "form-control mb-1";
+            textbox_input.type = "text";
+            textbox_input.id = `Input_Questions_${index}__Answers_${answers.children.length-1}__Text`;
+            textbox_input.name = `Input.Questions[${index}].Answers[${answers.children.length-1}].Text`;
+            textbox_input.placeholder = "Treść odpowiedzi";
+            textbox_input.value = "";
+            textbox_div.appendChild(textbox_input);
+            answer_div.appendChild(textbox_div);
+
+            let checkbox_div = document.createElement(`div`);
+            checkbox_div.className = "col-2";
+
+            let checkbox_input = document.createElement(`input`);
+            checkbox_input.className = "form-control mb-1";
+            checkbox_input.type = "checkbox";
+            checkbox_input.id = `Input_Questions_${index}__Answers_${answers.children.length-1}__IsCorrect`;
+            checkbox_input.name = `Input.Questions[${index}].Answers[${answers.children.length-1}].IsCorrect`;
+            checkbox_input.value = "true";
+            checkbox_input.data_val = "true";
+            checkbox_div.appendChild(checkbox_input);
+            answer_div.appendChild(checkbox_div);
+
+            let button_div = document.createElement(`div`);
+            button_div.className = "col-1";
+
+            let button_input = document.createElement(`button`);
+            button_input.id = `Question_[${index}]_Answer_[${answers.children.length-1}]_Remove`;
+            button_input.type = `button`;
+            button_input.className = "btn btn-danger fas fa-trash form-control mb-1";
+            button_input.setAttribute("onClick", `removeAnswer(${index}, ${answers.children.length-1})`);
+            button_div.appendChild(button_input);
+            answer_div.appendChild(button_div);
+
+            answers.appendChild(answer_div);
+
+            recalculateForm();
+            removeCheckboxDuplicates();
+        }
     </script>
 }

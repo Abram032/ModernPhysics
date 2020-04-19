@@ -37,7 +37,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes
             _context.Update(quiz);
             await _context.SaveChangesAsync();
 
-            return new RedirectToPageResult("/Manage/Quizzes/Deleted", new { area = "Admin" });
+            return new RedirectToPageResult("/Manage/Quizzes/Delete", new { area = "Admin" });
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(Guid id)

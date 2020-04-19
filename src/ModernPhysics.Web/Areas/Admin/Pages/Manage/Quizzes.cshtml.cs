@@ -22,7 +22,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage
 
         public void OnGet()
         {
-            Quizzes = _context.Quizzes;
+            Quizzes = _context.Quizzes.Where(p => p.IsDeleted == false);
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(Guid id)

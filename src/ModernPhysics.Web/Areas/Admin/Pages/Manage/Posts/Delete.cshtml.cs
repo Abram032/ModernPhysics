@@ -38,7 +38,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             _context.Update(post);
             await _context.SaveChangesAsync();
 
-            return new RedirectToPageResult("/Manage/Posts/Deleted", new { area = "Admin" });
+            return new RedirectToPageResult("/Manage/Posts/Delete", new { area = "Admin" });
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(Guid id)
@@ -52,7 +52,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Posts
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
 
-            return new RedirectToPageResult("/Manage/Posts/Deleted", new { area = "Admin" });
+            return new RedirectToPageResult("/Manage/Posts/Delete", new { area = "Admin" });
         }
     }
 }

@@ -64,6 +64,12 @@
                                     <div>
                                         @Html.Raw(@Model.Post.Content)
                                     </div>
+                                    @if(Model.Post.Quiz != null && Model.Post.Quiz.IsPublished == true)
+                                    {
+                                        <div class="m-2 p-2">
+                                            <a class="btn btn-primary" href="/Quizzes/@Model.Post.Quiz.FriendlyUrl">Przejdź do quizu</a>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>

@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes
 {
-    public class InputPostValidator : AbstractValidator<InputQuizModel>
+    public class InputQuizValidator : AbstractValidator<InputQuizModel>
     {
-        public InputPostValidator()
+        public InputQuizValidator()
         {
             RuleFor(p => p.Title)
                 .NotEmpty()
