@@ -32,10 +32,11 @@ namespace ModernPhysics.Web.Pages
         [BindProperty]
         public InputQuizModel Input { get; set; }
         public List<Category> Categories { get; set; }
+        public bool? Result { get; set; }
 
         public IActionResult OnGet(string quizurl)
         {
-            
+            Result = null;
             var quiz = _context.Quizzes
                 .Include(p => p.Questions)
                 .ThenInclude(p => p.Answers)
@@ -86,7 +87,7 @@ namespace ModernPhysics.Web.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string quizurl)
         {
             Categories = _context.Categories.Include(p => p.Posts).ToList();
             foreach(var _category in Categories)
@@ -94,10 +95,63 @@ namespace ModernPhysics.Web.Pages
                 _category.Posts = _category.Posts.Where(p => p.IsPublished == true).ToList();
             }
 
+            var quiz = _context.Quizzes
+                .Include(p => p.Questions)
+                .ThenInclude(p => p.Answers)
+                .FirstOrDefault(p => p.FriendlyUrl.Equals(quizurl));
+
+            if(quiz == null || quiz.IsDeleted == true)
+            {
+                return RedirectToPage("/NotFound");
+            }
+
+            if(quiz.IsPublished == false && User.Identity.IsAuthenticated == false)
+            {
+                return RedirectToPage("/NotFound");
+            }
+
             if (!ModelState.IsValid)
             {               
                 return Page();
             }
+
+            Input.Title = quiz.Title;
+            Input.FriendlyUrl = quiz.FriendlyUrl;
+
+            bool solvedCorrectly = true;
+            foreach(var question in Input.Questions)
+            {
+                var _question = quiz.Questions.FirstOrDefault(q => q.Id == question.Id);
+                if(_question != null)
+                {
+                    foreach(var answer in question.Answers)
+                    {
+                        var _answer = _question.Answers.FirstOrDefault(a => a.Id == answer.Id);
+                        if(_answer != null)
+                        {
+                            if(answer.IsCorrect == true && _answer.IsCorrect == true) 
+                            {
+                                answer.Result = 1;
+                            }
+                            else if(answer.IsCorrect != _answer.IsCorrect) 
+                            {
+                                answer.Result = -1;
+                                solvedCorrectly = false;
+                                Result = false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            quiz.TimesSolved++;
+            if(solvedCorrectly) {
+                quiz.TimesSolvedCorrectly++;
+                Result = true;
+            }
+
+            _context.Quizzes.Update(quiz);
+            await _context.SaveChangesAsync();
 
             return Page();
         }
@@ -123,6 +177,6 @@ namespace ModernPhysics.Web.Pages
         public Guid Id { get; set; }
         public string Text { get; set; }
         public bool IsCorrect { get; set; }
-        public bool Result { get; set; }
+        public int Result { get; set; }
     }
 }

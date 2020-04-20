@@ -66,12 +66,12 @@ namespace ModernPhysics.Web.Data
             builder.Entity<Quiz>().HasMany(p => p.Questions).WithOne(p => p.Quiz);
 
             builder.Entity<Question>().HasKey(p => p.Id);
-            builder.Entity<Question>().Property(p => p.Text).IsRequired().HasMaxLength(255);
+            builder.Entity<Question>().Property(p => p.Text).HasMaxLength(255);
             builder.Entity<Question>().HasOne(p => p.Quiz).WithMany(p => p.Questions);
             builder.Entity<Question>().HasMany(p => p.Answers).WithOne(p => p.Question);
 
             builder.Entity<Answer>().HasKey(p => p.Id);
-            builder.Entity<Answer>().Property(p => p.Text).IsRequired().HasMaxLength(255);
+            builder.Entity<Answer>().Property(p => p.Text).HasMaxLength(255);
             builder.Entity<Answer>().Property(p => p.IsCorrect).IsRequired().HasDefaultValue(false);
             builder.Entity<Answer>().HasOne(p => p.Question).WithMany(p => p.Answers);
         }

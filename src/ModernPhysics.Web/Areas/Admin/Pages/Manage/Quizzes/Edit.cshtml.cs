@@ -75,17 +75,17 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes
 
             BaseUrl = GetBaseUrl();
 
-            var questions = new List<Question>();
+            var questions = new List<QuestionModel>();
             if(quiz.Questions != null)
             {
                 foreach(var question in quiz.Questions)
                 {
-                    var answers = new List<Answer>();
+                    var answers = new List<AnswerModel>();
                     if(question.Answers != null)
                     {
                         foreach(var answer in question.Answers)
                         {
-                            answers.Add(new Answer
+                            answers.Add(new AnswerModel
                             {
                                 Id = answer.Id,
                                 Text = answer.Text,
@@ -93,7 +93,7 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes
                             });
                         }
                     }
-                    questions.Add(new Question 
+                    questions.Add(new QuestionModel 
                     {
                         Id = question.Id,
                         Text = question.Text,
@@ -115,7 +115,25 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes
 
         public async Task<IActionResult> OnPostAsync(Guid id)
         {
+            Posts = _context.Posts
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id.ToString(),
+                    Text = p.Title
+                }).ToList();
+
+            Posts.Add(new SelectListItem {
+                Value = null,
+                Text = "Wybierz..."
+            });
+            
             BaseUrl = GetBaseUrl();
+
+            Guid? postId = null;
+            if(Guid.TryParse(Input.PostId, out var _postId))
+            {
+                postId = _postId;
+            }
 
             if (!ModelState.IsValid)
             {               
@@ -144,13 +162,19 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes
                 .ThenInclude(p => p.Answers)
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
                 
-            var post = _context.Posts.FirstOrDefault(p => p.Id == Input.PostId);
+            var post = _context.Posts.Include(p => p.Quiz).FirstOrDefault(p => p.Id == postId);
+
+            if(post != null && post.Quiz != null && post.Quiz.Id != quiz.Id) 
+            {
+                Result = "Ten post posiada już quiz, nie można dodać kolejnego.";
+                return Page();
+            }
 
             quiz.Title = Input.Title;
             quiz.FriendlyUrl = Input.FriendlyUrl;
             quiz.IsPublished = Input.IsPublished;
             quiz.ModifiedBy = User.Identity.Name;
-            quiz.PostId = Input.PostId;
+            quiz.PostId = postId;
             quiz.Post = post;
 
             var _questions = new List<Models.Question>();

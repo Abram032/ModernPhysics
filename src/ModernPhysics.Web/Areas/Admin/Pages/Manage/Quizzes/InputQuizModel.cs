@@ -12,22 +12,22 @@ namespace ModernPhysics.Web.Areas.Admin.Pages.Manage.Quizzes
         [Display(Name = "Przyjazny URL", Prompt = "Przyjazny URL (Opcjonalne)")]
         public string FriendlyUrl { get; set; }
         [Display(Name = "Post", Prompt = "Post, który będzie miał quiz (Opcjonalne)")]
-        public Guid? PostId { get; set; }
+        public string PostId { get; set; }
         [Display(Name = "Pytania", Prompt = "Pytania do quizu (Opcjonalne)")]
-        public List<Question> Questions { get; set; }
+        public List<QuestionModel> Questions { get; set; }
         [Display(Name = "Opublikuj", Prompt = "Publikuje quiz po zapisaniu.")]
         public bool IsPublished { get; set; }
     }
 
-    public class Question
+    public class QuestionModel
     {
         public Guid Id { get; set; }
         [Display(Name = "Treść pytania", Prompt = "Treść pytania")]
         public string Text { get; set; }
-        public List<Answer> Answers { get; set; }
+        public List<AnswerModel> Answers { get; set; }
     }
 
-    public class Answer
+    public class AnswerModel
     {
         public Guid Id { get; set; }
         [Display(Name = "Treść odpowiedzi", Prompt = "Treść odpowiedzi")]

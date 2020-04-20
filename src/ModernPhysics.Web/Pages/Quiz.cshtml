@@ -59,38 +59,90 @@
                                             Edytuj
                                         </a>
                                     }
-                                    <h3>@Model.Input.Title</h3>
+                                    <h3 class="mb-4">@Model.Input.Title</h3>
+                                    @if(Model.Result.HasValue)
+                                    {
+                                        @if(Model.Result.Value)
+                                        {
+                                            <span class="p-2" style="background-color: #4df04d">Świetna robota!</span>
+                                        } 
+                                        else
+                                        {
+                                            <span class="p-2" style="background-color: #f04d4d">Spróbuj ponownie!</span>
+                                        }
+                                    }
                                     <div>
                                         <form method="post">
                                             <div class="form-group">
-                                                <div class="row ml-3">
+                                                <div class="row">
                                                     <div id="Questions" class="col-12">
                                                     @if(Model.Input.Questions != null)
                                                     {
-                                                        @for(int i = 0; i < Model.Input.Questions.Count; i++)
-                                                        {
-                                                            <div id="Question_[@i]" class="row p-3">
-                                                                <input asp-for="@Model.Input.Questions[@i].Text" type="hidden" class="form-control mb-1" />
-                                                                <span class="mb-3">@Model.Input.Questions[i].Text</span>
-                                                                <div id="Question_[@i]_Answers" class="col-12">
-                                                                    @if(Model.Input.Questions[i].Answers != null)
-                                                                    {
-                                                                        @for(int a = 0; a < Model.Input.Questions[i].Answers.Count; a++)
+                                                        <ol>
+                                                            @for(int i = 0; i < Model.Input.Questions.Count; i++)
+                                                            {
+                                                                <div id="Question_[@i]" class="row p-3">
+                                                                    <input asp-for="@Model.Input.Questions[i].Id" type="hidden"/>
+                                                                    <input asp-for="@Model.Input.Questions[@i].Text" type="hidden" class="form-control mb-1" />
+                                                                    <li class="mb-3">@Model.Input.Questions[i].Text</li>
+                                                                    <div id="Question_[@i]_Answers" class="col-12">
+                                                                        @if(Model.Input.Questions[i].Answers != null)
                                                                         {
-                                                                            <div id="Question_[@i]_Answer_[@a]" class="row">
-                                                                                <div class="col-1">
-                                                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].IsCorrect" class="mb-1" />
-                                                                                </div>
-                                                                                <div class="col-11">
-                                                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].Text" type="hidden" class="form-control mb-1" />
-                                                                                    <span>@Model.Input.Questions[i].Answers[a].Text</span>
-                                                                                </div>     
-                                                                            </div>
+                                                                            <ol type="a" class="p-0">
+                                                                                @for(int a = 0; a < Model.Input.Questions[i].Answers.Count; a++)
+                                                                                {
+                                                                                    @if(Model.Input.Questions[i].Answers[a].Result == 1)
+                                                                                    {
+                                                                                        <li class="p-1" style="background-color: #4df04d">
+                                                                                            <div id="Question_[@i]_Answer_[@a]" class="row">
+                                                                                                <input asp-for="@Model.Input.Questions[i].Answers[a].Id" type="hidden"/>
+                                                                                                <div class="col-1">
+                                                                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].IsCorrect" class="mb-1" />
+                                                                                                </div>
+                                                                                                <div class="col-11">
+                                                                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].Text" type="hidden" class="form-control mb-1" />
+                                                                                                    <span>@Model.Input.Questions[i].Answers[a].Text</span>
+                                                                                                </div>     
+                                                                                            </div>
+                                                                                        </li>
+                                                                                    }
+                                                                                    else if(Model.Input.Questions[i].Answers[a].Result == -1)
+                                                                                    {
+                                                                                        <li class="p-1" style="background-color: #f04d4d">
+                                                                                            <div id="Question_[@i]_Answer_[@a]" class="row">
+                                                                                                <input asp-for="@Model.Input.Questions[i].Answers[a].Id" type="hidden"/>
+                                                                                                <div class="col-1">
+                                                                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].IsCorrect" class="mb-1" />
+                                                                                                </div>
+                                                                                                <div class="col-11">
+                                                                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].Text" type="hidden" class="form-control mb-1" />
+                                                                                                    <span>@Model.Input.Questions[i].Answers[a].Text</span>
+                                                                                                </div>     
+                                                                                            </div>
+                                                                                        </li>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <li class="p-1">
+                                                                                            <div id="Question_[@i]_Answer_[@a]" class="row">
+                                                                                                <input asp-for="@Model.Input.Questions[i].Answers[a].Id" type="hidden"/>
+                                                                                                <div class="col-1">
+                                                                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].IsCorrect" class="mb-1" />
+                                                                                                </div>
+                                                                                                <div class="col-11">
+                                                                                                    <input asp-for="@Model.Input.Questions[i].Answers[a].Text" type="hidden" class="form-control mb-1" />
+                                                                                                    <span>@Model.Input.Questions[i].Answers[a].Text</span>
+                                                                                                </div>     
+                                                                                            </div>
+                                                                                        </li>
+                                                                                    }
+                                                                                }
+                                                                            </ol>
                                                                         }
-                                                                    }
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        }
+                                                            }
+                                                        </ol>
                                                     }     
                                                     </div>           
                                                 </div>
